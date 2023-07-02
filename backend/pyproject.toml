@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = ["duduru <hgalytoby@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.97.0"
+uvicorn = { extras = ["standard"], version = "^0.22.0" }
+fastapi-async-sqlalchemy = "^0.3.14"
+sqlmodel = "^0.0.8"
+fastapi-users = "^11.0.0"
+fastapi-pagination = "^0.12.1"
+asyncpg = "^0.27.0"
+broadcaster = { extras = ["redis"], version = "^0.2.0" }
+httpx-oauth = "^0.11.2"
+fastapi-mail = "^1.2.7"
+redis = "^4.5.5"
+fastapi-users-db-sqlmodel = "^0.2.0"
+alembic = "^1.10.3"
+fastapi-restful = "^0.4.3"
+pillow = "^9.5.0"
+aiopath = "^0.6.11"
+pyhumps = "^3.8.0"
+gcloud-aio-storage = "^8.2.0"
+qrcode = "^7.4.2"
+orjson = "^3.8.14"
+gunicorn = "^20.1.0"
+sqlalchemy-utils = "^0.41.1"
+arq = "^0.25.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start = "app.main:start"
