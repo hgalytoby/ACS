@@ -29,7 +29,13 @@ from app.crud.base import CRUDBase
 from app.crud.log import crud_user_log
 from app.models import UserModel, RoleModel, OAuthAccountModel
 from app.schemas.log import UserLogCreate
-from app.schemas.user import UserCreate, UserUpdate, UserRead, UserPasswordUpdate, UserDetailRead
+from app.schemas.user import (
+    UserCreate,
+    UserUpdate,
+    UserRead,
+    UserPasswordUpdate,
+    UserDetailRead,
+)
 from app.utils.enums import UserLogEvent
 from app.utils.storage import Storage
 
@@ -287,16 +293,17 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
             db_session: Optional[AsyncSession] = None,
     ) -> UserDetailRead:
         db_session = db_session or self.db.session
-        user.role_ids.extend(role_list)
-        await db_session.commit()
-        await db_session.refresh(user)
-        return UserDetailRead.from_orm(user)
+        user.role_ids = role_list
+        instance = await self.save(instance=user, db_session=db_session)
+        return UserDetailRead.from_orm(instance)
 
     async def update_password(
             self,
             user: UserModel,
             password: UserPasswordUpdate,
+            db_session: Optional[AsyncSession] = None,
     ) -> UserRead:
+        db_session = db_session or self.db.session
         password_helper = PasswordHelper()
         verified, _ = password_helper.verify_and_update(
             plain_password=password.old_password,
@@ -308,6 +315,7 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
         await self.update(
             current_item=user,
             update_item={'hashed_password': new_password},
+            db_session=db_session,
         )
         return UserRead.from_orm(user)
 
@@ -316,10 +324,16 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
             user: UserModel,
             update_item: UserUpdate,
             icon: UploadFile = File(None),
+            db_session: Optional[AsyncSession] = None,
     ) -> UserRead:
+        db_session = db_session or self.db.session
         if icon:
             await Storage.save_image(instance=user, image=icon, size=(200, 200))
-        user = await self.update(current_item=user, update_item=update_item)
+        user = await self.update(
+            current_item=user,
+            update_item=update_item,
+            db_session=db_session,
+        )
         return UserRead.from_orm(user)
 
     async def get_first_created_at_user(

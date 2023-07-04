@@ -233,7 +233,7 @@ async def create_role(db_session: AsyncSession):
     roles = await crud.crud_role.get_multi(
         query=QueryList(
             query=[
-                RoleModel.name.in_(role_init_items.keys())
+                crud.crud_role.model.name.in_(role_init_items.keys())
             ]
         ),
         db_session=db_session,

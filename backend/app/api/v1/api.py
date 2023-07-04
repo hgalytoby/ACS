@@ -3,7 +3,14 @@ from fastapi_restful.cbv import cbv
 from fastapi import status, HTTPException, APIRouter
 
 from app.crud import crud_api_group, crud_api
-from app.schemas.api import ApiGroupRead, ApiGroupCreate, ApiGroupUpdate, ApiUpdate, ApiRead, ApiGroupDetailRead
+from app.schemas.api import (
+    ApiGroupRead,
+    ApiGroupCreate,
+    ApiGroupUpdate,
+    ApiUpdate,
+    ApiRead,
+    ApiGroupDetailRead,
+)
 from app.utils.enums import APIAccess
 
 router = APIRouter()

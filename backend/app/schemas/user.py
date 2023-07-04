@@ -8,7 +8,7 @@ from app.models import UserBase
 from app.utils.partial import optional
 
 if TYPE_CHECKING:
-    from .role import RoleApiRead
+    from .role import RoleFrontendRead
 
 
 class UserRead(BaseUpdatedAtRead, BaseCreatedAtRead, UserBase, BaseUUIDRead):
@@ -19,7 +19,7 @@ class UserRead(BaseUpdatedAtRead, BaseCreatedAtRead, UserBase, BaseUUIDRead):
 
 
 class UserDetailRead(UserRead):
-    role_ids: list['RoleApiRead'] = Field(default_factory=list, description='角色')
+    role_ids: list['RoleFrontendRead'] = Field(default_factory=list, description='角色')
 
 
 class UserCreate(UserBase):

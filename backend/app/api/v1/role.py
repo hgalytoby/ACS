@@ -2,8 +2,16 @@ from uuid import UUID
 from fastapi import status, HTTPException, Query, APIRouter
 from fastapi_restful.cbv import cbv
 
-from app.crud import crud_role, crud_user, crud_api
-from app.schemas.role import RoleRead, RoleCreate, RoleUpdate, RoleDetailRead
+from app.crud import crud_role, crud_user, crud_api, crud_frontend
+from app.schemas.role import (
+    RoleRead,
+    RoleCreate,
+    RoleUpdate,
+    RoleApiRead,
+    RoleFrontendRead,
+    RoleUserRead,
+    RoleDetailRead,
+)
 from app.utils.enums import APIAccess
 
 router = APIRouter()
@@ -43,7 +51,7 @@ class UserRoleView:
             self,
             role_id: UUID,
             user_ids: list[UUID],
-    ) -> RoleDetailRead:
+    ) -> RoleUserRead:
         role = await crud_role.get(item_id=role_id)
         if not role:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -62,7 +70,7 @@ class UserRoleView:
             self,
             role_id: UUID,
             api_ids: list[UUID],
-    ) -> RoleDetailRead:
+    ) -> RoleApiRead:
         role = await crud_role.get(item_id=role_id)
         if not role:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -70,23 +78,24 @@ class UserRoleView:
         role = await crud_role.update_api_ids(apis=apis, role=role)
         return role
 
-    # @router.patch(
-    #     '/roles/user-add-roles',
-    #     name=APIAccess.PRIVATE,
-    #     summary='使用者加入多個角色',
-    #     status_code=status.HTTP_200_OK,
-    #     tags=['角色'],
-    # )
-    # async def user_add_roles(
-    #         self,
-    #         user_id: UUID,
-    #         roles_ids: list[UUID],
-    # ) -> UserDetailRead:
-    #     user = await crud_user.get(item_id=user_id)
-    #     if not user:
-    #         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    #     user = await crud_role.user_add_roles(user=user, roles_ids=roles_ids)
-    #     return user
+    @router.patch(
+        '/roles/{role_id}/frontend-ids',
+        name=APIAccess.PRIVATE,
+        summary='角色批量更新 Frontend',
+        status_code=status.HTTP_200_OK,
+        tags=['角色'],
+    )
+    async def update_role_to_frontends(
+            self,
+            role_id: UUID,
+            frontend_ids: list[UUID],
+    ) -> RoleFrontendRead:
+        frontend_list = await crud_frontend.get_by_ids(list_ids=frontend_ids)
+        role = await crud_role.get(item_id=role_id)
+        if not role:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        role = await crud_role.update_role_to_frontends(role=role, frontend_list=frontend_list)
+        return role
 
     @router.get(
         '/roles/{role_id}',

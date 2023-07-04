@@ -30,15 +30,16 @@ class GCStorge(BaseStorage):
             object_name=filename,
             file_data=file_data,
         )
-        return BlobMetadata(
+        blob_metadata = BlobMetadata(
             name=metadata['name'],
             link=f'{self.__host}/{self.__bucket_name}/{filename}',
         )
+        return blob_metadata
 
     async def delete_file(self, blob_name: str):
         await self.__storage_client.delete(bucket=self.__bucket_name, object_name=blob_name)
 
-    def link_to_filename(self, filename: str):
+    def link_to_filename(self, filename: str) -> str:
         return filename.replace(f'{self.__host}/{self.__bucket_name}/', '')
 
     async def save_image(

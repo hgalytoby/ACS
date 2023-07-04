@@ -1,5 +1,8 @@
+from typing import Optional
+
 from sqlalchemy.orm import joinedload
 from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel.sql.expression import Select, SelectOfScalar
 
 from app.crud.base import CRUDBase
@@ -10,7 +13,8 @@ from app.schemas.api import (
     ApiRead,
     ApiGroupCreate,
     ApiGroupUpdate,
-    ApiGroupRead, ApiGroupDetailRead,
+    ApiGroupRead,
+    ApiGroupDetailRead,
 )
 
 
@@ -27,12 +31,12 @@ class CRUDApiGroup(
             *,
             current_item: ApiGroupModel,
             api_items: list[ApiModel],
+            db_session: Optional[AsyncSession] = None,
     ) -> ApiGroupDetailRead:
+        db_session = db_session or self.db.session
         current_item.api_ids = api_items
-        self.db.session.add(current_item)
-        await self.db.session.commit()
-        await self.db.session.refresh(current_item)
-        return ApiGroupDetailRead.from_orm(current_item)
+        instance = await self.save(instance=current_item, db_session=db_session)
+        return ApiGroupDetailRead.from_orm(instance)
 
 
 class CRUDApi(

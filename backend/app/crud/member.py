@@ -14,7 +14,11 @@ from app.models import (
     MemberRecordModel,
     MemberStatusModel,
 )
-from app.schemas.chart import BaseGrowthRead, MemberRecordHourlyCountRead, MemberRecordHourlyCountDataRead
+from app.schemas.chart import (
+    BaseGrowthRead,
+    MemberRecordHourlyCountRead,
+    MemberRecordHourlyCountDataRead,
+)
 from app.schemas.member import (
     MemberLocationUpdate,
     MemberLocationRead,
@@ -27,7 +31,8 @@ from app.schemas.member import (
     MemberRecordRead,
     MemberStatusCreate,
     MemberStatusUpdate,
-    MemberStatusRead, MemberStatusCreatedRead,
+    MemberStatusRead,
+    MemberStatusCreatedRead,
 )
 from app.utils.chart import DateGrowthChart
 from app.utils.sql_query import QueryList, DateRelatedQueryList

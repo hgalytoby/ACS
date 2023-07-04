@@ -159,11 +159,11 @@ class UserView:
             user_id: UUID
     ) -> UserDetailRead:
         role_list = await crud_role.get_by_ids(list_ids=role_ids)
-        instance = await crud_user.get(item_id=user_id)
-        if not instance:
+        user = await crud_user.get(item_id=user_id)
+        if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-        instance = await crud_user.update_user_to_roles(user=instance, role_list=role_list)
-        return instance
+        user = await crud_user.update_user_to_roles(user=user, role_list=role_list)
+        return user
 
 
 router.include_router(

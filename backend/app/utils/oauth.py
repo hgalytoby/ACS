@@ -1,15 +1,7 @@
 from typing import Optional
-from httpx_oauth.clients.microsoft import MicrosoftGraphOAuth2
 from httpx_oauth.integrations.fastapi import OAuth2AuthorizeCallback as _OAuth2AuthorizeCallback
 from httpx_oauth.oauth2 import OAuth2Token
 from fastapi import Request, HTTPException, status, Query
-
-from app.core.config import settings
-
-microsoft_oauth_client = MicrosoftGraphOAuth2(
-    settings.oauth.microsoft_id,
-    settings.oauth.microsoft_secret,
-)
 
 
 class OAuth2AuthorizeCallback(_OAuth2AuthorizeCallback):

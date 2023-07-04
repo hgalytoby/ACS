@@ -1,8 +1,16 @@
 from sqlmodel import select, func
+
 from app.crud.base import CRUDBase
 from app.models import UserLogModel, SystemLogModel
 from app.schemas.chart import EmailLogChartRead
-from app.schemas.log import UserLogRead, UserLogUpdate, UserLogCreate, SystemLogRead, SystemLogUpdate, SystemLogCreate
+from app.schemas.log import (
+    UserLogRead,
+    UserLogUpdate,
+    UserLogCreate,
+    SystemLogRead,
+    SystemLogUpdate,
+    SystemLogCreate,
+)
 
 
 class CRUDUserLog(

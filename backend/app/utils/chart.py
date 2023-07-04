@@ -1,9 +1,7 @@
 from datetime import date, datetime
-from typing import TypeVar, Protocol
+from typing import Protocol
 
 from app.schemas.chart import BaseGrowthRead
-
-ModelType = TypeVar('ModelType')
 
 
 class DatedModel(Protocol):

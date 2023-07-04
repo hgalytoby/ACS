@@ -1,7 +1,6 @@
 from fastapi.params import Depends
 from fastapi_restful.cbv import cbv
-from fastapi import status, Request, APIRouter
-from starlette.background import BackgroundTasks
+from fastapi import status, APIRouter
 
 from app.dependencies.deps import valid_accept_token
 from app.crud import crud_member_location, crud_accept_api

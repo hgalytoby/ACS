@@ -28,7 +28,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
         return self.db
 
     def get_select(self) -> Select | SelectOfScalar:
-        return select(self.model).options()
+        return select(self.model)
 
     async def get_multi(
             self,
