@@ -41,8 +41,8 @@ class UserLogQuery(BaseQuery):
         super(UserLogQuery, self).__init__()
         self.query_list.extend([
             QuerySql(
-                expression=UserLogModel.event == event.value,
-                value=event.value,
+                expression=UserLogModel.event == event,
+                value=event,
                 include_none=False,
             ),
         ])

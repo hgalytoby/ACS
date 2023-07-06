@@ -204,7 +204,6 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
             request: Optional[Request] = None,
             response: Optional[Response] = None,
     ):
-        print(f"User {user.id} logged in.")
         user_log = UserLogCreate(
             user_id=user.id,
             event=UserLogEvent.LOGIN_USER,

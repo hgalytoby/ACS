@@ -136,6 +136,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
             self,
             instance: ModelType,
             db_session: Optional[AsyncSession] = None,
+            refresh: Optional[bool] = False,
     ) -> ModelType:
         db_session = db_session or self.db.session
         try:
@@ -148,5 +149,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
                 status_code=409,
                 detail='Resource already exists',
             )
-        await db_session.refresh(instance)
+        if refresh:
+            await db_session.refresh(instance)
         return instance
