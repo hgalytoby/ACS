@@ -1,25 +1,19 @@
 <script setup>
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import {useTheme} from 'vuetify'
-import {useRouter} from 'vue-router'
 import logo from '@images/logo.svg?raw'
 import authV1MaskDark from '@images/pages/auth-v1-mask-dark.png'
 import authV1MaskLight from '@images/pages/auth-v1-mask-light.png'
 import authV1Tree2 from '@images/pages/auth-v1-tree-2.png'
 import authV1Tree from '@images/pages/auth-v1-tree.png'
-import {useAuthStore} from '@/stores/auth'
-import {Form, Field, ErrorMessage} from 'vee-validate'
-import * as yup from 'yup'
 
-const router = useRouter()
-
-const loginFormSchema = yup.object({
-  email: yup.string().required().email(),
-  password: yup.string().required().min(6),
+const form = ref({
+  username: '',
+  email: '',
+  password: '',
+  privacyPolicies: false,
 })
 
-const remember = ref(!!localStorage.getItem('README'))
-const email = ref(localStorage.getItem('EMAIL'))
 const vuetifyTheme = useTheme()
 
 const authThemeMask = computed(() => {
@@ -27,21 +21,6 @@ const authThemeMask = computed(() => {
 })
 
 const isPasswordVisible = ref(false)
-
-const user = useAuthStore()
-
-async function submit({email, password}) {
-  await user.login({username: email, password}).then(() => {
-    if (remember.value) {
-      localStorage.setItem('README', '1')
-      localStorage.setItem('EMAIL', email)
-      router.push('/')
-    } else {
-      localStorage.removeItem('README')
-      localStorage.removeItem('EMAIL')
-    }
-  })
-}
 </script>
 
 <template>
@@ -64,88 +43,79 @@ async function submit({email, password}) {
 
       <VCardText class="pt-2">
         <h5 class="text-h5 font-weight-semibold mb-1">
-          Welcome to Materio! 👋🏻
+          Adventure starts here 🚀
         </h5>
         <p class="mb-0">
-          Please sign-in to your account and start the adventure
+          Make your app management easy and fun!
         </p>
       </VCardText>
 
       <VCardText>
-        <Form
-          :validation-schema="loginFormSchema"
-          @submit="submit"
-        >
+        <VForm @submit.prevent="() => {}">
           <VRow>
+            <!-- Username -->
+            <VCol cols="12">
+              <VTextField
+                v-model="form.username"
+                label="Username"
+              />
+            </VCol>
             <!-- email -->
             <VCol cols="12">
-              <Field
-                v-slot="{ field }"
-                v-model="email"
-                name="email"
+              <VTextField
+                v-model="form.email"
+                label="Email"
                 type="email"
-              >
-                <VTextField
-                  v-bind="field"
-                  v-model="email"
-                  label="Email"
-                  type="email"
-                />
-              </Field>
-              <ErrorMessage name="email"/>
+              />
             </VCol>
 
             <!-- password -->
             <VCol cols="12">
-              <Field
-                v-slot="{ field }"
-                name="password"
-                type="string"
-              >
-                <VTextField
-                  v-bind="field"
-                  label="Password"
-                  :type="isPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                  @click:append-inner="isPasswordVisible = !isPasswordVisible"
-                />
-              </Field>
-              <ErrorMessage name="password"/>
-              <!-- remember me checkbox -->
-              <div class="d-flex align-center justify-space-between flex-wrap mt-1 mb-4">
+              <VTextField
+                v-model="form.password"
+                label="Password"
+                :type="isPasswordVisible ? 'text' : 'password'"
+                :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                @click:append-inner="isPasswordVisible = !isPasswordVisible"
+              />
+              <div class="d-flex align-center mt-1 mb-4">
                 <VCheckbox
-                  v-model="remember"
-                  label="Remember me"
+                  id="privacy-policy"
+                  v-model="form.privacyPolicies"
+                  inline
                 />
-
-                <a
-                  class="ms-2 mb-1"
-                  href="javascript:void(0)"
+                <VLabel
+                  for="privacy-policy"
+                  style="opacity: 1;"
                 >
-                  Forgot Password?
-                </a>
+                  <span class="me-1">I agree to</span>
+                  <a
+                    href="javascript:void(0)"
+                    class="text-primary"
+                  >privacy policy & terms</a>
+                </VLabel>
               </div>
 
-              <!-- login button -->
               <VBtn
                 block
                 type="submit"
+                to="/"
               >
-                Login
+                Sign up
               </VBtn>
             </VCol>
 
-            <!-- create account -->
+            <!-- login instead -->
             <VCol
               cols="12"
               class="text-center text-base"
             >
-              <span>New on our platform?</span>
+              <span>Already have an account?</span>
               <RouterLink
                 class="text-primary ms-2"
-                :to="{name:'Register'}"
+                to="login"
               >
-                Create an account
+                Sign in instead
               </RouterLink>
             </VCol>
 
@@ -166,9 +136,10 @@ async function submit({email, password}) {
               <AuthProvider/>
             </VCol>
           </VRow>
-        </Form>
+        </VForm>
       </VCardText>
     </VCard>
+
     <VImg
       class="auth-footer-start-tree d-none d-md-block"
       :src="authV1Tree"
@@ -189,6 +160,6 @@ async function submit({email, password}) {
   </div>
 </template>
 
-<style lang='scss'>
+<style lang="scss">
 @use "@core/scss/pages/page-auth.scss";
 </style>

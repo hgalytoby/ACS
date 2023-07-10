@@ -2,7 +2,6 @@ import io
 from abc import ABCMeta, abstractmethod
 from typing import Protocol, Optional
 from uuid import UUID
-
 from PIL.ImageFile import ImageFile
 from fastapi import UploadFile, File, HTTPException, status
 from PIL import Image, UnidentifiedImageError

@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Optional, Any
 from uuid import UUID
-
 import orjson
 from fastapi import (
     Depends,
@@ -12,6 +11,8 @@ from fastapi import (
     File,
     Response,
 )
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_async_sqlalchemy import db
 from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin, exceptions
@@ -21,13 +22,16 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 from fastapi_users.jwt import decode_jwt, generate_jwt
+from fastapi_users.openapi import OpenAPIResponseType
 from fastapi_users.password import PasswordHelper
 from fastapi_users_db_sqlmodel import SQLModelUserDatabaseAsync
+from humps import camelize
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
 from app.crud.log import crud_user_log
 from app.models import UserModel, RoleModel, OAuthAccountModel
+from app.schemas.base import BaseModel
 from app.schemas.log import UserLogCreate
 from app.schemas.user import (
     UserCreate,
@@ -266,7 +270,38 @@ async def get_user_manager(
     )
 
 
-bearer_transport = BearerTransport(tokenUrl='api/v1/auth/jwt/login')
+class BearerResponse(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class MyBearerTransport(BearerTransport):
+    async def get_login_response(self, token: str) -> Response:
+        bearer_response = BearerResponse(access_token=token, token_type='bearer')
+        return JSONResponse({camelize(k): v for (k, v) in bearer_response})
+
+    @staticmethod
+    def get_openapi_login_responses_success() -> OpenAPIResponseType:
+        return {
+            status.HTTP_200_OK: {
+                'model': BearerResponse,
+                'content': {
+                    'application/json': {
+                        'example': {
+                            'accessToken': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1'
+                                           'c2VyX2lkIjoiOTIyMWZmYzktNjQwZi00MzcyLTg2Z'
+                                           'DMtY2U2NDJjYmE1NjAzIiwiYXVkIjoiZmFzdGFwaS'
+                                           '11c2VyczphdXRoIiwiZXhwIjoxNTcxNTA0MTkzfQ.'
+                                           'M10bjOe45I5Ncu_uXvOmVV8QxnL-nZfcH96U90JaocI',
+                            'tokenType': 'bearer',
+                        }
+                    }
+                },
+            },
+        }
+
+
+bearer_transport = MyBearerTransport(tokenUrl='api/v1/auth/jwt/login')
 
 
 def get_jwt_strategy() -> JWTStrategy:

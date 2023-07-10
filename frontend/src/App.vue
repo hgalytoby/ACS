@@ -1,10 +1,12 @@
-<script setup>
-import UpgradeToPro from '@/components/UpgradeToPro.vue'
-</script>
-
 <template>
   <VApp>
     <RouterView/>
-    <UpgradeToPro/>
+    <VCard/>
   </VApp>
 </template>
+
+<style lang="scss">
+.layout-anime-speed {
+  --animate-duration: 0.6s;
+}
+</style>

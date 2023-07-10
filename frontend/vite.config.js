@@ -40,7 +40,6 @@ export default defineConfig({
             '@images': fileURLToPath(new URL('./src/assets/images/', import.meta.url)),
             '@styles': fileURLToPath(new URL('./src/styles/', import.meta.url)),
             '@configured-variables': fileURLToPath(new URL('./src/styles/variables/_template.scss', import.meta.url)),
-            '@axios': fileURLToPath(new URL('./src/plugins/axios', import.meta.url)),
             'apexcharts': fileURLToPath(new URL('node_modules/apexcharts-clevision', import.meta.url)),
         },
     },
@@ -52,5 +51,15 @@ export default defineConfig({
         entries: [
             './src/**/*.vue',
         ],
+    },
+    server: {
+        hmr: true,
+        proxy: {
+            '/api': {
+                target: 'http://127.0.0.1:8000',
+                changeOrigin: true,
+                rewrite: path => path.replace(/^\/api/, 'api'),
+            },
+        },
     },
 })

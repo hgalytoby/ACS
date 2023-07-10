@@ -35,7 +35,6 @@ module.exports = {
             multiline: 'below',
         }],
 
-
         // indentation (Already present in TypeScript)
         'indent': ['error', 2],
 
@@ -124,7 +123,7 @@ module.exports = {
         // ESLint plugin vue
         'vue/block-tag-newline': 'error',
         'vue/component-api-style': 'error',
-        'vue/component-name-in-template-casing': ['error', 'PascalCase', {registeredComponentsOnly: false}],
+        'vue/component-name-in-template-casing': 'off',
         'vue/custom-event-name-casing': ['error', 'camelCase', {
             ignores: [
                 '/^(click):[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?/',
@@ -206,14 +205,6 @@ module.exports = {
                         inspect: '^(?!.*(@core|@layouts)).*',
                     },
                 },
-                {
-                    regex: 'import axios from \'axios\'',
-                    replacement: 'import axios from \'@axios\'',
-                    message: 'Use axios instances created in \'src/plugin/axios.js\' instead of unconfigured axios',
-                    files: {
-                        ignore: '^.*plugins/axios.js.*',
-                    },
-                },
             ],
 
             // Ignore files
@@ -227,7 +218,7 @@ module.exports = {
             },
             alias: {
                 'extensions': ['.ts', '.js', '.tsx', '.jsx', '.mjs'],
-                'map': [["@", "./src"], ["@core", "./src/@core"], ["@layouts", "./src/@layouts"], ["@images", "./src/assets/images/"], ["@styles", "./src/styles/"], ["@configured-variables", "./src/styles/variables/_template.scss"], ["@axios", "./src/plugins/axios"], ["apexcharts", "node_modules/apexcharts-clevision"]]
+                'map': [['@', './src'], ['@core', './src/@core'], ['@layouts', './src/@layouts'], ['@images', './src/assets/images/'], ['@styles', './src/styles/'], ['@configured-variables', './src/styles/variables/_template.scss'], ['@axios', './src/plugins/axios'], ['apexcharts', 'node_modules/apexcharts-clevision']],
             },
         },
     },
