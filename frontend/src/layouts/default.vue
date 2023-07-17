@@ -3,18 +3,23 @@ import DefaultLayoutWithVerticalNav from './components/DefaultLayoutWithVertical
 </script>
 
 <template>
-  <transition
-    appear
-    mode="out-in"
-    name="anime-speed animate__animated animate__bounce"
-    enter-active-class="animate__fadeIn"
-    leave-active-class="animate__fadeOut"
-  >
-    <DefaultLayoutWithVerticalNav>
-      <vue-progress-bar/>
-      <RouterView/>
-    </DefaultLayoutWithVerticalNav>
-  </transition>
+  <DefaultLayoutWithVerticalNav>
+    <vue-progress-bar />
+    <RouterView v-slot="{ Component }">
+      <transition
+        appear
+        mode="out-in"
+        name="animate__animated animate__bounce"
+        enter-active-class="animate__fadeIn animate__faster"
+        leave-active-class="animate__fadeOut animate__faster"
+      >
+        <component
+          :is="Component"
+          :key="$route.fullPath"
+        />
+      </transition>
+    </RouterView>
+  </DefaultLayoutWithVerticalNav>
 </template>
 
 <style lang="scss">

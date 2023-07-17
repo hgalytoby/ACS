@@ -24,7 +24,7 @@ class UserDetailRead(UserRead):
 
 class UserCreate(UserBase):
     email: EmailStr = Field(description='信箱', title='信箱')
-    password: str = Field(min_length=8, description='密碼', title='密碼')
+    password: str = Field(min_length=8, max_length=64, description='密碼', title='密碼')
 
 
 @optional

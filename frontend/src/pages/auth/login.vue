@@ -1,36 +1,31 @@
 <script setup>
 import AuthBase from '@/views/pages/auth/base.vue'
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
-import {useRouter} from 'vue-router'
-import {useAuthStore} from '@/stores/auth'
-import {Form, Field, ErrorMessage} from 'vee-validate'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
-
-const router = useRouter()
 
 const loginFormSchema = yup.object({
   email: yup.string().required().email(),
-  password: yup.string().required().min(6),
+  password: yup.string().required().min(8),
 })
 
-const remember = ref(!!localStorage.getItem('README'))
+const router = useRouter()
+const auth = useAuthStore()
+
+const remember = ref(!!localStorage.getItem('REMEMBER'))
 const email = ref(localStorage.getItem('EMAIL'))
-
 const isPasswordVisible = ref(false)
+const submitBtnLoading = ref(false)
 
-const user = useAuthStore()
-
-async function submit({email, password}) {
-  await user.login({username: email, password}).then(() => {
-    if (remember.value) {
-      localStorage.setItem('README', '1')
-      localStorage.setItem('EMAIL', email)
-      router.push('/')
-    } else {
-      localStorage.removeItem('README')
-      localStorage.removeItem('EMAIL')
-    }
+async function submit({ email, password }) {
+  submitBtnLoading.value = true
+  await auth.login({
+    username: email,
+    password,
+    remember: remember.value,
   })
+  submitBtnLoading.value = false
 }
 </script>
 
@@ -62,43 +57,57 @@ async function submit({email, password}) {
                 v-model="email"
                 label="Email"
                 type="email"
+                prepend-inner-icon="mdi-email"
               />
             </Field>
-            <ErrorMessage name="email"/>
+            <ErrorMessage
+              class="error-message"
+              name="email"
+            />
           </VCol>
           <VCol cols="12">
             <Field
               v-slot="{ field }"
               name="password"
-              type="string"
+              type="password"
             >
               <VTextField
                 v-bind="field"
                 label="Password"
                 :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                prepend-inner-icon="mdi-lock-question"
                 @click:append-inner="isPasswordVisible = !isPasswordVisible"
               />
             </Field>
-            <ErrorMessage name="password"/>
+            <ErrorMessage
+              class="error-message"
+              name="password"
+            />
             <div class="d-flex align-center justify-space-between flex-wrap mt-1 mb-4">
               <VCheckbox
                 v-model="remember"
                 label="Remember me"
               />
-
-              <a
+              <RouterLink
                 class="ms-2 mb-1"
-                href="javascript:void(0)"
+                :to="{name:'ForgotPassword'}"
               >
                 Forgot Password?
-              </a>
+              </RouterLink>
             </div>
             <VBtn
               block
               type="submit"
+              :loading="submitBtnLoading"
             >
               Login
+              <template #loader>
+                <v-progress-circular
+                  indeterminate
+                  color="primary"
+                />
+              </template>
             </VBtn>
           </VCol>
           <VCol
@@ -115,24 +124,6 @@ async function submit({email, password}) {
           </VCol>
         </VRow>
       </Form>
-    </template>
-    <template #footer>
-      <VRow>
-        <VCol
-          cols="12"
-          class="d-flex align-center"
-        >
-          <VDivider/>
-          <span class="mx-4">or</span>
-          <VDivider/>
-        </VCol>
-        <VCol
-          cols="12"
-          class="text-center"
-        >
-          <AuthProvider/>
-        </VCol>
-      </VRow>
     </template>
   </AuthBase>
 </template>

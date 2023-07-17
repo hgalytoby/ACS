@@ -1,5 +1,7 @@
 <script setup>
 import logo from '@images/logo.svg?raw'
+
+import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 </script>
 
 <template>
@@ -10,7 +12,7 @@ import logo from '@images/logo.svg?raw'
     <VCardItem class="justify-center">
       <template #prepend>
         <div class="d-flex">
-          <div v-html="logo"/>
+          <div v-html="logo" />
         </div>
       </template>
 
@@ -20,15 +22,28 @@ import logo from '@images/logo.svg?raw'
     </VCardItem>
 
     <VCardText class="pt-2">
-      <slot name="header"/>
+      <slot name="header" />
     </VCardText>
 
     <VCardText>
-      <slot name="content"/>
+      <slot name="content" />
     </VCardText>
-    <VCardText>
-      <slot name="footer"/>
-    </VCardText>
+    <VRow>
+      <VCol
+        cols="12"
+        class="d-flex align-center"
+      >
+        <VDivider />
+        <span class="mx-4">or</span>
+        <VDivider />
+      </VCol>
+      <VCol
+        cols="12"
+        class="text-center"
+      >
+        <AuthProvider />
+      </VCol>
+    </VRow>
   </VCard>
 </template>
 

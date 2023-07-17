@@ -1,7 +1,7 @@
 <script setup>
-import {useTheme} from 'vuetify'
+import { useTheme } from 'vuetify'
 
-const {global} = useTheme()
+const { global } = useTheme()
 
 const authProviders = [
   {

@@ -1,4 +1,4 @@
-import {jwtRequest, request} from '@/utils/requests'
+import { jwtRequest, request } from '@/utils/requests'
 import urls from '@/api/urls'
 
 
