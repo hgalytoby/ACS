@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getToken, removeToken, setToken } from '@/utils/auth'
+import { removeToken, setToken } from '@/utils/auth'
 import {
   reqForgotPassword,
   reqLogin,
@@ -10,21 +10,28 @@ import {
   reqVerify,
 } from '@/api/auth'
 import { useToast } from 'vue-toastification'
-import router from '@/router'
+import { useUserStore } from '@/stores/user'
 
 const toast = useToast()
+
 export const useAuthStore = defineStore({
   id: 'useAuthStore',
-  state: () => ({
-    token: getToken(),
-  }),
   actions: {
     async login({ username, password, remember }) {
       await reqLogin({ username, password })
         .then(async ({ data }) => {
+
+          const userStore = useUserStore()
+
+          userStore.$patch({ token: data.access_token })
+          setToken(data.access_token)
+
+          await this.$router.push({
+            path: this.$router.currentRoute.value.query.redirect || '/',
+          })
+
           toast.success('登入成功!')
-          setToken(data)
-          this.$patch({ token: data })
+
           if (remember) {
             localStorage.setItem('REMEMBER', '1')
             localStorage.setItem('EMAIL', username)
@@ -32,8 +39,8 @@ export const useAuthStore = defineStore({
             localStorage.removeItem('REMEMBER')
             localStorage.removeItem('EMAIL')
           }
-          await this.$router.push('/')
-        }).catch(() => {
+        }).catch(e => {
+          console.log(e)
           toast.error('登入失敗!')
         })
     },
@@ -45,8 +52,8 @@ export const useAuthStore = defineStore({
     async register(payload) {
       await reqRegister(payload)
         .then(async () => {
-          toast.success('註冊成功!請前往電子信箱查看驗證信!')
           await this.$router.push({ name: 'Login' })
+          toast.success('註冊成功!請前往電子信箱查看驗證信!')
         })
         .catch(() => {
           toast.error('註冊失敗!')
@@ -64,11 +71,12 @@ export const useAuthStore = defineStore({
     async resetPassword(payload) {
       await reqResetPassword(payload)
         .then(async () => {
-          toast.success('修改密碼成功')
           await this.$router.push({ name: 'Login' })
+          toast.success('修改密碼成功')
         })
-        .catch(() => {
-          toast.error('修改密碼失敗!')
+        .catch(async () => {
+          toast.error('修改密碼失敗!請重新發送忘記密碼信!')
+          await this.$router.push({ name: 'ForgotPassword' })
         })
     },
     async requestVerifyToken(payload) {
@@ -82,12 +90,13 @@ export const useAuthStore = defineStore({
     },
     async verify(payload) {
       await reqVerify(payload)
-        .then(() => {
+        .then(async () => {
+          await this.$router.push({ name: 'Login' })
           toast.success('信箱驗證成功!')
         })
-        .catch(async() => {
+        .catch(async () => {
+          await this.$router.push({ name: 'RequestVerifyToken' })
           toast.error('驗證失敗! 請重新發送驗證信!')
-          await router.push({ name: 'RequestVerifyToken' })
         })
     },
   },

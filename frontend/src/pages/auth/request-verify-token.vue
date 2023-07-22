@@ -1,5 +1,5 @@
 <script setup>
-import AuthBase from '@/views/pages/auth/Base.vue'
+import BaseContent from '@/views/pages/auth/BaseContent.vue'
 import BackToLogin from '@/views/pages/auth/BackToLogin.vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
@@ -21,7 +21,7 @@ async function submit(payload) {
 </script>
 
 <template>
-  <AuthBase>
+  <BaseContent>
     <template #header>
       <h5 class="text-h5 font-weight-semibold mb-1">
         Verify Account?
@@ -77,5 +77,5 @@ async function submit(payload) {
         </vrow>
       </Form>
     </template>
-  </AuthBase>
+  </BaseContent>
 </template>

@@ -1,5 +1,8 @@
 <script setup>
 import { useTheme } from 'vuetify'
+import { useOAuthStore } from '@/stores/oauth'
+
+const oauth = useOAuthStore()
 
 const { global } = useTheme()
 
@@ -8,23 +11,25 @@ const authProviders = [
     icon: 'mdi-facebook',
     color: '#4267b2',
     colorInDark: '#4267b2',
-  },
-  {
-    icon: 'mdi-twitter',
-    color: '#1da1f2',
-    colorInDark: '#1da1f2',
+    name: 'facebook',
   },
   {
     icon: 'mdi-github',
     color: '#272727',
     colorInDark: '#fff',
+    name: 'github',
   },
   {
     icon: 'mdi-google',
     color: '#db4437',
     colorInDark: '#db4437',
+    name: 'google',
   },
 ]
+
+async function login(name){
+  await oauth.authorize(name)
+}
 </script>
 
 <template>
@@ -34,5 +39,6 @@ const authProviders = [
     :icon="link.icon"
     variant="text"
     :color="global.name.value === 'dark' ? link.colorInDark : link.color"
+    @click="login(link.name)"
   />
 </template>

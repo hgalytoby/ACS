@@ -1,5 +1,5 @@
 <script setup>
-import AuthBase from '@/views/pages/auth/Base.vue'
+import BaseContent from '@/views/pages/auth/BaseContent.vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import { useAuthStore } from '@/stores/auth'
@@ -35,7 +35,7 @@ async function submit({ email, username, password }) {
 </script>
 
 <template>
-  <AuthBase>
+  <BaseContent>
     <template #header>
       <h5 class="text-h5 font-weight-semibold mb-1">
         Adventure starts here 🚀
@@ -185,7 +185,7 @@ async function submit({ email, username, password }) {
         </VRow>
       </Form>
     </template>
-  </AuthBase>
+  </BaseContent>
 </template>
 
 <style lang='scss'>

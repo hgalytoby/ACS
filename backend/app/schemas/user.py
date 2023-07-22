@@ -4,7 +4,7 @@ from sqlmodel import Field
 from typing import TYPE_CHECKING
 
 from app.schemas.base import BaseCreatedAtRead, BaseUUIDRead, BaseModel, BaseUpdatedAtRead
-from app.models import UserBase
+from app.models import UserBase, OAuthAccountModel
 from app.utils.partial import optional
 
 if TYPE_CHECKING:
@@ -13,13 +13,22 @@ if TYPE_CHECKING:
 
 class UserRead(BaseUpdatedAtRead, BaseCreatedAtRead, UserBase, BaseUUIDRead):
     last_login: datetime = Field(
-        title='',
-        description='',
+        description='最後登入',
+        title='最後登入',
     )
 
 
 class UserDetailRead(UserRead):
-    role_ids: list['RoleFrontendRead'] = Field(default_factory=list, description='角色')
+    role_ids: list['RoleFrontendRead'] = Field(
+        default_factory=list,
+        description='角色',
+        title='角色',
+    )
+    oauth_accounts: list['OAuthAccountModel'] = Field(
+        default_factory=list,
+        description='第三方帳號',
+        title='第三方帳號',
+    )
 
 
 class UserCreate(UserBase):
@@ -45,5 +54,15 @@ class UserUpdate(UserCreate):
 
 
 class UserPasswordUpdate(BaseModel):
-    old_password: str = Field(title='舊密碼', min_length=6, max_length=32)
-    new_password: str = Field(title='新密碼', min_length=6, max_length=32)
+    old_password: str = Field(
+        description='舊密碼',
+        title='舊密碼',
+        min_length=6,
+        max_length=32,
+    )
+    new_password: str = Field(
+        description='舊密碼',
+        title='新密碼',
+        min_length=6,
+        max_length=32,
+    )

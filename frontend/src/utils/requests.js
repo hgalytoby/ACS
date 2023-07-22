@@ -1,6 +1,7 @@
 import axios from 'axios'
 import urls from '@/api/urls'
 import { app as vue } from '@/main'
+import { useUserStore } from '@/stores/user'
 
 const formDataList = [
   urls.auth.login,
@@ -50,21 +51,22 @@ request.interceptors.response.use(
 export const jwtRequest = axios.create()
 
 jwtRequest.interceptors.request.use(config => {
-  // if (app.$store.state.auth.token) {
-  //     const result = {
-  //         ...config,
-  //         headers: {
-  //             ...config.headers,
-  //             Authorization: `Bearer ${app.$store.state.auth.token}`,
-  //         },
-  //     }
-  //
-  //     if (formDataList.includes(config.url)) {
-  //         result.headers['Content-Type'] = 'multipart/form-data'
-  //     }
-  //
-  //     return result
-  // }
+  const userStore = useUserStore()
+  if (userStore.token) {
+    const result = {
+      ...config,
+      headers: {
+        ...config.headers,
+        Authorization: `Bearer ${userStore.token}`,
+      },
+    }
+
+    if (formDataList.includes(config.url)) {
+      result.headers['Content-Type'] = 'multipart/form-data'
+    }
+
+    return result
+  }
 
   return config
 }, error => Promise.reject(error))

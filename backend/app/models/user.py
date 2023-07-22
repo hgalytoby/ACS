@@ -78,7 +78,7 @@ class UserModel(
         max_length=1024,
         nullable=False,
     )
-    oauth_accounts: list['OAuthAccountModel'] = Relationship(
+    oauth_accounts: list['OAuthAccountModel'] = Relationship(  # type: ignore
         back_populates='user',
         sa_relationship_kwargs={
             'lazy': 'selectin',

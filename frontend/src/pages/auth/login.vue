@@ -1,5 +1,5 @@
 <script setup>
-import AuthBase from '@/views/pages/auth/Base.vue'
+import BaseContent from '@/views/pages/auth/BaseContent.vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { Form, Field, ErrorMessage } from 'vee-validate'
@@ -12,7 +12,6 @@ const loginFormSchema = yup.object({
 
 const router = useRouter()
 const auth = useAuthStore()
-
 const remember = ref(!!localStorage.getItem('REMEMBER'))
 const email = ref(localStorage.getItem('EMAIL'))
 const isPasswordVisible = ref(false)
@@ -30,7 +29,7 @@ async function submit({ email, password }) {
 </script>
 
 <template>
-  <AuthBase>
+  <BaseContent>
     <template #header>
       <h5 class="text-h5 font-weight-semibold mb-1">
         Welcome to Materio! 👋🏻
@@ -119,5 +118,5 @@ async function submit({ email, password }) {
         </VRow>
       </Form>
     </template>
-  </AuthBase>
+  </BaseContent>
 </template>

@@ -101,7 +101,7 @@ export default [
           {
             path: 'reset-password',
             name: 'ResetPassword',
-            component: () => import('../pages/auth/reset_password.vue'),
+            component: () => import('../pages/auth/reset-password.vue'),
             meta: {
               title: '重設密碼',
             },
@@ -123,6 +123,15 @@ export default [
             },
           },
         ],
+      },
+      {
+        path: '/oauth/:name/callback',
+        name: 'OAuth',
+        component: () => import('../pages/oauth/oauth.vue'),
+        meta: {
+          layout: 'blank',
+          title: '第三方驗證',
+        },
       },
     ],
   },

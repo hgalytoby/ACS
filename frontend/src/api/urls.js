@@ -8,6 +8,19 @@ const auth = {
   verify: '/api/v1/auth/verify',
 }
 
+const oauth = {
+  authorize: name => `/api/auth/${name}/authorize`,
+  callback: name =>`/api/auth/${name}/callback`,
+  associateAuthorize: name =>`/api/auth/associate/${name}/authorize`,
+  associateCallback: name => `/api/auth/associate/${name}/authorize`,
+}
+
+const user = {
+  me: '/api/v1/users/me',
+}
+
 export default {
   auth,
+  oauth,
+  user,
 }

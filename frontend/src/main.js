@@ -13,6 +13,7 @@ import 'animate.css'
 import { progressbarOptions, toastificationOptions } from '@/utils/options'
 import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"
+import '@/utils/permission'
 
 loadFonts()
 
