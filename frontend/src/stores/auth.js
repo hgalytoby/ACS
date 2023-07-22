@@ -1,7 +1,16 @@
 import { defineStore } from 'pinia'
 import { getToken, removeToken, setToken } from '@/utils/auth'
-import { reqForgotPassword, reqLogin, reqLogout, reqRegister } from '@/api/auth'
-import { useToast } from "vue-toastification"
+import {
+  reqForgotPassword,
+  reqLogin,
+  reqLogout,
+  reqRegister,
+  reqRequestVerifyToken,
+  reqResetPassword,
+  reqVerify,
+} from '@/api/auth'
+import { useToast } from 'vue-toastification'
+import router from '@/router'
 
 const toast = useToast()
 export const useAuthStore = defineStore({
@@ -9,7 +18,6 @@ export const useAuthStore = defineStore({
   state: () => ({
     token: getToken(),
   }),
-
   actions: {
     async login({ username, password, remember }) {
       await reqLogin({ username, password })
@@ -51,6 +59,35 @@ export const useAuthStore = defineStore({
         })
         .catch(() => {
           toast.error('寄送驗證信失敗!')
+        })
+    },
+    async resetPassword(payload) {
+      await reqResetPassword(payload)
+        .then(async () => {
+          toast.success('修改密碼成功')
+          await this.$router.push({ name: 'Login' })
+        })
+        .catch(() => {
+          toast.error('修改密碼失敗!')
+        })
+    },
+    async requestVerifyToken(payload) {
+      await reqRequestVerifyToken(payload)
+        .then(async () => {
+          toast.success('請至輸入的信箱收取驗證信')
+        })
+        .catch(() => {
+          toast.error('驗證信寄送失敗!')
+        })
+    },
+    async verify(payload) {
+      await reqVerify(payload)
+        .then(() => {
+          toast.success('信箱驗證成功!')
+        })
+        .catch(async() => {
+          toast.error('驗證失敗! 請重新發送驗證信!')
+          await router.push({ name: 'RequestVerifyToken' })
         })
     },
   },

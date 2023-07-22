@@ -1,5 +1,5 @@
 <script setup>
-import AuthBase from '@/views/pages/auth/base.vue'
+import AuthBase from '@/views/pages/auth/Base.vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { Form, Field, ErrorMessage } from 'vee-validate'
@@ -102,12 +102,6 @@ async function submit({ email, password }) {
               :loading="submitBtnLoading"
             >
               Login
-              <template #loader>
-                <v-progress-circular
-                  indeterminate
-                  color="primary"
-                />
-              </template>
             </VBtn>
           </VCol>
           <VCol

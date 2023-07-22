@@ -1,6 +1,5 @@
 <script setup>
 import logo from '@images/logo.svg?raw'
-
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 </script>
 

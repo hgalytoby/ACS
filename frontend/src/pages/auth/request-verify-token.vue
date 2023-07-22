@@ -1,38 +1,43 @@
 <script setup>
-import AuthBase from '@/views/pages/auth/base.vue'
+import AuthBase from '@/views/pages/auth/Base.vue'
+import BackToLogin from '@/views/pages/auth/BackToLogin.vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import { useAuthStore } from '@/stores/auth'
 
 const auth = useAuthStore()
 
-const forgotPasswordFormSchema = yup.object({
+const requestVerifyTokenFormSchema = yup.object({
   email: yup.string().required().email(),
 })
 
-
 const submitBtnLoading = ref(false)
+
 async function submit(payload) {
   submitBtnLoading.value = true
-  await auth.forgotPassword(payload)
+  await auth.requestVerifyToken(payload)
   submitBtnLoading.value = false
-
 }
 </script>
 
 <template>
-  <auth-base>
+  <AuthBase>
     <template #header>
-      <p class="text-2xl font-weight-semibold text--primary mb-2">
-        Forgot Password? 🔒
-      </p>
-      <p class="mb-2">
-        Enter your email and we'll send you instructions to reset your password
+      <h5 class="text-h5 font-weight-semibold mb-1">
+        Verify Account?
+        <VIcon
+          size="24px"
+          color="#9155fd"
+          icon="mdi-email-check-outline"
+        />
+      </h5>
+      <p class="mb-0">
+        Enter your email and we'll send you instructions to verify your account
       </p>
     </template>
     <template #content>
       <Form
-        :validation-schema="forgotPasswordFormSchema"
+        :validation-schema="requestVerifyTokenFormSchema"
         @submit="submit"
       >
         <VRow>
@@ -60,33 +65,17 @@ async function submit(payload) {
               type="submit"
               :loading="submitBtnLoading"
             >
-              Login
-              <template #loader>
-                <v-progress-circular
-                  indeterminate
-                  color="primary"
-                />
-              </template>
+              Send Email Verification
             </VBtn>
           </VCol>
           <VCol
             cols="12"
             class="mx-n2"
           >
-            <RouterLink
-              class="d-flex align-center justify-center text-base"
-              :to="{name:'Login'}"
-            >
-              <VIcon
-                size="24px"
-                color="#9155fd"
-                icon="mdi-chevron-left"
-              />
-              Back to login
-            </RouterLink>
+            <BackToLogin />
           </VCol>
         </vrow>
       </Form>
     </template>
-  </auth-base>
+  </AuthBase>
 </template>

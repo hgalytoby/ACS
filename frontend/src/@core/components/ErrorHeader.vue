@@ -2,7 +2,7 @@
 const props = defineProps({
   errorCode: {
     type: String,
-    required: true,
+    required: false,
   },
   errorTitle: {
     type: String,

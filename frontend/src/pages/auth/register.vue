@@ -1,5 +1,5 @@
 <script setup>
-import AuthBase from '@/views/pages/auth/base.vue'
+import AuthBase from '@/views/pages/auth/Base.vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import { useAuthStore } from '@/stores/auth'
@@ -159,8 +159,15 @@ async function submit({ email, username, password }) {
             <VBtn
               block
               type="submit"
+              :loading="submitBtnLoading"
             >
               Sign up
+              <template #loader>
+                <v-progress-circular
+                  indeterminate
+                  color="primary"
+                />
+              </template>
             </VBtn>
           </VCol>
           <VCol
