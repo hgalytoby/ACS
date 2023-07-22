@@ -4,7 +4,7 @@ from sqlmodel import Field
 from typing import TYPE_CHECKING
 
 from app.schemas.base import BaseCreatedAtRead, BaseUUIDRead, BaseModel, BaseUpdatedAtRead
-from app.models import UserBase, OAuthAccountModel
+from app.models import UserBase
 from app.utils.partial import optional
 
 if TYPE_CHECKING:
@@ -18,13 +18,17 @@ class UserRead(BaseUpdatedAtRead, BaseCreatedAtRead, UserBase, BaseUUIDRead):
     )
 
 
+class OAuthAccountsRead(BaseUUIDRead):
+    oauth_name: str = Field(description='第三方名稱', title='第三方名稱')
+
+
 class UserDetailRead(UserRead):
     role_ids: list['RoleFrontendRead'] = Field(
         default_factory=list,
         description='角色',
         title='角色',
     )
-    oauth_accounts: list['OAuthAccountModel'] = Field(
+    oauth_accounts: list[OAuthAccountsRead] = Field(
         default_factory=list,
         description='第三方帳號',
         title='第三方帳號',

@@ -20,8 +20,6 @@ router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   const hasToken = getToken()
 
-
-  console.log(hasToken)
   if (hasToken) {
     if (authList.has(to.name)){
       next({ path: '/' })

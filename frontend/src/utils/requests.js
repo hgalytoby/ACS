@@ -10,8 +10,6 @@ const formDataList = [
 export const request = axios.create()
 
 request.interceptors.request.use(config => {
-  console.log('vue', vue)
-  console.log('$Progress', vue.config.globalProperties.$Progress)
   vue.config.globalProperties.$Progress.start()
   if (formDataList.includes(config.url)) {
     return {

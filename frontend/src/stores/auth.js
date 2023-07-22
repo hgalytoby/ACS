@@ -39,8 +39,7 @@ export const useAuthStore = defineStore({
             localStorage.removeItem('REMEMBER')
             localStorage.removeItem('EMAIL')
           }
-        }).catch(e => {
-          console.log(e)
+        }).catch(() => {
           toast.error('登入失敗!')
         })
     },

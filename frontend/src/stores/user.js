@@ -10,9 +10,8 @@ export const useUserStore = defineStore({
   }),
   actions: {
     async userInfo() {
-      await reqUserInfo().then(res => {
-        console.log(res)
-
+      await reqUserInfo().then(({ data }) => {
+        this.$patch({ me: data })
       })
     },
     resetToken() {
