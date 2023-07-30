@@ -1,8 +1,8 @@
 <script setup>
-import {useRoute} from 'vue-router'
+import { useRoute } from 'vue-router'
 import AccountSettingsAccount from '@/views/pages/account-settings/AccountSettingsAccount.vue'
-import AccountSettingsNotification from '@/views/pages/account-settings/AccountSettingsNotification.vue'
 import AccountSettingsSecurity from '@/views/pages/account-settings/AccountSettingsSecurity.vue'
+import AccountSettingsLog from '@/views/pages/account-settings/AccountSettingsLog.vue'
 
 const route = useRoute()
 const activeTab = ref(route.params.tab)
@@ -13,16 +13,21 @@ const tabs = [
     title: 'Account',
     icon: 'mdi-account-outline',
     tab: 'account',
+    component: AccountSettingsAccount,
   },
   {
     title: 'Security',
     icon: 'mdi-lock-open-outline',
     tab: 'security',
+    component: AccountSettingsSecurity,
+
   },
   {
-    title: 'Notifications',
-    icon: 'mdi-bell-outline',
-    tab: 'notification',
+    title: 'Log',
+    icon: 'mdi-book-open-variant',
+    tab: 'log',
+    component: AccountSettingsLog,
+
   },
 ]
 </script>
@@ -46,26 +51,19 @@ const tabs = [
         {{ item.title }}
       </VTab>
     </VTabs>
-    <VDivider/>
+    <VDivider />
 
     <VWindow
       v-model="activeTab"
-      class="mt-5 disable-tab-transition"
+      class="mt-5"
     >
-      <!-- Account -->
-      <VWindowItem value="account">
-        <AccountSettingsAccount/>
-      </VWindowItem>
-
-      <!-- Security -->
-      <VWindowItem value="security">
-        <AccountSettingsSecurity/>
-      </VWindowItem>
-
-      <!-- Notification -->
-      <VWindowItem value="notification">
-        <AccountSettingsNotification/>
-      </VWindowItem>
+      <VWindowItem
+        v-for="tab in tabs"
+        :key="tab.tab"
+        :value="tab.tab"
+      >
+        <Component :is="tab.component" />
+      </vwindowitem>
     </VWindow>
   </div>
 </template>

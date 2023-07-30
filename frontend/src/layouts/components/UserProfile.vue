@@ -1,5 +1,17 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png'
+import defaultAvatar from '@images/avatars/default-avatar.png'
+import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
+import ImageLazyProgress from '@/components/ImageLazyProgress.vue'
+
+const authStore = useAuthStore()
+const userStore = useUserStore()
+
+async function logout() {
+  await authStore.logout()
+}
+
+const avatar = computed(() => userStore.me.avatar || defaultAvatar)
 </script>
 
 <template>
@@ -16,9 +28,15 @@ import avatar1 from '@images/avatars/avatar-1.png'
       color="primary"
       variant="tonal"
     >
-      <VImg :src="avatar1"/>
+      <VImg
+        :src="avatar"
+        :lazy-src="avatar"
+      >
+        <template #placeholder>
+          <ImageLazyProgress />
+        </template>
+      </VImg>
 
-      <!-- SECTION Menu -->
       <VMenu
         activator="parent"
         width="230"
@@ -26,7 +44,6 @@ import avatar1 from '@images/avatars/avatar-1.png'
         offset="14px"
       >
         <VList>
-          <!-- 👉 User Avatar & Name -->
           <VListItem>
             <template #prepend>
               <VListItemAction start>
@@ -41,21 +58,27 @@ import avatar1 from '@images/avatars/avatar-1.png'
                     color="primary"
                     variant="tonal"
                   >
-                    <VImg :src="avatar1"/>
+                    <VImg
+                      :src="avatar"
+                      :lazy-src="avatar"
+                    >
+                      <template #placeholder>
+                        <ImageLazyProgress />
+                      </template>
+                    </VImg>
                   </VAvatar>
                 </VBadge>
               </VListItemAction>
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              John Doe
+              {{ userStore.me.username }}
             </VListItemTitle>
             <VListItemSubtitle>Admin</VListItemSubtitle>
           </VListItem>
-          <VDivider class="my-2"/>
+          <VDivider class="my-2" />
 
-          <!-- 👉 Profile -->
-          <VListItem link>
+          <VListItem :to="{name: 'AccountSettings'}">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -67,50 +90,9 @@ import avatar1 from '@images/avatars/avatar-1.png'
             <VListItemTitle>Profile</VListItemTitle>
           </VListItem>
 
-          <!-- 👉 Settings -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="mdi-cog-outline"
-                size="22"
-              />
-            </template>
+          <VDivider class="my-2" />
 
-            <VListItemTitle>Settings</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 Pricing -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="mdi-currency-usd"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Pricing</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 FAQ -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="mdi-help-circle-outline"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>FAQ</VListItemTitle>
-          </VListItem>
-
-          <!-- Divider -->
-          <VDivider class="my-2"/>
-
-          <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem @click="logout">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -123,7 +105,6 @@ import avatar1 from '@images/avatars/avatar-1.png'
           </VListItem>
         </VList>
       </VMenu>
-      <!-- !SECTION -->
     </VAvatar>
   </VBadge>
 </template>

@@ -1,7 +1,7 @@
 export const progressbarOptions = {
   color: '#48e3d1',
   failedColor: '#ff0202',
-  thickness: '2px',
+  thickness: '4px',
   transition: {
     speed: '0.2s',
     opacity: '0.6s',

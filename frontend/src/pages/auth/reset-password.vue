@@ -9,7 +9,7 @@ import { useRoute } from 'vue-router'
 const auth = useAuthStore()
 const route = useRoute()
 
-const resetPasswordFormSchema = yup.object({
+const formSchema = yup.object({
   confirmPassword: yup
     .string()
     .required()
@@ -43,7 +43,7 @@ async function submit({ password }) {
     </template>
     <template #content>
       <Form
-        :validation-schema="resetPasswordFormSchema"
+        :validation-schema="formSchema"
         @submit="submit"
       >
         <VRow>

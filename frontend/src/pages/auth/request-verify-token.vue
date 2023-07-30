@@ -7,7 +7,7 @@ import { useAuthStore } from '@/stores/auth'
 
 const auth = useAuthStore()
 
-const requestVerifyTokenFormSchema = yup.object({
+const formSchema = yup.object({
   email: yup.string().required().email(),
 })
 
@@ -37,7 +37,7 @@ async function submit(payload) {
     </template>
     <template #content>
       <Form
-        :validation-schema="requestVerifyTokenFormSchema"
+        :validation-schema="formSchema"
         @submit="submit"
       >
         <VRow>

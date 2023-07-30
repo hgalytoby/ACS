@@ -1,37 +1,96 @@
 <script setup>
 import BaseContent from '@/views/pages/auth/BaseContent.vue'
-import { Form, Field, ErrorMessage } from 'vee-validate'
-import * as yup from 'yup'
 import { useAuthStore } from '@/stores/auth'
+import { useForm } from 'vee-validate'
+import * as yup from 'yup'
+import { debounce } from 'lodash'
 
-const auth = useAuthStore()
+const { errors, handleSubmit, defineInputBinds } = useForm({
+  validationSchema: yup.object({
+    email: yup.string().email().required().test({
+      name: 'exists-email',
+      message: 'email already exists!',
+      test: async value => {
+        await checkEmail(value)
 
-const registerFormSchema = yup.object({
-  email: yup.string().required().email(),
-  username: yup.string().required().max(64),
-  password: yup.string().required().min(8),
-  confirmPassword: yup
-    .string()
-    .required()
-    .oneOf([yup.ref('password')], 'Passwords do not match'),
-  privacyPolicy: yup.boolean().required().test({
-    name: 'is-true',
-    message: '值必須為 true',
-    test: value => value === true,
+        return true
+      },
+    }),
+    username: yup.string().required().max(64),
+    password: yup.string().min(6).required(),
+    confirmPassword: yup
+      .string()
+      .required()
+      .oneOf([yup.ref('password')], 'Passwords do not match'),
+    privacyPolicy: yup.boolean().required().test({
+      name: 'is-true',
+      message: '值必須為 true',
+      test: value => value === true,
+    }),
   }),
 })
 
+const authStore = useAuthStore()
+const cache = reactive({})
+const emailSchema = yup.string().email()
+
+
+
+const email = defineInputBinds('email', {
+  validateOnInput: true,
+})
+
+const username = defineInputBinds('username', {
+  validateOnInput: true,
+})
+
+const password = defineInputBinds('password', {
+  validateOnInput: true,
+})
+
+const confirmPassword = defineInputBinds('confirmPassword', {
+  validateOnInput: true,
+})
+
+const privacyPolicy = defineInputBinds('privacyPolicy', {
+  validateOnInput: true,
+})
+
+const showEmailFailMsg = ref('')
 const isPasswordVisible = ref(false)
 const isConfirmPasswordVisible = ref(false)
 const submitBtnLoading = ref(false)
-const privacyPolicy = ref(false)
 
-async function submit({ email, username, password }) {
+const submit = handleSubmit(async ({ email, username, password }) => {
   submitBtnLoading.value = true
-  await auth.register({ email, username, password })
+  await authStore.register({ email, username, password })
   submitBtnLoading.value = false
+})
 
-}
+const checkEmail = debounce(async value => {
+  try {
+    await emailSchema.validate(value)
+    if (cache[value] === undefined) {
+      cache[value] = await authStore.emailExists(value)
+    }
+  } catch (e){
+  }
+}, 2000)
+
+watch(errors, (nV, _) => {
+  if (cache[email.value.value] === false){
+    showEmailFailMsg.value = 'email already exists!'
+  } else {
+    showEmailFailMsg.value = nV.email
+  }
+})
+watch(cache, (nV, _) => {
+  if (!nV[email.value.value]) {
+    showEmailFailMsg.value = 'email already exists!'
+  } else {
+    showEmailFailMsg.value = ''
+  }
+})
 </script>
 
 <template>
@@ -45,117 +104,77 @@ async function submit({ email, username, password }) {
       </p>
     </template>
     <template #content>
-      <Form
-        v-slot="{ errors }"
-        :validation-schema="registerFormSchema"
-        @submit="submit"
-      >
+      <form @submit="submit">
         <VRow>
           <VCol cols="12">
-            <Field
-              v-slot="{ field }"
-              name="email"
+            <VTextField
+              v-bind="email"
+              label="Email"
               type="email"
-            >
-              <VTextField
-                v-bind="field"
-                label="Email"
-                type="email"
-                prepend-inner-icon="mdi-email"
-              />
-            </Field>
-            <ErrorMessage
-              class="error-message"
-              name="email"
+              prepend-inner-icon="mdi-email"
             />
+            <div class="error-message">
+              {{ showEmailFailMsg }}
+            </div>
           </VCol>
           <VCol cols="12">
-            <Field
-              v-slot="{ field }"
-              name="username"
-              type="string"
-            >
-              <VTextField
-                v-bind="field"
-                label="Username"
-                prepend-inner-icon="mdi-account"
-              />
-            </Field>
-            <ErrorMessage
-              class="error-message"
-              name="username"
+            <VTextField
+              v-bind="username"
+              label="Username"
+              prepend-inner-icon="mdi-account"
             />
+            <div class="error-message">
+              {{ errors.username }}
+            </div>
           </VCol>
           <VCol cols="12">
-            <Field
-              v-slot="{ field }"
-              name="password"
-              type="password"
-            >
-              <VTextField
-                v-bind="field"
-                label="Password"
-                :type="isPasswordVisible ? 'text' : 'password'"
-                :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                prepend-inner-icon="mdi-lock-question"
-                @click:append-inner="isPasswordVisible = !isPasswordVisible"
-              />
-            </Field>
-            <ErrorMessage
-              class="error-message"
-              name="password"
+            <VTextField
+              v-bind="password"
+              label="Password"
+              :type="isPasswordVisible ? 'text' : 'password'"
+              :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+              prepend-inner-icon="mdi-lock-question"
+              @click:append-inner="isPasswordVisible = !isPasswordVisible"
             />
+            <div class="error-message">
+              {{ errors.password }}
+            </div>
           </VCol>
           <VCol cols="12">
-            <Field
-              v-slot="{ field }"
-              name="confirmPassword"
-              type="password"
-            >
-              <VTextField
-                v-bind="field"
-                label="ConfirmPassword"
-                :type="isConfirmPasswordVisible ? 'text' : 'password'"
-                :append-inner-icon="isConfirmPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                prepend-inner-icon="mdi-lock-question"
-                @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
-              />
-            </Field>
-            <ErrorMessage
-              class="error-message"
-              name="confirmPassword"
+            <VTextField
+              v-bind="confirmPassword"
+              label="ConfirmPassword"
+              :type="isConfirmPasswordVisible ? 'text' : 'password'"
+              :append-inner-icon="isConfirmPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+              prepend-inner-icon="mdi-lock-question"
+              @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
             />
+            <div class="error-message">
+              {{ errors.confirmPassword }}
+            </div>
           </VCol>
           <VCol cols="12">
-            <Field
-              v-slot="{ field }"
-              name="privacyPolicy"
-              type="checkbox"
-              :value="true"
-            >
-              <div class="d-flex align-center mt-n5">
-                <VCheckbox
-                  id="privacy-policy"
-                  v-bind="field"
-                  v-model="privacyPolicy"
-                  name="privacyPolicy"
-                />
-                <VLabel
-                  :class="{
-                    'animate__animated animate__headShake' : errors.privacyPolicy
-                  }"
-                  :style="{'color': errors.privacyPolicy ? 'red' : ''}"
-                  for="privacy-policy"
-                  style="opacity: 1;"
-                >
-                  <span class="me-1">I agree to</span>
-                  <a
-                    href="javascript:void(0)"
-                    class="text-primary"
-                  >privacy policy & terms</a>
-                </VLabel>
-              </div>
-            </Field>
+            <div class="d-flex align-center mt-n5">
+              <VCheckbox
+                id="privacy-policy"
+                v-bind="privacyPolicy"
+                name="privacyPolicy"
+              />
+              <VLabel
+                :class="{
+                  'animate__animated animate__headShake' : errors.privacyPolicy
+                }"
+                :style="{'color': errors.privacyPolicy ? 'red' : ''}"
+                for="privacy-policy"
+                style="opacity: 1;"
+              >
+                <span class="me-1">I agree to</span>
+                <a
+                  href="javascript:void(0)"
+                  class="text-primary"
+                >privacy policy & terms</a>
+              </VLabel>
+            </div>
             <VBtn
               block
               type="submit"
@@ -183,11 +202,7 @@ async function submit({ email, username, password }) {
             </RouterLink>
           </VCol>
         </VRow>
-      </Form>
+      </form>
     </template>
   </BaseContent>
 </template>
-
-<style lang='scss'>
-@use "@core/scss/pages/page-auth.scss";
-</style>

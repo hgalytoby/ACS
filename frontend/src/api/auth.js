@@ -15,3 +15,12 @@ export const reqResetPassword = payload => request.post(urls.auth.resetPassword,
 export const reqRequestVerifyToken = payload => request.post(urls.auth.requestVerifyToken, payload)
 
 export const reqVerify = payload => request.post(urls.auth.verify, payload)
+
+export const reqEmailExists = payload => request.get(
+  urls.auth.emailExists,
+  { 
+    params: {
+      email: payload,
+    },
+  },
+)

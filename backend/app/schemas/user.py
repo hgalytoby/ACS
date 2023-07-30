@@ -1,4 +1,6 @@
 from datetime import datetime
+
+import orjson
 from pydantic import EmailStr
 from sqlmodel import Field
 from typing import TYPE_CHECKING
@@ -12,6 +14,10 @@ if TYPE_CHECKING:
 
 
 class UserRead(BaseUpdatedAtRead, BaseCreatedAtRead, UserBase, BaseUUIDRead):
+    avatar: str = Field(
+        title='頭像',
+        description='頭像',
+    )
     last_login: datetime = Field(
         description='最後登入',
         title='最後登入',
@@ -55,6 +61,16 @@ class UserUpdate(UserCreate):
                 'avatar',
             },
         )
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate_to_json
+
+    @classmethod
+    def validate_to_json(cls, value):
+        if isinstance(value, str):
+            return cls(**orjson.loads(value))
+        return value
 
 
 class UserPasswordUpdate(BaseModel):

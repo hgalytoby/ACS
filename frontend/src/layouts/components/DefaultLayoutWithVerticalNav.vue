@@ -1,5 +1,5 @@
 <script setup>
-import {useTheme} from 'vuetify'
+import { useTheme } from 'vuetify'
 import upgradeBannerDark from '@images/pro/upgrade-banner-dark.png'
 import upgradeBannerLight from '@images/pro/upgrade-banner-light.png'
 import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
@@ -28,7 +28,7 @@ const upgradeBanner = computed(() => {
           class="ms-n3 d-lg-none"
           @click="toggleVerticalOverlayNavActive(true)"
         >
-          <VIcon icon="mdi-menu"/>
+          <VIcon icon="mdi-menu" />
         </IconBtn>
 
         <!-- 👉 Search -->
@@ -38,7 +38,7 @@ const upgradeBanner = computed(() => {
         >
           <!-- 👉 Search Trigger button -->
           <IconBtn>
-            <VIcon icon="mdi-magnify"/>
+            <VIcon icon="mdi-magnify" />
           </IconBtn>
 
           <span class="d-none d-md-flex align-center text-disabled">
@@ -47,35 +47,29 @@ const upgradeBanner = computed(() => {
           </span>
         </div>
 
-        <VSpacer/>
+        <VSpacer />
 
         <IconBtn
           class="me-2"
-          href="https://github.com/themeselection/materio-vuetify-vuejs-admin-template-free"
+          href="https://github.com/hgalytoby/ACS"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <VIcon icon="mdi-github"/>
+          <VIcon icon="mdi-github" />
         </IconBtn>
 
         <IconBtn class="me-2">
-          <VIcon icon="mdi-bell-outline"/>
+          <VIcon icon="mdi-bell-outline" />
         </IconBtn>
 
-        <NavbarThemeSwitcher class="me-2"/>
+        <NavbarThemeSwitcher class="me-2" />
 
-        <UserProfile/>
+        <UserProfile />
       </div>
     </template>
 
     <template #vertical-nav-content>
-      <VerticalNavLink
-        :item="{
-          title: 'Dashboard',
-          icon: 'mdi-home-outline',
-          to: '/dashboard',
-        }"
-      />
+
       <VerticalNavLink
         :item="{
           title: 'Account Settings',
@@ -83,32 +77,11 @@ const upgradeBanner = computed(() => {
           to: '/account-settings',
         }"
       />
-
-      <!-- 👉 Pages -->
-      <VerticalNavSectionTitle
-        :item="{
-          heading: 'Pages',
-        }"
-      />
       <VerticalNavLink
         :item="{
-          title: 'Login',
-          icon: 'mdi-login',
-          to: '/login',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Register',
-          icon: 'mdi-account-plus-outline',
-          to: '/register',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Error',
-          icon: 'mdi-information-outline',
-          to: '/no-existence',
+          title: 'Dashboard',
+          icon: 'mdi-home-outline',
+          to: '/dashboard',
         }"
       />
 
@@ -155,30 +128,12 @@ const upgradeBanner = computed(() => {
       />
     </template>
 
-    <template #after-vertical-nav-items>
-      <!-- 👉 illustration -->
-      <a
-        href="https://themeselection.com/item/materio-vuetify-vuejs-admin-template"
-        target="_blank"
-        rel="noopener noreferrer"
-        style="margin-left: 7px;"
-      >
-        <img
-          :src="upgradeBanner"
-          alt="upgrade-banner"
-          transition="scale-transition"
-          class="upgrade-banner mx-auto"
-          style="max-width: 230px;"
-        >
-      </a>
-    </template>
-
     <!-- 👉 Pages -->
-    <slot/>
+    <slot />
 
     <!-- 👉 Footer -->
     <template #footer>
-      <Footer/>
+      <Footer />
     </template>
   </VerticalNavLayout>
 </template>

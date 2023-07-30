@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { removeToken, setToken } from '@/utils/auth'
 import {
+  reqEmailExists,
   reqForgotPassword,
   reqLogin,
   reqLogout,
@@ -30,7 +31,7 @@ export const useAuthStore = defineStore({
             path: this.$router.currentRoute.value.query.redirect || '/',
           })
 
-          toast.success('登入成功!')
+          toast.success(`歡迎 !`)
 
           if (remember) {
             localStorage.setItem('REMEMBER', '1')
@@ -44,9 +45,10 @@ export const useAuthStore = defineStore({
         })
     },
     async logout() {
-      await reqLogout()
+      await reqLogout().catch(() => {})
       removeToken()
       this.$patch({ token: '' })
+      await this.$router.push({ name: 'Login' })
     },
     async register(payload) {
       await reqRegister(payload)
@@ -97,6 +99,15 @@ export const useAuthStore = defineStore({
           await this.$router.push({ name: 'RequestVerifyToken' })
           toast.error('驗證失敗! 請重新發送驗證信!')
         })
+    },
+    async emailExists(payload){
+      try {
+        await reqEmailExists(payload)
+        
+        return true
+      } catch (_){
+        return false
+      }
     },
   },
 })

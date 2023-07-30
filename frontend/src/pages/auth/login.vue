@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/auth'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 
-const loginFormSchema = yup.object({
+const formSchema = yup.object({
   email: yup.string().required().email(),
   password: yup.string().required().min(8),
 })
@@ -40,7 +40,7 @@ async function submit({ email, password }) {
     </template>
     <template #content>
       <Form
-        :validation-schema="loginFormSchema"
+        :validation-schema="formSchema"
         @submit="submit"
       >
         <VRow>

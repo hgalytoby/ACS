@@ -275,7 +275,7 @@ bearer_transport = BearerTransport(tokenUrl='api/v1/auth/jwt/login')
 
 
 def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
+    return JWTStrategy(secret=SECRET, lifetime_seconds=60 * 60 * 24)
 
 
 auth_backend = AuthenticationBackend(
@@ -327,12 +327,11 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
             self,
             user: UserModel,
             update_item: UserUpdate,
-            icon: UploadFile = File(None),
+            avatar: UploadFile = File(None),
             db_session: Optional[AsyncSession] = None,
     ) -> UserRead:
         db_session = db_session or self.db.session
-        if icon:
-            await Storage.save_image(instance=user, image=icon, size=(200, 200))
+        await Storage.save_image(instance=user, image=avatar)
         user = await self.update(
             current_item=user,
             update_item=update_item,

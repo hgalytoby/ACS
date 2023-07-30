@@ -49,6 +49,8 @@ request.interceptors.response.use(
 export const jwtRequest = axios.create()
 
 jwtRequest.interceptors.request.use(config => {
+  vue.config.globalProperties.$Progress.start()
+
   const userStore = useUserStore()
   if (userStore.token) {
     const result = {
@@ -70,9 +72,12 @@ jwtRequest.interceptors.request.use(config => {
 }, error => Promise.reject(error))
 
 jwtRequest.interceptors.response.use(response => {
+  vue.config.globalProperties.$Progress.finish()
 
   return response
 }, error => {
+  vue.config.globalProperties.$Progress.fail()
+
   console.log('jwtRequest', error)
   if (error.response) {
     switch (error.response.status) {

@@ -12,5 +12,5 @@ const themes = [
 </script>
 
 <template>
-  <ThemeSwitcher :themes="themes"/>
+  <ThemeSwitcher :themes="themes" />
 </template>

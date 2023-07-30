@@ -52,7 +52,7 @@ const isCardDetailsVisible = ref(false)
       md="4"
     >
       <VCard>
-        <VImg :src="pages2"/>
+        <VImg :src="pages2" />
 
         <VCardText class="position-relative">
           <!-- User Avatar -->
@@ -99,7 +99,7 @@ const isCardDetailsVisible = ref(false)
       sm="6"
     >
       <VCard>
-        <VImg :src="pages3"/>
+        <VImg :src="pages3" />
 
         <VCardItem>
           <VCardTitle>Popular Uses Of The Internet</VCardTitle>
@@ -114,20 +114,20 @@ const isCardDetailsVisible = ref(false)
             Details
           </VBtn>
 
-          <VSpacer/>
+          <VSpacer />
 
           <VBtn
             icon
             size="small"
             @click="isCardDetailsVisible = !isCardDetailsVisible"
           >
-            <VIcon :icon="isCardDetailsVisible ? 'mdi-chevron-up' : 'mdi-chevron-down'"/>
+            <VIcon :icon="isCardDetailsVisible ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
           </VBtn>
         </VCardActions>
 
         <VExpandTransition>
           <div v-show="isCardDetailsVisible">
-            <VDivider/>
+            <VDivider />
             <VCardText>
               I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for
               sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey,
@@ -154,7 +154,7 @@ const isCardDetailsVisible = ref(false)
             />
           </div>
 
-          <VDivider :vertical="$vuetify.display.mdAndUp"/>
+          <VDivider :vertical="$vuetify.display.mdAndUp" />
 
           <div>
             <VCardItem>
@@ -171,7 +171,7 @@ const isCardDetailsVisible = ref(false)
 
             <VCardActions class="justify-space-between">
               <VBtn>
-                <VIcon icon="mdi-cart-plus"/>
+                <VIcon icon="mdi-cart-plus" />
                 <span class="ms-2">Add to cart</span>
               </VBtn>
 
@@ -236,7 +236,7 @@ const isCardDetailsVisible = ref(false)
       cols="12"
     >
       <VCard>
-        <VImg :src="pages6"/>
+        <VImg :src="pages6" />
 
         <VCardItem>
           <VCardTitle>Apple Watch</VCardTitle>
@@ -289,7 +289,7 @@ const isCardDetailsVisible = ref(false)
             </VCardText>
 
             <VCardText>
-              <VDivider/>
+              <VDivider />
             </VCardText>
 
             <VCardText class="d-flex justify-center">

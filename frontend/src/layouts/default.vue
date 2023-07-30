@@ -1,5 +1,8 @@
 <script setup>
 import DefaultLayoutWithVerticalNav from './components/DefaultLayoutWithVerticalNav.vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 </script>
 
 <template>
@@ -15,7 +18,7 @@ import DefaultLayoutWithVerticalNav from './components/DefaultLayoutWithVertical
       >
         <component
           :is="Component"
-          :key="$route.fullPath"
+          :key="route.fullPath"
         />
       </transition>
     </RouterView>

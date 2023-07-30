@@ -46,7 +46,8 @@ class BaseStorage(metaclass=ABCMeta):
                 raise ValueError('valid_image image error')
 
         try:
-            open_image.verify()
+            copy_img = open_image.copy()
+            copy_img.verify()
             image_type = open_image.format.lower()
             if not AllowedImageExtensions.valid(type_=image_type):
                 raise TypeError
@@ -60,6 +61,7 @@ class BaseStorage(metaclass=ABCMeta):
 
     @classmethod
     def resize(cls, image: ImageFile, size: tuple[int, int]) -> bytes:
+        print(123213)
         buffer = io.BytesIO()
         if image.mode == 'P':
             image = image.convert('RGB')

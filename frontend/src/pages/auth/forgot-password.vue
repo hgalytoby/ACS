@@ -7,7 +7,7 @@ import { useAuthStore } from '@/stores/auth'
 
 const auth = useAuthStore()
 
-const forgotPasswordFormSchema = yup.object({
+const formSchema = yup.object({
   email: yup.string().required().email(),
 })
 
@@ -32,7 +32,7 @@ async function submit(payload) {
     </template>
     <template #content>
       <Form
-        :validation-schema="forgotPasswordFormSchema"
+        :validation-schema="formSchema"
         @submit="submit"
       >
         <VRow>

@@ -6,7 +6,7 @@ import {
   VerticalNavLink,
   VerticalNavSectionTitle,
 } from '@layouts'
-import {useTheme} from 'vuetify'
+import { useTheme } from 'vuetify'
 
 const vuetifyTheme = useTheme()
 
@@ -23,7 +23,7 @@ const upgradeBanner = computed(() => {
       class="app-logo d-flex align-center gap-x-3 app-title-wrapper"
     >
       <!-- ℹ️ You can also use img tag or VImg here -->
-      <div v-html="logo"/>
+      <div v-html="logo" />
 
       <Transition name="vertical-nav-app-title">
         <h1 class="font-weight-semibold leading-normal text-xl text-uppercase">
@@ -37,20 +37,20 @@ const upgradeBanner = computed(() => {
   <ul>
     <VerticalNavLink
       :item="{
-        title: 'Dashboard',
-        to: 'index',
-        icon: { icon: 'mdi-home-outline' }
-      }"
-    />
-    <VerticalNavLink
-      :item="{
         title: 'Account Settings',
         to: 'account-settings',
         icon: { icon: 'mdi-account-cog-outline' }
       }"
     />
+    <VerticalNavLink
+      :item="{
+        title: 'Dashboard',
+        to: 'index',
+        icon: { icon: 'mdi-home-outline' }
+      }"
+    />
     <!-- 👉 Pages -->
-    <VerticalNavSectionTitle :item="{ heading: 'Pages' }"/>
+    <VerticalNavSectionTitle :item="{ heading: 'Pages' }" />
     <VerticalNavLink
       :item="{
         title: 'Login',
@@ -78,8 +78,8 @@ const upgradeBanner = computed(() => {
       }"
     />
 
-    <!-- 👉 User Interface -->
-    <VerticalNavSectionTitle :item="{ heading: 'User Interface' }"/>
+    👉 User Interface
+    <VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />
 
     <VerticalNavLink
       :item="{
@@ -117,21 +117,6 @@ const upgradeBanner = computed(() => {
       }"
     />
   </ul>
-
-  <!-- 👉 illustration -->
-  <a
-    href="https://themeselection.com/item/materio-vuetify-vuejs-admin-template"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <img
-      :src="upgradeBanner"
-      alt="upgrade-banner"
-      transition="scale-transition"
-      class="upgrade-banner mx-auto"
-      style="max-width: 230px;"
-    >
-  </a>
 </template>
 
 <style lang="scss">

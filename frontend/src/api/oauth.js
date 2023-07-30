@@ -23,6 +23,7 @@ export const reqOAuthAssociateAuthorize = payload => request.get(
 )
 export const reqOAuthAssociateCallback = (name, payload) => request.get(
   urls.oauth.associateCallback(payload),
-  { params: payload },
-
+  { 
+    params: payload,
+  },
 )

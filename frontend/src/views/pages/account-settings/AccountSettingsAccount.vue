@@ -1,348 +1,207 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png'
+import { useUserStore } from '@/stores/user'
+import defaultAvatar from '@images/avatars/default-avatar.png'
+import ImageLazyProgress from '@/components/ImageLazyProgress.vue'
+import { Form, Field, ErrorMessage } from 'vee-validate'
+import * as yup from 'yup'
 
-const accountData = {
-  avatarImg: avatar1,
-  firstName: 'john',
-  lastName: 'Doe',
-  email: 'johnDoe@example.com',
-  org: 'ThemeSelection',
-  phone: '+1 (917) 543-9876',
-  address: '123 Main St, New York, NY 10001',
-  state: 'New York',
-  zip: '10001',
-  country: 'USA',
-  language: 'English',
-  timezone: '(GMT-11:00) International Date Line West',
-  currency: 'USD',
+const userStore = useUserStore()
+
+const formSchema = yup.object({
+  username: yup.string().required().max(64),
+})
+
+const formValues = {
+  username: userStore.me.username,
 }
 
 const refInputEl = ref()
-const accountDataLocal = ref(structuredClone(accountData))
-const isAccountDeactivated = ref(false)
+const avatar = ref()
+const submitBtnLoading = ref(false)
 
-const resetForm = () => {
-  accountDataLocal.value = structuredClone(accountData)
-}
+const showAvatar = computed(() => userStore.me.avatar ? userStore.me.avatar : defaultAvatar)
 
 const changeAvatar = file => {
   const fileReader = new FileReader()
-  const {files} = file.target
+  const { files } = file.target
   if (files && files.length) {
     fileReader.readAsDataURL(files[0])
     fileReader.onload = () => {
       if (typeof fileReader.result === 'string')
-        accountDataLocal.value.avatarImg = fileReader.result
+        avatar.value = fileReader.result
     }
   }
 }
 
-// reset avatar image
-const resetAvatar = () => {
-  accountDataLocal.value.avatarImg = accountData.avatarImg
+async function submit({ username }) {
+  submitBtnLoading.value = true
+
+  const payload = new FormData()
+
+  if (refInputEl.value.files[0]) {
+    payload.append('avatar', refInputEl.value.files[0])
+  }
+  
+  payload.append('item', JSON.stringify({ username }))
+  
+  await userStore.updateUserInfo(payload)
+    .then(async () => {
+      await userStore.userInfo()
+    })
+  
+  submitBtnLoading.value = false
 }
 
-const timezones = [
-  '(GMT-11:00) International Date Line West',
-  '(GMT-11:00) Midway Island',
-  '(GMT-10:00) Hawaii',
-  '(GMT-09:00) Alaska',
-  '(GMT-08:00) Pacific Time (US & Canada)',
-  '(GMT-08:00) Tijuana',
-  '(GMT-07:00) Arizona',
-  '(GMT-07:00) Chihuahua',
-  '(GMT-07:00) La Paz',
-  '(GMT-07:00) Mazatlan',
-  '(GMT-07:00) Mountain Time (US & Canada)',
-  '(GMT-06:00) Central America',
-  '(GMT-06:00) Central Time (US & Canada)',
-  '(GMT-06:00) Guadalajara',
-  '(GMT-06:00) Mexico City',
-  '(GMT-06:00) Monterrey',
-  '(GMT-06:00) Saskatchewan',
-  '(GMT-05:00) Bogota',
-  '(GMT-05:00) Eastern Time (US & Canada)',
-  '(GMT-05:00) Indiana (East)',
-  '(GMT-05:00) Lima',
-  '(GMT-05:00) Quito',
-  '(GMT-04:00) Atlantic Time (Canada)',
-  '(GMT-04:00) Caracas',
-  '(GMT-04:00) La Paz',
-  '(GMT-04:00) Santiago',
-  '(GMT-03:30) Newfoundland',
-  '(GMT-03:00) Brasilia',
-  '(GMT-03:00) Buenos Aires',
-  '(GMT-03:00) Georgetown',
-  '(GMT-03:00) Greenland',
-  '(GMT-02:00) Mid-Atlantic',
-  '(GMT-01:00) Azores',
-  '(GMT-01:00) Cape Verde Is.',
-  '(GMT+00:00) Casablanca',
-  '(GMT+00:00) Dublin',
-  '(GMT+00:00) Edinburgh',
-  '(GMT+00:00) Lisbon',
-  '(GMT+00:00) London',
-]
+const resetForm = setFieldValue => {
+  setFieldValue('username', userStore.me.username)
+}
 
-const currencies = [
-  'USD',
-  'EUR',
-  'GBP',
-  'AUD',
-  'BRL',
-  'CAD',
-  'CNY',
-  'CZK',
-  'DKK',
-  'HKD',
-  'HUF',
-  'INR',
-]
+const resetAvatar = () => {
+  avatar.value = undefined
+}
 </script>
 
 <template>
   <VRow>
     <VCol cols="12">
-      <VCard title="Account Details">
-        <VCardText class="d-flex">
-          <!-- 👉 Avatar -->
-          <VAvatar
-            rounded="lg"
-            size="100"
-            class="me-6"
-            :image="accountDataLocal.avatarImg"
-          />
+      <VCard>
+        <Form
+          v-slot="{ setFieldValue }"
+          :validation-schema="formSchema"
+          :initial-values="formValues"
+          @submit="submit"
+        >
+          <VCardText class="d-flex">
+            <VImg
+              class="me-6 custom-image"
+              width="100"
+              max-width="200"
+              :src="avatar ? avatar : showAvatar"
+              :lazy-src="avatar ? avatar : showAvatar"
+            >
+              <template #placeholder>
+                <image-lazy-progress />
+              </template>
+            </VImg>
+            <div class="d-flex flex-column justify-center gap-5">
+              <div class="d-flex flex-wrap gap-2">
+                <VBtn
+                  color="primary"
+                  @click="refInputEl?.click()"
+                >
+                  <VIcon
+                    icon="mdi-cloud-upload-outline"
+                    class="d-sm-none"
+                  />
+                  <span class="d-none d-sm-block">Upload new photo</span>
+                </VBtn>
 
-          <!-- 👉 Upload Photo -->
-          <form class="d-flex flex-column justify-center gap-5">
-            <div class="d-flex flex-wrap gap-2">
-              <VBtn
-                color="primary"
-                @click="refInputEl?.click()"
-              >
-                <VIcon
-                  icon="mdi-cloud-upload-outline"
-                  class="d-sm-none"
-                />
-                <span class="d-none d-sm-block">Upload new photo</span>
-              </VBtn>
+                <input
+                  ref="refInputEl"
+                  type="file"
+                  name="file"
+                  accept=".jpeg,.png,.jpg,GIF"
+                  hidden
+                  @input="changeAvatar"
+                >
 
-              <input
-                ref="refInputEl"
-                type="file"
-                name="file"
-                accept=".jpeg,.png,.jpg,GIF"
-                hidden
-                @input="changeAvatar"
-              >
+                <VBtn
+                  type="reset"
+                  color="error"
+                  variant="tonal"
+                  @click="resetAvatar"
+                >
+                  <span class="d-none d-sm-block">Reset</span>
+                  <VIcon
+                    icon="mdi-refresh"
+                    class="d-sm-none"
+                  />
+                </VBtn>
+              </div>
 
-              <VBtn
-                type="reset"
-                color="error"
-                variant="tonal"
-                @click="resetAvatar"
-              >
-                <span class="d-none d-sm-block">Reset</span>
-                <VIcon
-                  icon="mdi-refresh"
-                  class="d-sm-none"
-                />
-              </VBtn>
+              <p class="text-body-1 mb-0">
+                Allowed JPG, GIF or PNG. Max size of 800K
+              </p>
             </div>
-
-            <p class="text-body-1 mb-0">
-              Allowed JPG, GIF or PNG. Max size of 800K
-            </p>
-          </form>
-        </VCardText>
-
-        <VDivider/>
-
-        <VCardText>
-          <!-- 👉 Form -->
-          <VForm class="mt-6">
+          </VCardText>
+          <VCardText>
+            <VIcon icon="mdi-shield-account" />
+            Roles:
+            <v-chip
+              v-for="role in userStore.me.roleIds"
+              :key="role.id"
+              class="ms-2"
+              color="primary"
+            >
+              {{ role.name }}
+            </v-chip>
+          </VCardText>
+          <VDivider />
+          <VCardText>
+            <!-- 👉 Form -->
             <VRow>
-              <!-- 👉 First Name -->
-              <VCol
-                md="6"
-                cols="12"
-              >
-                <VTextField
-                  v-model="accountDataLocal.firstName"
-                  label="First Name"
+              <VCol cols="12">
+                <Field
+                  v-slot="{ field }"
+                  name="username"
+                  type="text"
+                >
+                  <VTextField
+                    v-bind="field"
+                    v-model="formValues.username"
+                    label="Username"
+                    prepend-inner-icon="mdi-account"
+                  />
+                </Field>
+                <ErrorMessage
+                  class="error-message"
+                  name="username"
                 />
               </VCol>
-
-              <!-- 👉 Last Name -->
-              <VCol
-                md="6"
-                cols="12"
-              >
+              <VCol cols="12">
                 <VTextField
-                  v-model="accountDataLocal.lastName"
-                  label="Last Name"
-                />
-              </VCol>
-
-              <!-- 👉 Email -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="accountDataLocal.email"
+                  v-model="userStore.me.email"
                   label="E-mail"
-                  type="email"
+                  readonly
+                  prepend-inner-icon="mdi-email"
                 />
               </VCol>
-
-              <!-- 👉 Organization -->
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12">
                 <VTextField
-                  v-model="accountDataLocal.org"
-                  label="Organization"
+                  v-model="userStore.me.createdAt"
+                  label="Created-at"
+                  readonly
+                  prepend-inner-icon="mdi-calendar"
                 />
               </VCol>
-
-              <!-- 👉 Phone -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="accountDataLocal.phone"
-                  label="Phone Number"
-                />
-              </VCol>
-
-              <!-- 👉 Address -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="accountDataLocal.address"
-                  label="Address"
-                />
-              </VCol>
-
-              <!-- 👉 State -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="accountDataLocal.state"
-                  label="State"
-                />
-              </VCol>
-
-              <!-- 👉 Zip Code -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="accountDataLocal.zip"
-                  label="Zip Code"
-                />
-              </VCol>
-
-              <!-- 👉 Country -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VSelect
-                  v-model="accountDataLocal.country"
-                  label="Country"
-                  :items="['USA', 'Canada', 'UK', 'India', 'Australia']"
-                />
-              </VCol>
-
-              <!-- 👉 Language -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VSelect
-                  v-model="accountDataLocal.language"
-                  label="Language"
-                  :items="['English', 'Spanish', 'Arabic', 'Hindi', 'Urdu']"
-                />
-              </VCol>
-
-              <!-- 👉 Timezone -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VSelect
-                  v-model="accountDataLocal.timezone"
-                  label="Timezone"
-                  :items="timezones"
-                  :menu-props="{ maxHeight: 200 }"
-                />
-              </VCol>
-
-              <!-- 👉 Currency -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VSelect
-                  v-model="accountDataLocal.currency"
-                  label="Currency"
-                  :items="currencies"
-                  :menu-props="{ maxHeight: 200 }"
-                />
-              </VCol>
-
               <!-- 👉 Form Actions -->
               <VCol
                 cols="12"
                 class="d-flex flex-wrap gap-4"
               >
-                <VBtn>Save changes</VBtn>
+                <VBtn type="submit">
+                  Save changes
+                </VBtn>
 
                 <VBtn
                   color="secondary"
                   variant="tonal"
                   type="reset"
-                  @click.prevent="resetForm"
+                  @click.prevent="resetForm(setFieldValue)"
                 >
                   Reset
                 </VBtn>
               </VCol>
             </VRow>
-          </VForm>
-        </VCardText>
-      </VCard>
-    </VCol>
-
-    <VCol cols="12">
-      <!-- 👉 Deactivate Account -->
-      <VCard title="Deactivate Account">
-        <VCardText>
-          <div>
-            <VCheckbox
-              v-model="isAccountDeactivated"
-              label="I confirm my account deactivation"
-            />
-          </div>
-
-          <VBtn
-            :disabled="!isAccountDeactivated"
-            color="error"
-            class="mt-3"
-          >
-            Deactivate Account
-          </VBtn>
-        </VCardText>
+          </VCardText>
+        </Form>
       </VCard>
     </VCol>
   </VRow>
 </template>
+
+<style lang="scss" scoped>
+.custom-image {
+  border-radius: 4px;
+}
+</style>

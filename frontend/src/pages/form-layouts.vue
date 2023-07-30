@@ -16,7 +16,7 @@ import DemoFormLayoutVerticalFormWithIcons from '@/views/pages/form-layouts/Demo
         <!-- 👉 Horizontal Form -->
         <VCard title="Horizontal Form">
           <VCardText>
-            <DemoFormLayoutHorizontalForm/>
+            <DemoFormLayoutHorizontalForm />
           </VCardText>
         </VCard>
       </VCol>
@@ -27,7 +27,7 @@ import DemoFormLayoutVerticalFormWithIcons from '@/views/pages/form-layouts/Demo
         <!-- 👉 Horizontal Form with Icons -->
         <VCard title="Horizontal Form with Icons">
           <VCardText>
-            <DemoFormLayoutHorizontalFormWithIcons/>
+            <DemoFormLayoutHorizontalFormWithIcons />
           </VCardText>
         </VCard>
       </VCol>
@@ -38,7 +38,7 @@ import DemoFormLayoutVerticalFormWithIcons from '@/views/pages/form-layouts/Demo
         <!-- 👉 Vertical Form -->
         <VCard title="Vertical Form">
           <VCardText>
-            <DemoFormLayoutVerticalForm/>
+            <DemoFormLayoutVerticalForm />
           </VCardText>
         </VCard>
       </VCol>
@@ -49,7 +49,7 @@ import DemoFormLayoutVerticalFormWithIcons from '@/views/pages/form-layouts/Demo
         <!-- 👉 Vertical Form with Icons -->
         <VCard title="Vertical Form with Icons">
           <VCardText>
-            <DemoFormLayoutVerticalFormWithIcons/>
+            <DemoFormLayoutVerticalFormWithIcons />
           </VCardText>
         </VCard>
       </VCol>
@@ -57,7 +57,7 @@ import DemoFormLayoutVerticalFormWithIcons from '@/views/pages/form-layouts/Demo
         <!-- 👉 Multiple Column -->
         <VCard title="Multiple Column">
           <VCardText>
-            <DemoFormLayoutMultipleColumn/>
+            <DemoFormLayoutMultipleColumn />
           </VCardText>
         </VCard>
       </VCol>

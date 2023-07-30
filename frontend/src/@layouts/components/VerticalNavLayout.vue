@@ -1,14 +1,14 @@
 <script>
 import VerticalNav from '@layouts/components/VerticalNav.vue'
-import {useDisplay} from 'vuetify'
+import { useDisplay } from 'vuetify'
 
 export default defineComponent({
-  setup(props, {slots}) {
+  setup(props, { slots }) {
     const isOverlayNavActive = ref(false)
     const isLayoutOverlayVisible = ref(false)
     const toggleIsOverlayNavActive = useToggle(isOverlayNavActive)
     const route = useRoute()
-    const {mdAndDown} = useDisplay()
+    const { mdAndDown } = useDisplay()
 
 
     // ℹ️ This is alternative to below two commented watcher
@@ -17,7 +17,7 @@ export default defineComponent({
 
     return () => {
       // 👉 Vertical nav
-      const verticalNav = h(VerticalNav, {isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive}, {
+      const verticalNav = h(VerticalNav, { isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive }, {
         'nav-header': () => slots['vertical-nav-header']?.(),
         'before-nav-items': () => slots['before-vertical-nav-items']?.(),
         'default': () => slots['vertical-nav-content']?.(),
@@ -26,24 +26,24 @@ export default defineComponent({
 
 
       // 👉 Navbar
-      const navbar = h('header', {class: ['layout-navbar navbar-blur']}, [
-        h('div', {class: 'navbar-content-container'}, slots.navbar?.({
+      const navbar = h('header', { class: ['layout-navbar navbar-blur'] }, [
+        h('div', { class: 'navbar-content-container' }, slots.navbar?.({
           toggleVerticalOverlayNavActive: toggleIsOverlayNavActive,
         })),
       ])
 
-      const main = h('main', {class: 'layout-page-content'}, h('div', {class: 'page-content-container'}, slots.default?.()))
+      const main = h('main', { class: 'layout-page-content' }, h('div', { class: 'page-content-container' }, slots.default?.()))
 
 
       // 👉 Footer
-      const footer = h('footer', {class: 'layout-footer'}, [
-        h('div', {class: 'footer-content-container'}, slots.footer?.()),
+      const footer = h('footer', { class: 'layout-footer' }, [
+        h('div', { class: 'footer-content-container' }, slots.footer?.()),
       ])
 
 
       // 👉 Overlay
       const layoutOverlay = h('div', {
-        class: ['layout-overlay', {visible: isLayoutOverlayVisible.value}],
+        class: ['layout-overlay', { visible: isLayoutOverlayVisible.value }],
         onClick: () => {
           isLayoutOverlayVisible.value = !isLayoutOverlayVisible.value
         },
@@ -57,7 +57,7 @@ export default defineComponent({
         ],
       }, [
         verticalNav,
-        h('div', {class: 'layout-content-wrapper'}, [
+        h('div', { class: 'layout-content-wrapper' }, [
           navbar,
           main,
           footer,

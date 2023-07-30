@@ -35,28 +35,28 @@ const newProject = {
       cols="12"
       md="4"
     >
-      <AnalyticsAward/>
+      <AnalyticsAward />
     </VCol>
 
     <VCol
       cols="12"
       md="8"
     >
-      <AnalyticsTransactions/>
+      <AnalyticsTransactions />
     </VCol>
 
     <VCol
       cols="12"
       md="4"
     >
-      <AnalyticsWeeklyOverview/>
+      <AnalyticsWeeklyOverview />
     </VCol>
 
     <VCol
       cols="12"
       md="4"
     >
-      <AnalyticsTotalEarning/>
+      <AnalyticsTotalEarning />
     </VCol>
 
     <VCol
@@ -68,28 +68,28 @@ const newProject = {
           cols="12"
           sm="6"
         >
-          <AnalyticsTotalProfitLineCharts/>
+          <AnalyticsTotalProfitLineCharts />
         </VCol>
 
         <VCol
           cols="12"
           sm="6"
         >
-          <CardStatisticsVertical v-bind="totalProfit"/>
+          <CardStatisticsVertical v-bind="totalProfit" />
         </VCol>
 
         <VCol
           cols="12"
           sm="6"
         >
-          <CardStatisticsVertical v-bind="newProject"/>
+          <CardStatisticsVertical v-bind="newProject" />
         </VCol>
 
         <VCol
           cols="12"
           sm="6"
         >
-          <AnalyticsBarCharts/>
+          <AnalyticsBarCharts />
         </VCol>
       </VRow>
     </VCol>
@@ -98,18 +98,18 @@ const newProject = {
       cols="12"
       md="4"
     >
-      <AnalyticsSalesByCountries/>
+      <AnalyticsSalesByCountries />
     </VCol>
 
     <VCol
       cols="12"
       md="8"
     >
-      <AnalyticsDepositWithdraw/>
+      <AnalyticsDepositWithdraw />
     </VCol>
 
     <VCol cols="12">
-      <AnalyticsUserTable/>
+      <AnalyticsUserTable />
     </VCol>
   </VRow>
 </template>
