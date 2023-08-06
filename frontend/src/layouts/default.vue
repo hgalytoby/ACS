@@ -1,6 +1,7 @@
 <script setup>
 import DefaultLayoutWithVerticalNav from './components/DefaultLayoutWithVerticalNav.vue'
 import { useRoute } from 'vue-router'
+import 'vue-datepicker-next/index.css'
 
 const route = useRoute()
 </script>
@@ -16,10 +17,7 @@ const route = useRoute()
         enter-active-class="animate__fadeIn animate__faster"
         leave-active-class="animate__fadeOut animate__faster"
       >
-        <component
-          :is="Component"
-          :key="route.fullPath"
-        />
+        <component :is="Component" />
       </transition>
     </RouterView>
   </DefaultLayoutWithVerticalNav>
@@ -28,4 +26,5 @@ const route = useRoute()
 <style lang="scss">
 // As we are using `layouts` plugin we need its styles to be imported
 @use "@layouts/styles/default-layout";
+@import '@styles/date-picker';
 </style>

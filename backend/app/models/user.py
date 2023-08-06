@@ -130,7 +130,7 @@ class OAuthAccountModel(BaseUUIDModel, SQLModelBaseOAuthAccount, table=True):
     )
     user: 'UserModel' = Relationship(
         back_populates='oauth_accounts',
-        sa_relationship_kwargs={
-            'lazy': 'joined',
-        },
+        # sa_relationship_kwargs={
+        #     'lazy': 'joined',
+        # },
     )

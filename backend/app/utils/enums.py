@@ -82,7 +82,7 @@ class UserLogEvent(BaseEventEnum):
     LOGIN_USER = 'LoginUser', '使用者登入'
     VERIFY_USER = 'VerifyUser', '啟用使用者'
     UPDATE_USER = 'UpdateUser', '更新使用者'
-    DESTROY_USER = 'DestroyVerify', '刪除使用者'
+    DESTROY_USER = 'DestroyUser', '刪除使用者'
 
 
 # 無法繼承拓展。

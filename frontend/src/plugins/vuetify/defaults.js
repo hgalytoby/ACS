@@ -79,6 +79,7 @@ export default {
   VRating: {
     // set v-rating default color to primary
     color: 'rgba(var(--v-theme-on-background),0.23)',
+
     // color: 'warning',
   },
   VProgressCircular: {
@@ -119,5 +120,9 @@ export default {
     // set v-switch default color to primary
     color: 'primary',
     hideDetails: 'auto',
+  },
+  VDataTable: {
+    color: 'primary',
+
   },
 }

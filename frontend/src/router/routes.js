@@ -9,9 +9,9 @@ export default [
         component: () => import('../pages/dashboard.vue'),
       },
       {
-        path: 'account-settings',
+        path: 'account-settings/:tab?',
         name: 'AccountSettings',
-        component: () => import('../pages/account-settings.vue'),
+        component: () => import('../pages/account-settings/index.vue'),
       },
       {
         path: 'typography',

@@ -1,0 +1,38 @@
+.mx-date-row .cell.active {
+  border-radius: 20px;
+  background-color: #9155FD !important;
+
+  &.start-date {
+    border-radius: 20px !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+
+  &.end-date {
+    border-radius: 20px !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+  }
+}
+
+.mx-date-row .in-range, .hover-in-range {
+  background-color: #F4EEFF !important;
+  color: #C4A3FE !important;
+}
+
+.mx-date-row .td.cell:hover {
+  border-radius: 20px !important;
+  background-color: #9155FD !important;
+  color: #ffffff !important;
+}
+
+.mx-table-date .today {
+  color: #C4A3FE !important;
+  background: none;
+  border: 1px #9155FD solid;
+  border-radius: 20px;
+}
+
+.mx-datepicker-range {
+  width: 100%;
+}

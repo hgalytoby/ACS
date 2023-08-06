@@ -15,7 +15,6 @@ import BaseAuth from '@/views/pages/auth/Base.vue'
         >
           <component
             :is="Component"
-            :key="$route.fullPath"
           />
         </transition>
       </RouterView>

@@ -22,7 +22,13 @@ export const useUserStore = defineStore({
       'lastLogin': '',
       'roleIds': [],
     },
-    log: [],
+    log: {
+      items: [],
+      page: 1,
+      pages: 1,
+      size: 10,
+      total: 1,
+    },
   }),
   actions: {
     async userInfo() {
@@ -48,8 +54,9 @@ export const useUserStore = defineStore({
           toast.error('修改密碼失敗!')
         })
     },
-    async userLog() {
-      await reqUserLog().then(({ data }) => {
+    async userLog(params) {
+      await reqUserLog(params).then(({ data }) => {
+        data.items.forEach(item => item.rawData = JSON.stringify(item.rawData))
         this.$patch({ log: data })
       })
     },

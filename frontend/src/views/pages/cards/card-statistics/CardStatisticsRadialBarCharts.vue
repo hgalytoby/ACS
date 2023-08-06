@@ -1,7 +1,7 @@
 <script setup>
-import {hexToRgb} from '@layouts/utils'
+import { hexToRgb } from '@layouts/utils'
 import VueApexCharts from 'vue3-apexcharts'
-import {useTheme} from 'vuetify'
+import { useTheme } from 'vuetify'
 
 const vuetifyTheme = useTheme()
 const currentTheme = computed(() => vuetifyTheme.current.value.colors)
@@ -10,15 +10,15 @@ const series = [78]
 
 const chartOptions = computed(() => {
   return {
-    chart: {sparkline: {enabled: true}},
+    chart: { sparkline: { enabled: true } },
     colors: [currentTheme.value.info],
     plotOptions: {
       radialBar: {
         startAngle: -90,
         endAngle: 90,
-        hollow: {size: '65%'},
+        hollow: { size: '65%' },
         dataLabels: {
-          name: {show: false},
+          name: { show: false },
           value: {
             fontSize: '1.25rem',
             fontWeight: '600',
@@ -26,10 +26,10 @@ const chartOptions = computed(() => {
             color: `rgba(${hexToRgb(currentTheme.value['on-surface'])},${variableTheme.value['high-emphasis-opacity']})`,
           },
         },
-        track: {background: currentTheme.value.background},
+        track: { background: currentTheme.value.background },
       },
     },
-    stroke: {lineCap: 'round'},
+    stroke: { lineCap: 'round' },
   }
 })
 </script>

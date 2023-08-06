@@ -19,19 +19,24 @@ const headers = [
   },
 ]
 
-const getData = async (page = 1, size = 10, sortParams) => {
-  await userStore.userLog({ page, size, ...sortParams })
+const searchEmit = async params => {
+  console.log('emitSearch', params)
+  search.value = JSON.stringify(params)
+}
+
+const getData = async (page = 1, size = 10, params) => {
+  await userStore.userLog({ page, size, ...params })
 }
 
 const loadData = async ({ page, itemsPerPage, sortBy, search }) => {
-  const sortParams = {}
-
+  const params = search ? JSON.parse(search) : {}
+  console.log('loadData', params)
   sortBy.forEach((item, i) => {
-    sortParams[`${item.key}Num`] = i
-    sortParams[`${item.key}Sort`] = item.order === 'asc'
+    params[`${item.key}Num`] = i
+    params[`${item.key}Sort`] = item.order === 'asc'
   })
   loading.value = true
-  await getData(page, itemsPerPage, sortParams)
+  await getData(page, itemsPerPage, params)
   loading.value = false
 }
 
@@ -51,7 +56,7 @@ onMounted(() => {
     <button @click="test">
       test
     </button>
-    <AccountSettingsFilterLog />
+    <AccountSettingsFilterLog @search-emit="searchEmit" />
     <VCard
       class="mt-5"
       elevation="3"

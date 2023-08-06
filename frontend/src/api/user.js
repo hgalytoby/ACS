@@ -6,5 +6,5 @@ export const reqUserInfo = () => jwtRequest.get(urls.user.me)
 export const reqUpdatePassword = payload => jwtRequest.patch(urls.user.updatePassword, payload)
 
 export const reqUpdateUserInfo = payload => jwtRequest.patch(urls.user.updateUserInfo, payload)
-export const reqUserLog = () => jwtRequest.get(urls.user.log)
+export const reqUserLog = params => jwtRequest.get(urls.user.log, { params })
 

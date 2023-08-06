@@ -1,4 +1,5 @@
 from uuid import UUID
+from fastapi_pagination import add_pagination
 from fastapi_restful.cbv import cbv
 from fastapi import status, Depends, UploadFile, File, HTTPException, APIRouter
 
@@ -23,6 +24,7 @@ from app.crud.user import (
     current_active_verified_user,
 )
 from app.utils.enums import UserFailDetail, APIAccess
+from app.utils.pagination import Page
 from app.utils.sql_query import QueryList
 
 router = APIRouter()
@@ -52,7 +54,7 @@ router.include_router(
 @cbv(router)
 class UserEmailExistView:
     @router.get(
-        '/users/exist-email',
+        '/users/email-exists',
         name=APIAccess.PUBLIC,
         summary='檢查信箱使否存在',
         status_code=status.HTTP_200_OK,
@@ -95,12 +97,12 @@ class UserView:
     async def update_info(
             self,
             item: UserUpdate,
-            icon: UploadFile = File(None),
+            avatar: UploadFile = File(None),
     ) -> UserRead:
         instance = await crud_user.update_info(
             user=self.user,
             update_item=item,
-            icon=icon,
+            avatar=avatar,
         )
         return instance
 
@@ -128,8 +130,8 @@ class UserView:
     async def get_multi_log(
             self,
             query: QueryList = web_params(UserLogQuery),
-    ) -> list[UserLogRead]:
-        items = await crud_user_log.get_multi(query=query)
+    ) -> Page[UserLogRead]:
+        items = await crud_user_log.get_multi(query=query, paginated=True)
         return items
 
     @router.get(
@@ -171,3 +173,5 @@ router.include_router(
     prefix='/users',
     tags=['使用者'],
 )
+
+add_pagination(router)

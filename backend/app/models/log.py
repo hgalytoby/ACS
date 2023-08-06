@@ -41,7 +41,4 @@ class SystemLogModel(SystemLogBase, table=True):
 class UserLogModel(UserLogBase, table=True):
     user: 'UserModel' = Relationship(  # type: ignore
         back_populates='logs',
-        sa_relationship_kwargs={
-            'lazy': 'joined',
-        },
     )

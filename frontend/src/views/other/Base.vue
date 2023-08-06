@@ -25,7 +25,7 @@ const authThemeMask = computed(() => {
     <!-- 👉 Image -->
     <div class="misc-avatar w-100 text-center">
       <VImg
-        :src="props.img"
+        :src="img"
         alt="Coming Soon"
         :max-width="800"
         class="mx-auto"

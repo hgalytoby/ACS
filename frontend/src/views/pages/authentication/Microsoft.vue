@@ -1,0 +1,42 @@
+<template>
+  <VIcon>
+    <svg
+      viewBox="0 0 110 110"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xml:space="preserve"
+      xmlns:serif="http://www.serif.com/"
+      style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+    >
+      <rect
+        x="0"
+        y="0"
+        width="51.927"
+        height="51.927"
+        style="fill:rgb(241,81,27);fill-rule:nonzero;"
+      />
+      <rect
+        x="57.334"
+        y="0"
+        width="51.926"
+        height="51.927"
+        style="fill:rgb(128,204,40);fill-rule:nonzero;"
+      />
+      <rect
+        x="0"
+        y="57.354"
+        width="51.925"
+        height="51.927"
+        style="fill:rgb(0,173,239);fill-rule:nonzero;"
+      />
+      <rect
+        x="57.334"
+        y="57.354"
+        width="51.926"
+        height="51.927"
+        style="fill:rgb(251,188,9);fill-rule:nonzero;"
+      />
+    </svg>
+  </VIcon>
+</template>

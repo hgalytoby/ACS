@@ -1,11 +1,12 @@
 import { it } from 'vuetify/locale'
+import Microsoft from '@/views/pages/authentication/Microsoft.vue'
 
 export const authProviders = [
   {
-    icon: 'mdi-facebook',
-    color: '#4267b2',
-    colorInDark: '#4267b2',
-    name: 'facebook',
+    icon: Microsoft,
+    color: '',
+    colorInDark: '',
+    name: 'microsoft',
   },
   {
     icon: 'mdi-github',
