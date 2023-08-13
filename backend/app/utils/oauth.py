@@ -15,6 +15,7 @@ from httpx_oauth.oauth2 import OAuth2Token, BaseOAuth2
 from fastapi import Request, HTTPException, status, Query, APIRouter, Depends
 
 from app.crud.user import UserManager, get_user_manager, auth_backend, SECRET, fastapi_users
+from app.dependencies.oauth import is_oauth_linked
 from app.models import UserModel
 from app.schemas.user import UserRead
 
@@ -60,7 +61,7 @@ def get_oauth_router(
     callback_route_name = f'oauth:{oauth_client.name}.{auth_backend.name}.callback'
     oauth2_authorize_callback = OAuth2AuthorizeCallback(
         client=oauth_client,
-        route_name='http://localhost:8000/api/auth/github/callback',
+        route_name=f'http://localhost:8000/api/auth/{oauth_client.name}/callback',
     )
 
     @router.get(
@@ -194,14 +195,13 @@ def get_oauth_associate_router(
     async def authorize(
             request: Request,
             scopes: list[str] = Query(None),
-            user: UserModel = Depends(get_current_active_user),
+            user: UserModel = Depends(is_oauth_linked(oauth_client.name)),
             redirect_url: Optional[str] = redirect_url_query,
     ) -> OAuth2AuthorizeResponse:
         if redirect_url is not None:
             authorize_redirect_url = redirect_url
         else:
             authorize_redirect_url = str(request.url_for(callback_route_name))
-
         state_data: dict[str, str] = {'sub': str(user.id)}
         state = generate_state_token(state_data, SECRET)
         authorization_url = await oauth_client.get_authorization_url(

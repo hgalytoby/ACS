@@ -86,3 +86,15 @@ class UserPasswordUpdate(BaseModel):
         min_length=6,
         max_length=32,
     )
+
+
+class OAuthAccountCreate(BaseModel):
+    ...
+
+
+class OAuthAccountUpdate(BaseModel):
+    ...
+
+
+class OAuthAccountRead(BaseModel):
+    ...

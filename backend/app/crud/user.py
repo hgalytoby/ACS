@@ -11,8 +11,6 @@ from fastapi import (
     File,
     Response,
 )
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_async_sqlalchemy import db
 from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin, exceptions
@@ -22,16 +20,14 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 from fastapi_users.jwt import decode_jwt, generate_jwt
-from fastapi_users.openapi import OpenAPIResponseType
 from fastapi_users.password import PasswordHelper
 from fastapi_users_db_sqlmodel import SQLModelUserDatabaseAsync
-from humps import camelize
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import select
 
 from app.crud.base import CRUDBase
 from app.crud.log import crud_user_log
 from app.models import UserModel, RoleModel, OAuthAccountModel
-from app.schemas.base import BaseModel
 from app.schemas.log import UserLogCreate
 from app.schemas.user import (
     UserCreate,
@@ -348,6 +344,33 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
         expression = self.get_select().order_by(self.model.created_at.asc())
         response = await db_session.execute(expression)
         return response.scalars().first()
+
+    async def unlink_oauth(
+            self,
+            provider_name: str,
+            user: UserModel,
+            db_session: Optional[AsyncSession] = None,
+    ) -> UserRead:
+        for oauth in user.oauth_accounts:
+            if oauth.oauth_name == provider_name:
+                db_session = db_session or self.db.session
+                response = await db_session.execute(
+                    select(OAuthAccountModel)
+                    .where(OAuthAccountModel.id == oauth.id)
+                )
+                oauth_obj = response.scalar_one()
+                await db_session.delete(oauth_obj)
+                user.oauth_accounts.remove(oauth)
+                await self.save(
+                    instance=user,
+                    db_session=db_session,
+                )
+                return UserRead.from_orm(user)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='UnLink.',
+        )
+
 
 
 crud_user = CRUDUser(model=UserModel)
