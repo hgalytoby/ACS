@@ -1,37 +1,53 @@
 import { defineStore } from 'pinia'
-import { reqOAuthAuthorize, reqOAuthCallback } from '@/api/oauth'
+import {
+  reqOAuthAuthorize,
+  reqOAuthCallback,
+  reqOAuthAssociateAuthorize,
+  reqOAuthAssociateCallback,
+} from '@/api/oauth'
 import { setToken } from '@/utils/auth'
 import { useUserStore } from '@/stores/user'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 export const useOAuthStore = defineStore({
   id: 'useOAuthStore',
   actions: {
     async authorize(payload) {
-      if (!this.oauth?.[payload]) {
-        await reqOAuthAuthorize(payload).then(({ data }) => {
-          this.$patch({
-            [payload]: data.authorization_url,
-          })
+      await reqOAuthAuthorize(payload)
+        .then(({ data }) => {
           window.location.href = data.authorization_url
         })
-      } else {
-        window.location.href = this.oauth[payload]
-      }
     },
-    async callback({ name, query }) {
-      await reqOAuthCallback(name, query).then(async ({ data }) => {
-        const userStore = useUserStore()
+    async callback({ providerName, query }) {
+      await reqOAuthCallback(providerName, query)
+        .then(async ({ data }) => {
+          const userStore = useUserStore()
 
-        userStore.$patch({ token: data.access_token })
-        setToken(data.access_token)
-        await this.$router.push('/')
-      })
+          userStore.$patch({ token: data.access_token })
+          setToken(data.access_token)
+          await this.$router.push('/')
+        })
     },
+
     async associateAuthorize(payload) {
-
+      await reqOAuthAssociateAuthorize(payload)
+        .then(({ data }) => {
+          window.location.href = data.authorization_url
+        })
     },
-    async associateCallback(name, payload) {
+    async associateCallback({ providerName, query }) {
+      await reqOAuthAssociateCallback(providerName, query)
+        .then(async () => {
+          const userStore = useUserStore()
 
+          await userStore.userInfo()
+          this.$router.push({ name: 'AccountSettings' })
+          toast.success(`綁定 ${providerName} 帳號成功!`)
+        }).catch(() => {
+          toast.error(`綁定 ${providerName} 帳號失敗!`)
+        })
     },
   },
 })

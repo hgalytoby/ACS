@@ -118,12 +118,21 @@ export default [
         ],
       },
       {
-        path: '/oauth/:name/callback',
+        path: '/oauth/:providerName/callback',
         name: 'OAuth',
         component: () => import('../pages/oauth/oauth.vue'),
         meta: {
           layout: 'blank',
           title: '第三方驗證',
+        },
+      },
+      {
+        path: '/oauth/associate/:providerName/callback',
+        name: 'OAuthAssociate',
+        component: () => import('../pages/oauth/oauth-associate.vue'),
+        meta: {
+          layout: 'blank',
+          title: '第三方綁定讞正',
         },
       },
     ],

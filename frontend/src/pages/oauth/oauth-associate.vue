@@ -7,12 +7,16 @@ const route = useRoute()
 const oauth = useOAuthStore()
 
 onMounted(() => {
-  oauth.callback({
-    providerName: route.params.providerName, query: route.query,
-  })
+  oauth.associateCallback(
+    {
+      providerName: route.params.providerName,
+      query: route.query,
+    },
+  )
 })
 </script>
 
 <template>
   <BaseOAuth />
 </template>
+

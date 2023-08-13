@@ -4,6 +4,7 @@ import defaultAvatar from '@images/avatars/default-avatar.png'
 import ImageLazyProgress from '@/components/ImageLazyProgress.vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
+import AccountSettingsOAuth from '@/views/pages/account-settings/AccountSettingsOAuth.vue'
 
 const userStore = useUserStore()
 
@@ -33,7 +34,7 @@ const changeAvatar = file => {
   }
 }
 
-async function submit({ username }) {
+const submit = async ({ username }) => {
   submitBtnLoading.value = true
 
   const payload = new FormData()
@@ -41,14 +42,14 @@ async function submit({ username }) {
   if (refInputEl.value.files[0]) {
     payload.append('avatar', refInputEl.value.files[0])
   }
-  
+
   payload.append('item', JSON.stringify({ username }))
-  
+
   await userStore.updateUserInfo(payload)
     .then(async () => {
       await userStore.userInfo()
     })
-  
+
   submitBtnLoading.value = false
 }
 
@@ -138,7 +139,6 @@ const resetAvatar = () => {
           </VCardText>
           <VDivider />
           <VCardText>
-            <!-- 👉 Form -->
             <VRow>
               <VCol cols="12">
                 <Field
@@ -174,7 +174,15 @@ const resetAvatar = () => {
                   prepend-inner-icon="mdi-calendar"
                 />
               </VCol>
-              <!-- 👉 Form Actions -->
+            </VRow>
+          </VCardText>
+          <VDivider />
+          <VCardText>
+            <AccountSettingsOAuth />
+          </VCardText>
+          <VDivider />
+          <VCardText>
+            <VRow>
               <VCol
                 cols="12"
                 class="d-flex flex-wrap gap-4"
@@ -200,7 +208,7 @@ const resetAvatar = () => {
   </VRow>
 </template>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .custom-image {
   border-radius: 4px;
 }

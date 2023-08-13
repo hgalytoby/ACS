@@ -1,5 +1,11 @@
 import { defineStore } from 'pinia'
-import { reqUpdatePassword, reqUpdateUserInfo, reqUserInfo, reqUserLog } from '@/api/user'
+import {
+  reqUnlinkOAuthAccount,
+  reqUpdatePassword,
+  reqUpdateUserInfo,
+  reqUserInfo,
+  reqUserLog,
+} from '@/api/user'
 import { getToken, removeToken } from '@/utils/auth'
 import { useToast } from 'vue-toastification'
 
@@ -10,23 +16,22 @@ export const useUserStore = defineStore({
   state: () => ({
     token: getToken(),
     me: {
-      'id': '',
-      'email': '',
-      'isActive': false,
-      'isSuperuser': false,
-      'isVerified': false,
-      'username': '',
-      'createdAt': '',
-      'updatedAt': '',
-      'avatar': '',
-      'lastLogin': '',
-      'roleIds': [],
+      id: '',
+      email: '',
+      isActive: false,
+      isSuperuser: false,
+      isVerified: false,
+      username: '',
+      createdAt: '',
+      updatedAt: '',
+      avatar: '',
+      lastLogin: '',
+      roleIds: [],
+      oauthAccounts: [],
     },
     log: {
       items: [],
-      page: 1,
-      pages: 1,
-      size: 10,
+      pages: 999,
       total: 1,
     },
   }),
@@ -59,6 +64,13 @@ export const useUserStore = defineStore({
         data.items.forEach(item => item.rawData = JSON.stringify(item.rawData))
         this.$patch({ log: data })
       })
+    },
+    async unlinkOauthAccount(providerName) {
+      await reqUnlinkOAuthAccount({ providerName })
+        .then(async () => {
+          await this.userInfo()
+          toast.success(`解除 ${providerName} 綁定!`)
+        })
     },
   },
 })

@@ -1,5 +1,3 @@
-import { reqEmailExists } from '@/api/auth'
-
 const auth = {
   login: '/api/v1/auth/jwt/login',
   logout: '/api/v1/auth/jwt//logout',
@@ -12,10 +10,10 @@ const auth = {
 }
 
 const oauth = {
-  authorize: name => `/api/auth/${name}/authorize`,
-  callback: name =>`/api/auth/${name}/callback`,
-  associateAuthorize: name =>`/api/auth/associate/${name}/authorize`,
-  associateCallback: name => `/api/auth/associate/${name}/authorize`,
+  authorize: providerName => `/api/auth/${providerName}/authorize`,
+  callback: providerName => `/api/auth/${providerName}/callback`,
+  associateAuthorize: providerName => `/api/auth/associate/${providerName}/authorize`,
+  associateCallback: providerName => `/api/auth/associate/${providerName}/callback`,
 }
 
 const user = {
@@ -24,7 +22,9 @@ const user = {
   updatePassword: '/api/v1/users/me/update-password',
   log: '/api/v1/users/me/log',
   info: '/api/v1/users/me/info',
+  unlinkOAuth: '/api/v1/users/me/unlink-oauth',
 }
+
 
 const healthAPI = '/api/health'
 

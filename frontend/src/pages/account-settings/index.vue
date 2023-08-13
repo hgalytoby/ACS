@@ -8,6 +8,8 @@ const route = useRoute()
 const router = useRouter()
 const activeTab = ref(route.params.tab || 'account')
 
+router.push({ params: { tab: activeTab.value }, query: route.query })
+
 const tabs = [
   {
     title: 'Account',
@@ -30,7 +32,7 @@ const tabs = [
 ]
 
 const tabEvent = tab => {
-  router.push({ params: { tab } })
+  router.push({ params: { tab }, query: route.query })
 }
 
 watch(route, (nV, _) => {

@@ -59,8 +59,10 @@ class OAuth(Base):
     google_secret: str = Field(env='GOOGLE_OAUTH_CLIENT_SECRET')
     github_id: str = Field(env='GITHUB_OAUTH_CLIENT_ID')
     github_secret: str = Field(env='GITHUB_OAUTH_CLIENT_SECRET')
-    facebook_id: str = Field(env='FACEBOOK_OAUTH_CLIENT_ID')
-    facebook_secret: str = Field(env='FACEBOOK_OAUTH_CLIENT_SECRET')
+    github_associate_id: str = Field(env='GITHUB_OAUTH_ASSOCIATE_CLIENT_ID')
+    github_associate_secret: str = Field(env='GITHUB_OAUTH_ASSOCIATE_CLIENT_SECRET')
+    microsoft_id: str = Field(env='MICROSOFT_OAUTH_CLIENT_ID')
+    microsoft_secret: str = Field(env='MICROSOFT_OAUTH_CLIENT_SECRET')
 
     @property
     def google(self) -> tuple[str, str]:
@@ -71,8 +73,12 @@ class OAuth(Base):
         return self.github_id, self.github_secret
 
     @property
-    def facebook(self) -> tuple[str, str]:
-        return self.facebook_id, self.facebook_secret
+    def github_associate(self) -> tuple[str, str]:
+        return self.github_associate_id, self.github_associate_secret
+
+    @property
+    def microsoft(self) -> tuple[str, str]:
+        return self.microsoft_id, self.microsoft_secret
 
 
 class LogConfig(Base):

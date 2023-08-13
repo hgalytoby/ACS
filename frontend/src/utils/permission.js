@@ -17,7 +17,7 @@ const checkQueryToken = (to, next) => {
 }
 
 const checkOAuthName = (to, next) => {
-  if (to.params.name in authProviderItems) {
+  if (to.params.providerName in authProviderItems) {
     next()
   } else {
     next({ name: 'NotAuthorized' })

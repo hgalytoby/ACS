@@ -1,7 +1,7 @@
 from uuid import UUID
 from fastapi_pagination import add_pagination
 from fastapi_restful.cbv import cbv
-from fastapi import status, Depends, UploadFile, File, HTTPException, APIRouter
+from fastapi import status, Depends, UploadFile, File, HTTPException, APIRouter, Query
 
 from app.crud import crud_role, crud_user_log
 from app.dependencies.base import web_params
@@ -166,6 +166,26 @@ class UserView:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         user = await crud_user.update_user_to_roles(user=user, role_list=role_list)
         return user
+
+    @router.delete(
+        '/users/{user_id}/unlink-oauth',
+        name=APIAccess.PUBLIC,
+        summary='解除第三方連結',
+        status_code=status.HTTP_200_OK,
+        tags=['使用者'],
+    )
+    async def unlink_oauth(
+            self,
+            provider_name: str = Query(
+                description='第三方服務名稱',
+                title='第三方服務名稱',
+                alias='providerName'
+            ),
+    ) -> UserRead:
+        return await crud_user.unlink_oauth(
+            provider_name=provider_name,
+            user=self.user,
+        )
 
 
 router.include_router(

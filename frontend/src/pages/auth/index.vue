@@ -13,9 +13,7 @@ import BaseAuth from '@/views/pages/auth/Base.vue'
           enter-active-class="animate__fadeInLeft animate__faster"
           leave-active-class="animate__fadeOutRight animate__faster"
         >
-          <component
-            :is="Component"
-          />
+          <component :is="Component" />
         </transition>
       </RouterView>
     </template>

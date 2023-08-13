@@ -7,8 +7,8 @@ const oauth = useOAuthStore()
 
 const { global } = useTheme()
 
-async function login(name) {
-  await oauth.authorize(name)
+async function login(providerName) {
+  await oauth.authorize(providerName)
 }
 </script>
 

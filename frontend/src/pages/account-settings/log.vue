@@ -1,13 +1,7 @@
 <script setup>
 import { useUserStore } from '@/stores/user'
 import AccountSettingsFilterLog from '@/views/pages/account-settings/AccountSettingsFilterLog.vue'
-
-const userStore = useUserStore()
-
-const options = reactive({})
-const loading = ref(false)
-const totalVisible = ref()
-const search = ref()
+import usePagination from '@/hooks/usePagination'
 
 const headers = [
   {
@@ -19,29 +13,25 @@ const headers = [
   },
 ]
 
+const userStore = useUserStore()
+const route = useRoute()
+
+const totalVisible = ref()
+
+const search = ref(JSON.stringify({
+  event: route.query.event,
+  createdAt: route.query.createdAt,
+}))
+
+const {
+  loadData,
+  loading,
+  currentPage,
+  currentSize,
+} = usePagination(userStore.userLog)
+
 const searchEmit = async params => {
-  console.log('emitSearch', params)
   search.value = JSON.stringify(params)
-}
-
-const getData = async (page = 1, size = 10, params) => {
-  await userStore.userLog({ page, size, ...params })
-}
-
-const loadData = async ({ page, itemsPerPage, sortBy, search }) => {
-  const params = search ? JSON.parse(search) : {}
-  console.log('loadData', params)
-  sortBy.forEach((item, i) => {
-    params[`${item.key}Num`] = i
-    params[`${item.key}Sort`] = item.order === 'asc'
-  })
-  loading.value = true
-  await getData(page, itemsPerPage, params)
-  loading.value = false
-}
-
-const test = async () => {
-  search.value = '213'
 }
 
 onMounted(() => {
@@ -53,9 +43,6 @@ onMounted(() => {
 
 <template>
   <div class="pa-3">
-    <button @click="test">
-      test
-    </button>
     <AccountSettingsFilterLog @search-emit="searchEmit" />
     <VCard
       class="mt-5"
@@ -63,8 +50,8 @@ onMounted(() => {
       rounded="lg"
     >
       <VDataTableServer
-        v-model:items-per-page="userStore.log.size"
-        v-model:page="userStore.log.page"
+        v-model:items-per-page="currentSize"
+        v-model:page="currentPage"
         :search="search"
         :headers="headers"
         :items="userStore.log.items"
@@ -80,7 +67,7 @@ onMounted(() => {
               cols="12"
             >
               <VPagination
-                v-model="userStore.log.page"
+                v-model="currentPage"
                 :length="userStore.log.pages"
                 :total-visible="totalVisible"
               />
@@ -90,12 +77,12 @@ onMounted(() => {
               cols="12"
             >
               <VSelect
-                :model-value="userStore.log.size"
+                :model-value="currentSize"
                 label="顯示比數"
                 :items="[10, 25, 50]"
                 density="compact"
                 hide-details
-                @update:model-value="userStore.log.size = $event"
+                @update:model-value="currentSize.value = $event"
               />
             </VCol>
           </VRow>

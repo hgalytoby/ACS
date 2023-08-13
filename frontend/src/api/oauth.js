@@ -9,21 +9,29 @@ export const reqOAuthAuthorize = payload => request.get(
     },
   },
 )
-export const reqOAuthCallback = (name, payload) => request.get(
-  urls.oauth.callback(name),
+export const reqOAuthCallback = (providerName, payload) => request.get(
+  urls.oauth.callback(providerName),
   { 
     params: {
-      redirect_url: `${window.location.origin}/oauth/${name}/callback`,
+      redirect_url: `${window.location.origin}/oauth/${providerName}/callback`,
       ...payload,
     },
   },
 )
-export const reqOAuthAssociateAuthorize = payload => request.get(
+export const reqOAuthAssociateAuthorize = payload => jwtRequest.get(
   urls.oauth.associateAuthorize(payload),
+  {
+    params: {
+      redirect_url: `${window.location.origin}/oauth/associate/${payload}/callback`,
+    },
+  },
 )
-export const reqOAuthAssociateCallback = (name, payload) => request.get(
-  urls.oauth.associateCallback(payload),
-  { 
-    params: payload,
+export const reqOAuthAssociateCallback = (providerName, payload) => jwtRequest.get(
+  urls.oauth.associateCallback(providerName),
+  {
+    params: {
+      redirect_url: `${window.location.origin}/oauth/associate/${providerName}/callback`,
+      ...payload,
+    },
   },
 )
