@@ -1,7 +1,6 @@
 <template>
   <VApp>
     <RouterView />
-    <VCard />
   </VApp>
 </template>
 

@@ -5,6 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import vuetify from 'vite-plugin-vuetify'
+import mkcert from 'vite-plugin-mkcert'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -30,6 +31,7 @@ export default defineConfig({
       imports: ['vue', 'vue-router', '@vueuse/core', '@vueuse/math', 'pinia'],
       vueTemplate: true,
     }),
+    mkcert(),
   ],
   define: { 'process.env': {} },
   resolve: {
@@ -53,6 +55,8 @@ export default defineConfig({
     ],
   },
   server: {
+    host: '0.0.0.0',
+    https: true,
     hmr: true,
     proxy: {
       '/api': {

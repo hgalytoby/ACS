@@ -13,5 +13,4 @@ export const useHealthStore = defineStore({
       })
     },
   },
-},
-)
+})

@@ -32,7 +32,7 @@ async function submit({ email, password }) {
   <BaseContent>
     <template #header>
       <h5 class="text-h5 font-weight-semibold mb-1">
-        Welcome to Materio! 👋🏻
+        Welcome to ACS! 👋🏻
       </h5>
       <p class="mb-0">
         Please sign-in to your account and start the adventure
@@ -112,6 +112,18 @@ async function submit({ email, password }) {
               class="text-primary ms-2"
               :to="{name:'Register'}"
             >
+              Create an account
+            </RouterLink>
+          </VCol>
+          <VCol
+            cols="12"
+            class="text-center text-base"
+          >
+            <RouterLink
+              class="text-primary ms-2"
+              :to="{name:'Camera'}"
+            >
+              <VIcon icon="mdi-camera-marker-outline" />
               Create an account
             </RouterLink>
           </VCol>

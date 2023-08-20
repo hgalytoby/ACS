@@ -1,5 +1,4 @@
 <script setup>
-import logo from '@images/logo.svg?raw'
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 </script>
 
@@ -10,13 +9,15 @@ import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
   >
     <VCardItem class="justify-center">
       <template #prepend>
-        <div class="d-flex">
-          <div v-html="logo" />
-        </div>
+        <VIcon
+          icon="mdi-door-sliding-lock"
+          color="primary"
+          size="30px"
+        />
       </template>
 
       <VCardTitle class="font-weight-semibold text-2xl text-uppercase">
-        Materio
+        Access Control System
       </VCardTitle>
     </VCardItem>
 

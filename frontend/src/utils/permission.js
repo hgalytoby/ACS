@@ -5,7 +5,7 @@ import { authProviderItems } from '@/utils/oauth'
 import { useHealthStore } from '@/stores/health'
 
 const checkTokenSet = new Set(['ResetPassword', 'Verify'])
-const authSet = new Set(['Login', 'Register', 'ForgotPassword', 'ResetPassword', 'Verify', 'OAuth'])
+const authSet = new Set(['Login', 'Register', 'ForgotPassword', 'ResetPassword', 'Verify', 'OAuth', 'Camera', 'Camera2'])
 const whiteSet = new Set(['Error404', 'NotAuthorized', 'UnderMaintenance', 'AuthCamera', 'OAuth', ...authSet])
 
 const checkQueryToken = (to, next) => {

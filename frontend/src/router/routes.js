@@ -115,6 +115,14 @@ export default [
               title: '啟用驗證',
             },
           },
+          {
+            path: 'camera',
+            name: 'Camera',
+            component: () => import('../pages/auth/camera.vue'),
+            meta: {
+              title: 'QRCode',
+            },
+          },
         ],
       },
       {

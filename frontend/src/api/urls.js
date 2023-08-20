@@ -25,6 +25,20 @@ const user = {
   unlinkOAuth: '/api/v1/users/me/unlink-oauth',
 }
 
+const member = {
+  members: '/api/v1/members',
+  member: id => `/api/v1/members/${id}`,
+  membersRecord: '/api/v1/members-record',
+  memberRecord: id => `/api/v1/members-record/${id}`,
+  memberStatus: '/api/v1/member-status',
+  membersLocation: '/api/v1/members-location',
+  memberLocation: id => `/api/v1/members-location/${id}`,
+}
+
+const accept = {
+  acceptLocation: '/api/accept-location',
+  acceptApi: '/api/accept-api',
+}
 
 const healthAPI = '/api/health'
 
@@ -33,4 +47,6 @@ export default {
   oauth,
   user,
   healthAPI,
+  member,
+  accept,
 }
