@@ -37,7 +37,7 @@ class MemberLocationModel(
         default=None,
         nullable=True,
     )
-    member_status_id: list['MemberStatusModel'] = Relationship(  # type: ignore
+    member_status_list: list['MemberStatusModel'] = Relationship(  # type: ignore
         back_populates='member_location',
         sa_relationship_kwargs={
             'lazy': 'selectin',
@@ -240,5 +240,5 @@ class MemberStatusModel(
         },
     )
     member_location: 'MemberLocationModel' = Relationship(
-        back_populates='member_status_id',
+        back_populates='member_status_list',
     )

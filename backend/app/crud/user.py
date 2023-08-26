@@ -210,7 +210,6 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
             event=UserLogEvent.LOGIN_USER,
             raw_data={'host': self.request.client.host},
         )
-        user.last_login = datetime.utcnow()
         await crud_user.save(instance=user)
         await crud_user_log.create(create_item=user_log)
 

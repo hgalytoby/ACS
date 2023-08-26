@@ -11,7 +11,7 @@ class ApiGroupRead(ApiGroupBase, BaseCreatedAtRead, BaseUUIDRead):
 
 
 class ApiGroupDetailRead(ApiGroupBase, BaseCreatedAtRead, BaseUUIDRead):
-    api_ids: list['ApiRead'] = Field(
+    api_list: list['ApiRead'] = Field(
         description='Api列表',
         title='Api列表',
     )

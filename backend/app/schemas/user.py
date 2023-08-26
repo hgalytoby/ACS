@@ -18,10 +18,6 @@ class UserRead(BaseUpdatedAtRead, BaseCreatedAtRead, UserBase, BaseUUIDRead):
         title='頭像',
         description='頭像',
     )
-    last_login: datetime = Field(
-        description='最後登入',
-        title='最後登入',
-    )
 
 
 class OAuthAccountsRead(BaseUUIDRead):
@@ -29,7 +25,7 @@ class OAuthAccountsRead(BaseUUIDRead):
 
 
 class UserDetailRead(UserRead):
-    role_ids: list['RoleFrontendRead'] = Field(
+    role_list: list['RoleFrontendRead'] = Field(
         default_factory=list,
         description='角色',
         title='角色',
@@ -43,7 +39,12 @@ class UserDetailRead(UserRead):
 
 class UserCreate(UserBase):
     email: EmailStr = Field(description='信箱', title='信箱')
-    password: str = Field(min_length=8, max_length=64, description='密碼', title='密碼')
+    password: str = Field(
+        min_length=8,
+        max_length=64,
+        description='密碼',
+        title='密碼',
+    )
 
 
 @optional
@@ -77,13 +78,13 @@ class UserPasswordUpdate(BaseModel):
     old_password: str = Field(
         description='舊密碼',
         title='舊密碼',
-        min_length=6,
+        min_length=8,
         max_length=32,
     )
     new_password: str = Field(
         description='舊密碼',
         title='新密碼',
-        min_length=6,
+        min_length=8,
         max_length=32,
     )
 

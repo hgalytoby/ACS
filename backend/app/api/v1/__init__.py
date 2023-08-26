@@ -17,7 +17,7 @@ router.include_router(api_router, dependencies=[Depends(authorize_api)])
 router.include_router(chart_router, dependencies=[Depends(current_active_verified_user)])
 router.include_router(user_router)  # 局部授權
 router.include_router(email_router, dependencies=[Depends(authorize_api)])
-router.include_router(frontend_router, dependencies=[Depends(authorize_api)])
+router.include_router(frontend_router)
 router.include_router(role_router, dependencies=[Depends(authorize_api)])
 router.include_router(log_router, dependencies=[Depends(authorize_api)])
 router.include_router(member_router, dependencies=[Depends(authorize_api)])

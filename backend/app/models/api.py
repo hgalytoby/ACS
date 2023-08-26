@@ -4,7 +4,12 @@ from sqlalchemy import String
 from sqlalchemy_utils import ChoiceType
 from sqlmodel import Field, Relationship, Column
 
-from app.models.base import SQLModel, BaseCreatedAtModel, BaseUUIDModel, BaseUpdatedAtModel
+from app.models.base import (
+    SQLModel,
+    BaseCreatedAtModel,
+    BaseUUIDModel,
+    BaseUpdatedAtModel,
+)
 from app.models.link import ApiLinkModel
 from app.utils.enums import ApiMethod
 
@@ -26,7 +31,7 @@ class ApiGroupModel(
     ApiGroupBase,
     table=True,
 ):
-    api_ids: list['ApiModel'] = Relationship(  # type: ignore
+    api_list: list['ApiModel'] = Relationship(  # type: ignore
         back_populates='group',
         sa_relationship_kwargs={'lazy': 'selectin'},
     )
@@ -68,11 +73,11 @@ class ApiModel(
         max_length=32,
         nullable=False,
     )
-    role_ids: list['RoleModel'] = Relationship(  # type: ignore
-        back_populates='api_ids',
+    role_list: list['RoleModel'] = Relationship(  # type: ignore
+        back_populates='api_list',
         link_model=ApiLinkModel,
         sa_relationship_kwargs={'lazy': 'selectin'},
     )
     group: 'ApiGroupModel' = Relationship(
-        back_populates='api_ids',
+        back_populates='api_list',
     )

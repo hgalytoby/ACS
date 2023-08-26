@@ -91,20 +91,14 @@ class UserModel(
         nullable=True,
         max_length=128,
     )
-    logs: list['UserLogModel'] = Relationship(  # type: ignore
+    log_list: list['UserLogModel'] = Relationship(  # type: ignore
         back_populates='user',
         sa_relationship_kwargs={
             'lazy': 'selectin',
         }
     )
-    last_login: datetime = Field(
-        default_factory=datetime.utcnow,
-        title='最後登入',
-        description='最後登入',
-        nullable=False,
-    )
-    role_ids: list['RoleModel'] = Relationship(  # type: ignore
-        back_populates='user_ids',
+    role_list: list['RoleModel'] = Relationship(  # type: ignore
+        back_populates='user_list',
         link_model=RoleLinkModel,
         sa_relationship_kwargs={
             'lazy': 'selectin',

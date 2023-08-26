@@ -32,7 +32,9 @@ class CRUDFrontend(
     ) -> list[FrontendRead | FrontendModel]:
         db_session = db_session or self.db.session
         response = await db_session.execute(self.get_select().where(self.model.depth == 1))
-        return response.scalars().all()
+        r = response.scalars().all()
+        print(r)
+        return r
 
 
 crud_frontend = CRUDFrontend(model=FrontendModel)

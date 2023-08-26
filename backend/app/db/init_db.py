@@ -1,6 +1,5 @@
 from collections import defaultdict
 from uuid import uuid4
-
 from fastapi.routing import APIRoute
 from fastapi_users.password import PasswordHelper
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -8,7 +7,14 @@ from app import crud
 from app.core.config import settings
 from app.crud.user import MySQLModelUserDatabaseAsync
 from app.main import app
-from app.models import UserModel, OAuthAccountModel, EmailSettingsModel, ApiModel, ApiGroupModel, RoleModel
+from app.models import (
+    UserModel,
+    OAuthAccountModel,
+    EmailSettingsModel,
+    ApiModel,
+    ApiGroupModel,
+    RoleModel,
+)
 from app.schemas.accept import AcceptApiCreate
 from app.utils.enums import SystemLogEvent, APIAccess, ApiMethod
 from app.utils.sql_query import QueryList
@@ -21,10 +27,13 @@ async def create_superuser(db_session: AsyncSession):
         user_model=UserModel,
         oauth_account_model=OAuthAccountModel,
     )
+
     if await user_db.get_by_email(email=root):
         return
+
     password_helper = PasswordHelper()
-    password = password_helper.hash('string')
+    password = password_helper.hash('00000000')
+
     user = UserModel(
         id=uuid4(),
         email=root,
@@ -41,6 +50,7 @@ async def create_superuser(db_session: AsyncSession):
 async def create_accept_api(db_session: AsyncSession):
     if await crud.crud_accept_api.get_first(db_session=db_session):
         return
+
     create_item = AcceptApiCreate(api='/api/v1/member-come')
     await crud.crud_accept_api.create(
         create_item=create_item,
@@ -54,6 +64,7 @@ async def create_email_register(db_session: AsyncSession):
             db_session=db_session,
     ):
         return
+
     await crud.crud_email_settings.create(
         create_item=EmailSettingsModel(
             event=SystemLogEvent.USER_REGISTER,
@@ -70,6 +81,7 @@ async def create_email_forgot_password(db_session: AsyncSession):
             db_session=db_session,
     ):
         return
+
     await crud.crud_email_settings.create(
         create_item=EmailSettingsModel(
             event=SystemLogEvent.USER_FORGOT_PASSWORD,
@@ -86,6 +98,7 @@ async def create_email_reset_password(db_session: AsyncSession):
             db_session=db_session,
     ):
         return
+
     await crud.crud_email_settings.create(
         create_item=EmailSettingsModel(
             event=SystemLogEvent.USER_RESET_PASSWORD,
@@ -102,6 +115,7 @@ async def create_email_verify(db_session: AsyncSession):
             db_session=db_session,
     ):
         return
+
     await crud.crud_email_settings.create(
         create_item=EmailSettingsModel(
             event=SystemLogEvent.USER_VERIFY,
@@ -118,6 +132,7 @@ async def create_email_delete(db_session: AsyncSession):
             db_session=db_session,
     ):
         return
+
     await crud.crud_email_settings.create(
         create_item=EmailSettingsModel(
             event=SystemLogEvent.USER_DESTROY,
@@ -134,6 +149,7 @@ async def create_email_login_fail(db_session: AsyncSession):
             db_session=db_session,
     ):
         return
+
     await crud.crud_email_settings.create(
         create_item=EmailSettingsModel(
             event=SystemLogEvent.USER_LOGIN_FAIL,
@@ -159,6 +175,7 @@ def get_route() -> list[APIRoute]:
         if route.name == APIAccess.PRIVATE:
             yield route
             continue
+
         for private in private_exception_list:
             if route.name.startswith(private):
                 yield route
@@ -172,6 +189,7 @@ async def create_api(db_session: AsyncSession):
                 crud.crud_api.model.method == list(route.methods)[0],
             ]
         )
+
         if not await crud.crud_api.get_first(db_session=db_session, query=query):
             api_model = ApiModel(
                 uri=str(route.path),
@@ -188,14 +206,17 @@ async def create_api_group(db_session: AsyncSession):
     tags = {}
     for route in get_route():
         tags[route.tags[0]] = ApiGroupModel(name=route.tags[0])
+
     query = QueryList(
         query=[
             crud.crud_api_group.model.name.in_(tags.keys()),
         ]
     )
+
     items = await crud.crud_api_group.get_multi(query=query, db_session=db_session)
     for item in items:
         tags.pop(item.name)
+
     db_session.add_all(tags.values())
     await db_session.commit()
 
@@ -211,6 +232,7 @@ async def add_api_to_api_group(db_session: AsyncSession):
         )
         api_item = await crud.crud_api.get_first(db_session=db_session, query=query)
         group[route.tags[0]].append(api_item)
+
     for group_name, api_list in group.items():
         query = QueryList(
             query=[
@@ -218,10 +240,12 @@ async def add_api_to_api_group(db_session: AsyncSession):
             ]
         )
         group_item = await crud.crud_api_group.get_first(query=query, db_session=db_session)
+
         for api in api_list:
             if not api.group:
                 api.group = group_item
                 db_session.add(api)
+
     await db_session.commit()
 
 
@@ -240,6 +264,7 @@ async def create_role(db_session: AsyncSession):
     )
     for role in roles:
         role_init_items.pop(role.name)
+
     db_session.add_all(role_init_items.values())
     await db_session.commit()
 

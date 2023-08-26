@@ -26,18 +26,18 @@ class RoleModel(
     table=True,
 ):
     is_protected: bool = Field(default=False, description='受保護不可刪除')
-    api_ids: list['ApiModel'] = Relationship(  # type: ignore
-        back_populates='role_ids',
+    api_list: list['ApiModel'] = Relationship(  # type: ignore
+        back_populates='role_list',
         link_model=ApiLinkModel,
         sa_relationship_kwargs={'lazy': 'selectin'},
     )
-    user_ids: list['UserModel'] = Relationship(  # type: ignore
-        back_populates='role_ids',
+    user_list: list['UserModel'] = Relationship(  # type: ignore
+        back_populates='role_list',
         link_model=RoleLinkModel,
         sa_relationship_kwargs={'lazy': 'selectin'},
     )
-    frontend_ids: list['FrontendModel'] = Relationship(  # type: ignore
-        back_populates='role_ids',
+    frontend_list: list['FrontendModel'] = Relationship(  # type: ignore
+        back_populates='role_list',
         link_model=FrontendLinkModel,
         sa_relationship_kwargs={'lazy': 'selectin'},
     )

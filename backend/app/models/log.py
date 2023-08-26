@@ -40,5 +40,5 @@ class SystemLogModel(SystemLogBase, table=True):
 
 class UserLogModel(UserLogBase, table=True):
     user: 'UserModel' = Relationship(  # type: ignore
-        back_populates='logs',
+        back_populates='log_list',
     )

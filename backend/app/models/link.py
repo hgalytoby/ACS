@@ -18,10 +18,10 @@ class ApiLinkBase(BaseUUIDModel, SQLModel):
     )
 
     api: 'ApiModel' = Relationship(  # type: ignore
-        back_populates='role_ids',
+        back_populates='role_list',
     )
     role: 'RoleModel' = Relationship(  # type: ignore
-        back_populates='api_ids',
+        back_populates='api_list',
     )
 
 
@@ -45,10 +45,10 @@ class FrontendLinkBase(BaseUUIDModel, SQLModel):
         primary_key=True,
     )
     frontend: 'FrontendModel' = Relationship(  # type: ignore
-        back_populates='role_ids',
+        back_populates='role_list',
     )
     role: 'RoleModel' = Relationship(  # type: ignore
-        back_populates='frontend_ids',
+        back_populates='frontend_list',
     )
 
 
@@ -71,13 +71,12 @@ class RoleLinkBase(BaseUUIDModel, SQLModel):
         foreign_key='Role.id',
         primary_key=True,
     )
-
     user: 'UserModel' = Relationship(  # type: ignore
-        back_populates='role_ids',
+        back_populates='role_list',
         sa_relationship_kwargs={'lazy': 'selectin'},
     )
     role: 'RoleModel' = Relationship(  # type: ignore
-        back_populates='user_ids',
+        back_populates='user_list',
         sa_relationship_kwargs={'lazy': 'selectin'},
     )
 

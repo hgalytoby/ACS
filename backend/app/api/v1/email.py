@@ -1,12 +1,15 @@
-from uuid import UUID
 from fastapi import status, HTTPException, APIRouter, Depends, Request
 from fastapi_restful.cbv import cbv
 
 from app.crud import crud_email_settings
 from app.crud.user import current_active_verified_user
 from app.models import UserModel
-from app.schemas.email import EmailSettingsRead, EmailSettingsUpdate, EmailTrySendSchema
-from app.utils.enums import APIAccess
+from app.schemas.email import (
+    EmailSettingsRead,
+    EmailSettingsUpdate,
+    EmailTrySendSchema,
+)
+from app.utils.enums import APIAccess, SystemLogEvent
 
 router = APIRouter()
 
@@ -16,14 +19,14 @@ class EmailView:
     user: UserModel = Depends(current_active_verified_user)
 
     @router.get(
-        '/email-settings',
+        '/email-settings/{event}',
         name=APIAccess.PRIVATE,
         summary='信箱設定',
         status_code=status.HTTP_200_OK,
         tags=['信箱設定'],
     )
-    async def get(self) -> EmailSettingsRead:
-        instance = await crud_email_settings.get_first()
+    async def get(self, event: SystemLogEvent) -> EmailSettingsRead:
+        instance = await crud_email_settings.get_event(event=event)
         if not instance:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         return EmailSettingsRead.from_orm(instance)
@@ -35,8 +38,12 @@ class EmailView:
         status_code=status.HTTP_200_OK,
         tags=['信箱設定'],
     )
-    async def update(self, event: UUID, item: EmailSettingsUpdate) -> EmailSettingsRead:
-        instance = await crud_email_settings.get_event(item_id=event)
+    async def update(
+            self,
+            event: SystemLogEvent,
+            item: EmailSettingsUpdate,
+    ) -> EmailSettingsRead:
+        instance = await crud_email_settings.get_event(event=event)
         if not instance:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         instance = crud_email_settings.update(

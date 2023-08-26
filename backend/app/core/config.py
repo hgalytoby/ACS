@@ -2,6 +2,7 @@ import os
 import logging
 from logging.config import dictConfig
 from functools import lru_cache
+from typing import Optional
 from fastapi_mail import ConnectionConfig
 from pydantic import BaseSettings, Field, EmailStr, validator
 
@@ -55,14 +56,14 @@ class Domain(Base):
 
 
 class OAuth(Base):
-    google_id: str = Field(env='GOOGLE_OAUTH_CLIENT_ID')
-    google_secret: str = Field(env='GOOGLE_OAUTH_CLIENT_SECRET')
-    github_id: str = Field(env='GITHUB_OAUTH_CLIENT_ID')
-    github_secret: str = Field(env='GITHUB_OAUTH_CLIENT_SECRET')
-    github_associate_id: str = Field(env='GITHUB_OAUTH_ASSOCIATE_CLIENT_ID')
-    github_associate_secret: str = Field(env='GITHUB_OAUTH_ASSOCIATE_CLIENT_SECRET')
-    microsoft_id: str = Field(env='MICROSOFT_OAUTH_CLIENT_ID')
-    microsoft_secret: str = Field(env='MICROSOFT_OAUTH_CLIENT_SECRET')
+    google_id: Optional[str] = Field(env='GOOGLE_OAUTH_CLIENT_ID')
+    google_secret: Optional[str] = Field(env='GOOGLE_OAUTH_CLIENT_SECRET')
+    github_id: Optional[str] = Field(env='GITHUB_OAUTH_CLIENT_ID')
+    github_secret: Optional[str] = Field(env='GITHUB_OAUTH_CLIENT_SECRET')
+    github_associate_id: Optional[str] = Field(env='GITHUB_OAUTH_ASSOCIATE_CLIENT_ID')
+    github_associate_secret: Optional[str] = Field(env='GITHUB_OAUTH_ASSOCIATE_CLIENT_SECRET')
+    microsoft_id: Optional[str] = Field(env='MICROSOFT_OAUTH_CLIENT_ID')
+    microsoft_secret: Optional[str] = Field(env='MICROSOFT_OAUTH_CLIENT_SECRET')
 
     @property
     def google(self) -> tuple[str, str]:
