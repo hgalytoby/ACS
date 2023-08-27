@@ -6,9 +6,12 @@ import account from '@/pages/account-settings/account.vue'
 
 const route = useRoute()
 const router = useRouter()
-const activeTab = ref(route.params.tab || 'account')
+const activeTab = ref(route.query.tab || 'account')
 
-router.push({ params: { tab: activeTab.value }, query: route.query })
+router.push({
+  // params: { tab: activeTab.value },
+  query: { tab: activeTab.value,  ...route.query }, 
+})
 
 const tabs = [
   {
@@ -32,11 +35,13 @@ const tabs = [
 ]
 
 const tabEvent = tab => {
-  router.push({ params: { tab }, query: route.query })
+  console.log(tab, { tab: tab,  ...route.query })
+  router.push({ query: { ...route.query, tab } })
 }
 
 watch(route, (nV, _) => {
-  activeTab.value = nV.params.tab || 'account'
+  console.log(nV.query.tab)
+  activeTab.value = nV.query.tab || 'account'
 })
 </script>
 

@@ -10,12 +10,15 @@ import VerticalNavSectionTitle from '@/@layouts/components/VerticalNavSectionTit
 import Footer from '@/layouts/components/Footer.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
+import VerticalNavGroup from '@layouts/components/VerticalNavGroup.vue'
 
 const vuetifyTheme = useTheme()
 
 const upgradeBanner = computed(() => {
   return vuetifyTheme.global.name.value === 'light' ? upgradeBannerLight : upgradeBannerDark
 })
+
+const isCardDetailsVisible = ref(false)
 </script>
 
 <template>
@@ -69,7 +72,6 @@ const upgradeBanner = computed(() => {
     </template>
 
     <template #vertical-nav-content>
-
       <VerticalNavLink
         :item="{
           title: 'Account Settings',
@@ -77,18 +79,100 @@ const upgradeBanner = computed(() => {
           to: '/account-settings',
         }"
       />
-      <VerticalNavLink
+      <VerticalNavGroup
         :item="{
-          title: 'Dashboard',
-          icon: 'mdi-home-outline',
-          to: '/dashboard',
+          title: 'Settings',
+          icon: 'mdi-cog-outline',
         }"
-      />
-
+      >
+        <VerticalNavLink
+          :item="{
+            title: 'UserList',
+            icon: 'mdi-account-search-outline',
+            to: '/user-list',
+          }"
+        />
+        <VerticalNavLink
+          :item="{
+            title: 'UserLog',
+            icon: 'mdi-book-open-variant',
+            to: '/user-log',
+          }"
+        />
+        <VerticalNavLink
+          :item="{
+            title: 'EmailLog',
+            icon: 'mdi-email-search-outline',
+            to: '/email-log',
+          }"
+        />
+        <VerticalNavLink
+          :item="{
+            title: 'EmailMessage',
+            icon: 'mdi-email-edit-outline',
+            to: '/email-message',
+          }"
+        />
+        <VerticalNavLink
+          :item="{
+            title: 'MemberLocationList',
+            icon: 'mdi-map-marker-plus-outline',
+            to: '/member-location-list',
+          }"
+        />
+      </VerticalNavGroup>
       <!-- 👉 User Interface -->
       <VerticalNavSectionTitle
         :item="{
           heading: 'User Interface',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Dashboard',
+          icon: 'mdi-view-dashboard-outline',
+          to: '/dashboard',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Locations Overview',
+          icon: 'mdi-map-marker-radius-outline',
+          to: '/locations-overview',
+        }"
+      />
+      <VerticalNavGroup
+        :item="{
+          title: 'Member',
+          icon: 'mdi-account-multiple-outline',
+        }"
+      >
+        <VerticalNavLink
+          :item="{
+            title: 'List',
+            icon: 'mdi-account-group-outline',
+            to: '/member-list',
+          }"
+        />
+        <VerticalNavLink
+          :item="{
+            title: 'Create',
+            icon: 'mdi-account-plus-outline',
+            to: '/member-create',
+          }"
+        />
+        <VerticalNavLink
+          :item="{
+            title: 'Record List',
+            icon: 'mdi-book-account-outline',
+            to: '/member-record-list',
+          }"
+        />
+      </VerticalNavGroup>
+      <!-- 👉 User Interface -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: '下面之後刪掉',
         }"
       />
       <VerticalNavLink
@@ -107,16 +191,16 @@ const upgradeBanner = computed(() => {
       />
       <VerticalNavLink
         :item="{
-          title: 'Cards',
-          icon: 'mdi-credit-card-outline',
-          to: '/cards',
+          title: 'Tables',
+          icon: 'mdi-table',
+          to: '/tables',
         }"
       />
       <VerticalNavLink
         :item="{
-          title: 'Tables',
-          icon: 'mdi-table',
-          to: '/tables',
+          title: 'Cards',
+          icon: 'mdi-credit-card-outline',
+          to: '/cards',
         }"
       />
       <VerticalNavLink

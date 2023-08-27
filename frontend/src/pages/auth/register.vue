@@ -34,8 +34,6 @@ const authStore = useAuthStore()
 const cache = reactive({})
 const emailSchema = yup.string().email()
 
-
-
 const email = defineInputBinds('email', {
   validateOnInput: true,
 })

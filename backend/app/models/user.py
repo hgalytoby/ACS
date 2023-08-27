@@ -93,9 +93,9 @@ class UserModel(
     )
     log_list: list['UserLogModel'] = Relationship(  # type: ignore
         back_populates='user',
-        sa_relationship_kwargs={
-            'lazy': 'selectin',
-        }
+        # sa_relationship_kwargs={
+        #     'lazy': 'selectin',
+        # }
     )
     role_list: list['RoleModel'] = Relationship(  # type: ignore
         back_populates='user_list',

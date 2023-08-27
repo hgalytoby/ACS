@@ -5,6 +5,7 @@ import {
   reqUpdateUserInfo,
   reqUserInfo,
   reqUserLog,
+  reqUserList,
 } from '@/api/user'
 import { getToken, removeToken } from '@/utils/auth'
 import { useToast } from 'vue-toastification'
@@ -25,13 +26,17 @@ export const useUserStore = defineStore({
       createdAt: '',
       updatedAt: '',
       avatar: '',
-      lastLogin: '',
-      roleIds: [],
+      roleList: [],
       oauthAccounts: [],
     },
     log: {
       items: [],
-      pages: 999,
+      pages: 1,
+      total: 1,
+    },
+    list: {
+      items: [],
+      pages: 1,
       total: 1,
     },
   }),
@@ -43,6 +48,7 @@ export const useUserStore = defineStore({
     },
     async updateUserInfo(payload) {
       await reqUpdateUserInfo(payload)
+      toast.success('修改基本資料成功!')
     },
     resetToken() {
       return new Promise(resolve => {
@@ -63,6 +69,11 @@ export const useUserStore = defineStore({
       await reqUserLog(params).then(({ data }) => {
         data.items.forEach(item => item.rawData = JSON.stringify(item.rawData))
         this.$patch({ log: data })
+      })
+    },
+    async userList(params) {
+      await reqUserList(params).then(({ data }) => {
+        this.$patch({ list: data })
       })
     },
     async unlinkOauthAccount(providerName) {

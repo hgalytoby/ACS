@@ -23,6 +23,7 @@ const user = {
   log: '/api/v1/users/me/log',
   info: '/api/v1/users/me/info',
   unlinkOAuth: '/api/v1/users/me/unlink-oauth',
+  list: '/api/v1/users',
 }
 
 const member = {
@@ -40,6 +41,12 @@ const accept = {
   acceptApi: '/api/accept-api',
 }
 
+const log = {
+  users: '/api/v1/log/users',
+  systems: '/api/v1/log/systems',
+  system: id => `/api/v1/log/systems/${id}`,
+}
+
 const healthAPI = '/api/health'
 
 export default {
@@ -49,4 +56,5 @@ export default {
   healthAPI,
   member,
   accept,
+  log,
 }

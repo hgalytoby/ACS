@@ -31,7 +31,7 @@ export default defineConfig({
       imports: ['vue', 'vue-router', '@vueuse/core', '@vueuse/math', 'pinia'],
       vueTemplate: true,
     }),
-    mkcert(),
+    // mkcert(),
   ],
   define: { 'process.env': {} },
   resolve: {
@@ -56,7 +56,6 @@ export default defineConfig({
   },
   server: {
     host: '0.0.0.0',
-    https: true,
     hmr: true,
     proxy: {
       '/api': {

@@ -10,7 +10,7 @@ from app.models import UserBase
 from app.utils.partial import optional
 
 if TYPE_CHECKING:
-    from .role import RoleFrontendRead
+    from .role import RoleFrontendListRead
 
 
 class UserRead(BaseUpdatedAtRead, BaseCreatedAtRead, UserBase, BaseUUIDRead):
@@ -25,7 +25,7 @@ class OAuthAccountsRead(BaseUUIDRead):
 
 
 class UserDetailRead(UserRead):
-    role_list: list['RoleFrontendRead'] = Field(
+    role_list: list['RoleFrontendListRead'] = Field(
         default_factory=list,
         description='角色',
         title='角色',

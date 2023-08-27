@@ -5,17 +5,19 @@ import * as yup from 'yup'
 import DatePicker from 'vue-datepicker-next'
 import useFilter from '@/hooks/useFilter'
 
-
 const emit = defineEmits(['searchEmit'])
+
+const getCreatedAt = createdAt => {
+  if (!route.query.createdAt) return []
+  const [start, end] = route.query.createdAt
+  
+  return [start, end]
+}
+
 const route = useRoute()
 const selectedItem = ref(route.query.event)
-const _createAt = route.query.createdAt || []
 
-const createdAt = ref([
-  _createAt[0] || null,
-  _createAt[1] || null,
-])
-
+const createdAt = ref(getCreatedAt())
 
 const {
   submitBtnLoading,

@@ -30,11 +30,13 @@ class CRUDFrontend(
             db_session: Optional[AsyncSession] = None,
             paginated: bool = False,
     ) -> list[FrontendRead | FrontendModel]:
+        """"""
         db_session = db_session or self.db.session
-        response = await db_session.execute(self.get_select().where(self.model.depth == 1))
-        r = response.scalars().all()
-        print(r)
-        return r
+        # 如果用以下這行，第二層以後會沒有 selectinload 導致拿不到第二層以後的資料。
+        # 暫時沒解決方法只好自己篩選了。
+        # response = await db_session.execute(self.get_select().where(self.model.depth == 1))
+        response = await db_session.execute(self.get_select())
+        return [item for item in response.scalars().all() if item.depth == 1]
 
 
 crud_frontend = CRUDFrontend(model=FrontendModel)

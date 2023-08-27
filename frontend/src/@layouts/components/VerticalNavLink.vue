@@ -10,7 +10,7 @@ const props = defineProps({
 <template>
   <li
     class="nav-link"
-    :class="{ disabled: item.disable }"
+    :class="{ disabled: false }"
   >
     <Component
       :is="item.to ? 'RouterLink' : 'RouterLink'"

@@ -9,4 +9,6 @@ export const reqUpdateUserInfo = payload => jwtRequest.patch(urls.user.updateUse
 
 export const reqUserLog = params => jwtRequest.get(urls.user.log, { params })
 
+export const reqUserList = params => jwtRequest.get(urls.user.list, { params })
+
 export const reqUnlinkOAuthAccount = params => jwtRequest.delete(urls.user.unlinkOAuth, { params })

@@ -2,6 +2,7 @@ import axios from 'axios'
 import urls from '@/api/urls'
 import { app as vue } from '@/main'
 import { useUserStore } from '@/stores/user'
+import qs from 'qs'
 
 const formDataList = [
   urls.auth.login,
@@ -46,7 +47,13 @@ request.interceptors.response.use(
   },
 )
 
-export const jwtRequest = axios.create()
+export const jwtRequest = axios.create(
+  {
+    paramsSerializer: params => {
+      return qs.stringify(params, { arrayFormat: 'repeat' })
+    },
+  },
+)
 
 jwtRequest.interceptors.request.use(config => {
   vue.config.globalProperties.$Progress.start()

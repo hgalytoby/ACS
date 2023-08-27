@@ -20,7 +20,6 @@ const isPasswordVisible = ref(false)
 const isConfirmPasswordVisible = ref(false)
 const submitBtnLoading = ref(false)
 
-
 async function submit({ password }) {
   submitBtnLoading.value = true
   await auth.resetPassword({

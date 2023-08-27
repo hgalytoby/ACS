@@ -1,5 +1,5 @@
 export default [
-  { path: '/', redirect: '/dashboard' },
+  { path: '/', redirect: '/account-settings' },
   {
     path: '/',
     component: () => import('../layouts/default.vue'),
@@ -7,11 +7,89 @@ export default [
       {
         path: 'dashboard',
         component: () => import('../pages/dashboard.vue'),
+        meta: {
+          title: '儀錶板',
+        },
       },
       {
-        path: 'account-settings/:tab?',
+        path: 'account-settings',
         name: 'AccountSettings',
         component: () => import('../pages/account-settings/index.vue'),
+        meta: {
+          title: '帳號設定',
+        },
+      },
+      {
+        path: 'user-list',
+        name: 'UserList',
+        component: () => import('../pages/settings/user-list.vue'),
+        meta: {
+          title: '使用者列表',
+        },
+      },
+      {
+        path: 'user-log',
+        name: 'UserLog',
+        component: () => import('../pages/settings/user-log.vue'),
+        meta: {
+          title: '使用者日誌',
+        },
+      },
+      {
+        path: 'email-log',
+        name: 'EmailLog',
+        component: () => import('../pages/settings/email-log.vue'),
+        meta: {
+          title: '信箱日誌',
+        },
+      },
+      {
+        path: 'email-message',
+        name: 'EmailMessage',
+        component: () => import('../pages/settings/email-message.vue'),
+        meta: {
+          title: '信箱訊息',
+        },
+      },
+      {
+        path: 'member-location-list',
+        name: 'MemberLocationList',
+        component: () => import('../pages/settings/member-location-list.vue'),
+        meta: {
+          title: '成員地點列表',
+        },
+      },
+      {
+        path: 'locations-overview',
+        name: 'LocationOverview',
+        component: () => import('../pages/locations-overview.vue'),
+        meta: {
+          title: '地點概覽',
+        },
+      },
+      {
+        path: 'member-list',
+        name: 'MemberList',
+        component: () => import('../pages/member/member-list.vue'),
+        meta: {
+          title: '成員列表',
+        },
+      },
+      {
+        path: 'member-create',
+        name: 'MemberCreate',
+        component: () => import('../pages/member/member-create.vue'),
+        meta: {
+          title: '新增成員',
+        },
+      },
+      {
+        path: 'member-record-list',
+        name: 'MemberRecordList',
+        component: () => import('../pages/member/member-record-list.vue'),
+        meta: {
+          title: '成員紀錄列表',
+        },
       },
       {
         path: 'typography',

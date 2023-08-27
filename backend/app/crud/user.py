@@ -292,7 +292,7 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
             db_session: Optional[AsyncSession] = None,
     ) -> UserDetailRead:
         db_session = db_session or self.db.session
-        user.role_ids = role_list
+        user.role_list = role_list
         instance = await self.save(instance=user, db_session=db_session)
         return UserDetailRead.from_orm(instance)
 

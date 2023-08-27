@@ -70,6 +70,20 @@ const test = () => {
     title: 'Signed in successfully',
   })
 }
+
+const admins = [
+  ['Management', 'mdi-account-multiple-outline'],
+  ['Settings', 'mdi-cog-outline'],
+]
+
+const cruds = [
+  ['Create', 'mdi-plus-outline'],
+  ['Read', 'mdi-file-outline'],
+  ['Update', 'mdi-update'],
+  ['Delete', 'mdi-delete'],
+]
+
+const open = ['Users']
 </script>
 
 <template>
@@ -140,7 +154,7 @@ const test = () => {
             <VIcon icon="mdi-shield-account" />
             Roles:
             <v-chip
-              v-for="role in userStore.me.roleIds"
+              v-for="role in userStore.me.roleList"
               :key="role.id"
               class="ms-2"
               color="primary"

@@ -1,4 +1,4 @@
-export default function(storeAction) {
+export default function(getDataCallback) {
   const route = useRoute()
   const router = useRouter()
   const loading = ref(false)
@@ -6,13 +6,14 @@ export default function(storeAction) {
   const currentSize = ref(Number(route.query.size) || 25)
 
   const getData = async params => {
-    await storeAction({
+    await getDataCallback({
       page: currentPage.value,
       size: currentSize.value,
       ...params,
     })
     await router.push({
       query: {
+        ...route.query,
         ...params,
         page: currentPage.value,
         size: currentSize.value,

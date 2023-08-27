@@ -16,12 +16,12 @@ export const useMemberStore = defineStore({
   state: () => ({
     memberList: {
       items: [],
-      pages: 999,
+      pages: 1,
       total: 1,
     },
     memberRecordList: {
       items: [],
-      pages: 999,
+      pages: 1,
       total: 1,
     },
     memberStatusList: [],
