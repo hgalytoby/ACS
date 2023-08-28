@@ -6,7 +6,7 @@ from app.crud import crud_user_log, crud_system_log
 from app.dependencies.base import web_params
 from app.dependencies.query.log import SuperUserLogQuery
 from app.dependencies.query.system import SystemLogQuery
-from app.schemas.log import UserLogRead, SystemLogRead
+from app.schemas.log import UserLogRead, SystemLogRead, AllUserLogRead
 from app.utils.enums import APIAccess
 from app.utils.sql_query import QueryList
 
@@ -25,18 +25,18 @@ class LogView:
     async def get_multi_users(
             self,
             query: QueryList = web_params(SuperUserLogQuery),
-    ) -> list[UserLogRead]:
+    ) -> list[AllUserLogRead]:
         items = await crud_user_log.get_multi(query=query)
         return items
 
     @router.get(
-        '/log/system',
+        '/log/systems',
         name=APIAccess.PRIVATE,
         summary='系統日誌列表',
         status_code=status.HTTP_200_OK,
         tags=['日誌'],
     )
-    async def get_multi_system(
+    async def get_multi_systems(
             self,
             query: QueryList = web_params(SystemLogQuery),
     ) -> list[SystemLogRead]:
@@ -44,7 +44,7 @@ class LogView:
         return items
 
     @router.get(
-        '/log/system/{log_id}',
+        '/log/systems/{log_id}',
         name=APIAccess.PRIVATE,
         summary='系統日誌',
         status_code=status.HTTP_200_OK,

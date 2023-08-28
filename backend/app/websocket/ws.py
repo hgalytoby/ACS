@@ -16,14 +16,14 @@ from app.utils.enums import WebSocketEvent
 router = APIRouter()
 
 
-class MyBroadcast(Broadcast):
-    async def connect(self) -> None:
-        logger.info('連線 Redis!!，請確認有沒有啟用 Redis!!')
-        await super(MyBroadcast, self).connect()
-        logger.info('連線 Redis 成功!')
+# class MyBroadcast(Broadcast):
+#     async def connect(self) -> None:
+#         logger.info('連線 Redis!!，請確認有沒有啟用 Redis!!')
+#         await super(MyBroadcast, self).connect()
+#         logger.info('連線 Redis 成功!')
 
 
-broadcast = MyBroadcast(settings.redis.url)
+broadcast = Broadcast(settings.redis.url)
 
 
 class Client:

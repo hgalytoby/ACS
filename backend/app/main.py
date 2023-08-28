@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi_async_sqlalchemy import SQLAlchemyMiddleware, db
 
 from app.api import router
-from app.core.config import settings
+from app.core.config import settings, logger
 from app.crud import crud_user
 from app.db.session import engine
 from app.utils.enums import AppEnv
@@ -23,6 +23,8 @@ is_dev = settings.app_env == AppEnv.DEVELOPMENT
 async def lifespan(app: FastAPI):
     if not os.path.isdir('static'):
         os.mkdir('static')
+    logger.info('程式啟動! 如果無法訪問請確認 Redis 有沒有啟動成功!')
+    await broadcast.connect()
     async with db():
         first_user = await crud_user.get_first_created_at_user()
     items = {
@@ -31,7 +33,6 @@ async def lifespan(app: FastAPI):
         'redis': await init_redis_pool(),
         'db': db,
     }
-    await broadcast.connect()
     yield items
     await items['redis'].close()
     await broadcast.disconnect()

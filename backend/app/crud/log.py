@@ -1,4 +1,6 @@
 from sqlmodel import select, func
+from sqlmodel.sql.expression import Select, SelectOfScalar
+from sqlalchemy.orm import joinedload
 
 from app.crud.base import CRUDBase
 from app.models import UserLogModel, SystemLogModel
@@ -10,6 +12,7 @@ from app.schemas.log import (
     SystemLogRead,
     SystemLogUpdate,
     SystemLogCreate,
+    AllUserLogRead,
 )
 
 
@@ -18,10 +21,11 @@ class CRUDUserLog(
         UserLogModel,
         UserLogCreate,
         UserLogUpdate,
-        UserLogRead,
+        UserLogRead | AllUserLogRead,
     ]
 ):
-    ...
+    def get_select(self) -> Select | SelectOfScalar:
+        return select(self.model).options(joinedload(self.model.user))
 
 
 class CRUDSystemLog(

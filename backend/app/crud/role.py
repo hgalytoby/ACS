@@ -8,7 +8,7 @@ from app.schemas.role import (
     RoleUpdate,
     RoleRead,
     RoleFrontendRead,
-    RoleUserRead, RoleApiRead,
+    RoleUserRead, RoleApiRead, RoleFrontendListRead,
 )
 
 
@@ -21,7 +21,7 @@ class CRUDRole(CRUDBase[RoleModel, RoleCreate, RoleUpdate, RoleRead]):
             db_session: Optional[AsyncSession] = None,
     ) -> RoleUserRead:
         db_session = db_session or self.db.session
-        role.user_ids = users
+        role.user_list = users
         instance = await self.save(instance=role, db_session=db_session)
         return RoleUserRead.from_orm(instance)
 
@@ -33,7 +33,7 @@ class CRUDRole(CRUDBase[RoleModel, RoleCreate, RoleUpdate, RoleRead]):
             db_session: Optional[AsyncSession] = None,
     ) -> RoleApiRead:
         db_session = db_session or self.db.session
-        role.api_ids = apis
+        role.api_list = apis
         instance = await self.save(instance=role, db_session=db_session)
         return RoleApiRead.from_orm(instance)
 
@@ -43,11 +43,11 @@ class CRUDRole(CRUDBase[RoleModel, RoleCreate, RoleUpdate, RoleRead]):
             role: RoleModel,
             frontend_list: list[FrontendModel],
             db_session: Optional[AsyncSession] = None,
-    ) -> RoleFrontendRead:
+    ) -> RoleFrontendListRead:
         db_session = db_session or self.db.session
-        role.frontend_ids = frontend_list
+        role.frontend_list = frontend_list
         instance = await self.save(instance=role, db_session=db_session)
-        return RoleFrontendRead.from_orm(instance)
+        return RoleFrontendListRead.from_orm(instance)
 
 
 crud_role = CRUDRole(model=RoleModel)

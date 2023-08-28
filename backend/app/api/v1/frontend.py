@@ -34,7 +34,7 @@ class FrontendView:
         if item.parent_id:
             parent = await crud_frontend.get(item_id=item.parent_id)
             if not parent:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
             item = FrontendModel(depth=parent.depth + 1, **item.dict())
         instance = await crud_frontend.create(create_item=item)
         return instance

@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends
 
-from app.crud.user import current_active_verified_user
 from app.dependencies.deps import authorize_api
 from app.api.v1.api import router as api_router
 from app.api.v1.chart import router as chart_router
@@ -14,10 +13,10 @@ from app.api.v1.member import router as member_router
 router = APIRouter(prefix='/v1')
 
 router.include_router(api_router, dependencies=[Depends(authorize_api)])
-router.include_router(chart_router, dependencies=[Depends(current_active_verified_user)])
+router.include_router(chart_router, dependencies=[Depends(authorize_api)])
 router.include_router(user_router)  # 局部授權
 router.include_router(email_router, dependencies=[Depends(authorize_api)])
-router.include_router(frontend_router)
+router.include_router(frontend_router, dependencies=[Depends(authorize_api)])
 router.include_router(role_router, dependencies=[Depends(authorize_api)])
 router.include_router(log_router, dependencies=[Depends(authorize_api)])
 router.include_router(member_router, dependencies=[Depends(authorize_api)])

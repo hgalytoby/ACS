@@ -21,8 +21,12 @@ class RoleApiRead(RoleBase, BaseUUIDRead):
     )
 
 
-class RoleFrontendRead(RoleBase, BaseUUIDRead):
-    frontend_list: list[FrontendBase] = Field(
+class RoleFrontendRead(FrontendBase, BaseUUIDRead):
+    ...
+
+
+class RoleFrontendListRead(RoleBase):
+    frontend_list: list[RoleFrontendRead] = Field(
         default_factory=list,
         description='前端',
         title='前端',
@@ -37,7 +41,7 @@ class RoleUserRead(RoleBase, BaseUUIDRead):
     )
 
 
-class RoleDetailRead(RoleFrontendRead, RoleUserRead, RoleApiRead):
+class RoleDetailRead(RoleFrontendListRead, RoleUserRead, RoleApiRead):
     ...
 
 

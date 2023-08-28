@@ -8,9 +8,9 @@ from app.schemas.role import (
     RoleCreate,
     RoleUpdate,
     RoleApiRead,
-    RoleFrontendRead,
     RoleUserRead,
     RoleDetailRead,
+    RoleFrontendListRead,
 )
 from app.utils.enums import APIAccess
 
@@ -89,7 +89,7 @@ class UserRoleView:
             self,
             role_id: UUID,
             frontend_ids: list[UUID],
-    ) -> RoleFrontendRead:
+    ) -> RoleFrontendListRead:
         frontend_list = await crud_frontend.get_by_ids(list_ids=frontend_ids)
         role = await crud_role.get(item_id=role_id)
         if not role:
@@ -107,8 +107,12 @@ class UserRoleView:
     async def get(
             self,
             role_id: UUID,
-            detail: bool = Query(default=False),
-    ) -> RoleDetailRead | RoleRead:
+            detail: bool = Query(
+                default=False,
+                description='詳細資料',
+                title='詳細資料',
+            ),
+    ) -> RoleRead | RoleDetailRead:
         instance = await crud_role.get(item_id=role_id)
         if not instance:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)

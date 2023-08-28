@@ -20,7 +20,6 @@ class BaseQuery:
         start_date, end_date = date_arr[0], date_arr[1]
         if start_date:
             if isinstance(start_date, datetime):
-                print(start_date.date(), start_date.time())
                 start_date = datetime.strptime(f'{start_date.date()} {start_date.time()}', '%Y-%m-%d %H:%M:%S')
             self.query_list.append(
                 QuerySql(

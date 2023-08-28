@@ -21,8 +21,8 @@ async def authorize_api(
         return
     uri = request.scope['route'].path
     method = request.method
-    for role in user.role_ids:
-        for api in role.api_ids:
+    for role in user.role_list:
+        for api in role.api_list:
             if api.uri == uri and api.method == method:
                 return
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)

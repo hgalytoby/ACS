@@ -34,7 +34,7 @@ class CRUDApiGroup(
             db_session: Optional[AsyncSession] = None,
     ) -> ApiGroupDetailRead:
         db_session = db_session or self.db.session
-        current_item.api_ids = api_items
+        current_item.api_list = api_items
         instance = await self.save(instance=current_item, db_session=db_session)
         return ApiGroupDetailRead.from_orm(instance)
 

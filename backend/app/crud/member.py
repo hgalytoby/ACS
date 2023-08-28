@@ -82,7 +82,6 @@ class CRUDMemberLocation(
             item_id: UUID | str,
             db_session: Optional[AsyncSession] = None,
     ) -> MemberLocationModel:
-        print(type(MemberStatusModel.member_location_id == item_id))
         member_exist = await crud_member_status.get_first(
             query=QueryList(
                 query=[
