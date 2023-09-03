@@ -13,14 +13,14 @@ const formSchema = yup.object({
 })
 
 const formValues = {
-  username: userStore.me.username,
+  username: userStore.meInfo.username,
 }
 
 const refInputEl = ref()
 const avatar = ref()
 const submitBtnLoading = ref(false)
 
-const showAvatar = computed(() => userStore.me.avatar || defaultAvatar)
+const showAvatar = computed(() => userStore.meInfo.avatar || defaultAvatar)
 
 const changeAvatar = file => {
   const fileReader = new FileReader()
@@ -45,16 +45,16 @@ const submit = async ({ username }) => {
 
   payload.append('item', JSON.stringify({ username }))
 
-  await userStore.updateUserInfo(payload)
+  await userStore.updateMeInfo(payload)
     .then(async () => {
-      await userStore.userInfo()
+      await userStore.me()
     })
 
   submitBtnLoading.value = false
 }
 
 const resetForm = setFieldValue => {
-  setFieldValue('username', userStore.me.username)
+  setFieldValue('username', userStore.meInfo.username)
 }
 
 const resetAvatar = () => {
@@ -106,7 +106,7 @@ const open = ['Users']
               :lazy-src="avatar || showAvatar"
             >
               <template #placeholder>
-                <image-lazy-progress />
+                <ImageLazyProgress />
               </template>
             </VImg>
             <div class="d-flex flex-column justify-center gap-5">
@@ -154,7 +154,7 @@ const open = ['Users']
             <VIcon icon="mdi-shield-account" />
             Roles:
             <v-chip
-              v-for="role in userStore.me.roleList"
+              v-for="role in userStore.meInfo.roleList"
               :key="role.id"
               class="ms-2"
               color="primary"
@@ -185,7 +185,7 @@ const open = ['Users']
               </VCol>
               <VCol cols="12">
                 <VTextField
-                  v-model="userStore.me.email"
+                  v-model="userStore.meInfo.email"
                   label="E-mail"
                   readonly
                   prepend-inner-icon="mdi-email"
@@ -193,7 +193,7 @@ const open = ['Users']
               </VCol>
               <VCol cols="12">
                 <VTextField
-                  v-model="userStore.me.createdAt"
+                  v-model="userStore.meInfo.createdAt"
                   label="Created-at"
                   readonly
                   prepend-inner-icon="mdi-calendar"

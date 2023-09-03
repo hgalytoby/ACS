@@ -1,6 +1,7 @@
 from datetime import datetime, date
 from typing import Optional
 from fastapi import Query
+from pydantic import EmailStr
 
 from app.models import UserLogModel, UserModel
 from app.utils.enums import UserLogEvent
@@ -67,7 +68,14 @@ class UserLogQuery(BaseQuery):
 class SuperUserLogQuery(BaseQuery):
     def __init__(
             self,
-            event: UserLogEvent = Query(default=None, description=UserLogEvent.md()),
+            event: UserLogEvent = Query(
+                default=None,
+                description=UserLogEvent.md(),
+            ),
+            email: Optional[EmailStr] = Query(
+                default=None,
+                description='信箱',
+            ),
             username: str = Query(
                 default=None,
                 description='使用者名稱',
@@ -109,6 +117,7 @@ class SuperUserLogQuery(BaseQuery):
             ),
     ):
         super(SuperUserLogQuery, self).__init__()
+        print(email)
         self.query_list.extend([
             QuerySql(
                 expression=UserLogModel.event == event,
@@ -116,8 +125,13 @@ class SuperUserLogQuery(BaseQuery):
                 include_none=False,
             ),
             QuerySql(
-                expression=UserModel.username == username,
+                expression=UserModel.username.ilike(f'%{username}%'),
                 value=username,
+                include_none=False,
+            ),
+            QuerySql(
+                expression=UserModel.email == email,
+                value=email,
                 include_none=False,
             ),
         ])

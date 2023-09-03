@@ -116,7 +116,14 @@ const validationFailure = computed(
           @detect="onDetect"
           @error="console.error"
           @camera-on="resetValidationState"
-        />
+        >
+          <div v-if="validationSuccess" class="validation-success">This is a URL</div>
+
+          <div v-if="validationFailure" class="validation-failure">This is NOT a URL!</div>
+
+          <div v-if="validationPending" class="validation-pending">Long validation in progress...</div>
+
+        </qrcode-stream>
       </div>
     </VCardText>
   </VCard>

@@ -8,9 +8,19 @@ import { getCreatedAt } from '@/utils/misc'
 
 const emit = defineEmits(['searchEmit'])
 
+const defaultQuery = [
+  'event',
+  'createdAt',
+  'username',
+  'email',
+]
+
 const route = useRoute()
 const selectedItem = ref(route.query.event)
 const createdAt = ref(getCreatedAt(route.query.createdAt))
+const email = ref(route.query.email)
+const username = ref(route.query.username)
+const myForm = ref(null)
 
 const {
   submitBtnLoading,
@@ -20,16 +30,36 @@ const {
 const formSchema = yup.object({
   event: yup.string().nullable(),
   createdAt: yup.array().nullable(),
+  username: yup.string().nullable(),
+  email: yup.string().email().nullable(),
 })
+
+
+onMounted(async () => {
+  myForm.value.setFieldValue('email', email.value)
+  myForm.value.setFieldValue('username', username.value)
+})
+
 
 const resetForm = () => {
   selectedItem.value = null
-  emit('searchEmit', {})
+  username.value = undefined
+  email.value = undefined
+  myForm.value.setFieldValue('email', email.value)
+  myForm.value.setFieldValue('username', username.value)
+  createdAt.value = []
+  emit(
+    'searchEmit',
+    {
+      reset: true,
+    },
+  )
 }
 </script>
 
 <template>
   <Form
+    ref="myForm"
     :validation-schema="formSchema"
     @submit="submit"
   >
@@ -42,7 +72,7 @@ const resetForm = () => {
         <VRow>
           <VCol
             cols="12"
-            sm="3"
+            sm="4"
           >
             <Field
               v-slot="{ field }"
@@ -66,7 +96,55 @@ const resetForm = () => {
           </VCol>
           <VCol
             cols="12"
-            sm="5"
+            sm="4"
+          >
+            <Field
+              v-slot="{ field }"
+              name="email"
+              type="email"
+            >
+              <VTextField
+                v-bind="field"
+                v-model="email"
+                label="Email"
+                type="email"
+                variant="outlined"
+                density="compact"
+                prepend-inner-icon="mdi-email"
+              />
+            </Field>
+            <ErrorMessage
+              class="error-message"
+              name="email"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="4"
+          >
+            <Field
+              v-slot="{ field }"
+              name="username"
+              type="text"
+            >
+              <VTextField
+                v-bind="field"
+                v-model="username"
+                label="username"
+                type="text"
+                variant="outlined"
+                density="compact"
+                prepend-inner-icon="mdi-account"
+              />
+            </Field>
+            <ErrorMessage
+              class="error-message"
+              name="username"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="8"
           >
             <Field
               v-slot="{ field }"
@@ -97,6 +175,7 @@ const resetForm = () => {
             </Field>
             <ErrorMessage name="date" />
           </VCol>
+
           <VCol
             cols="12"
             sm="2"

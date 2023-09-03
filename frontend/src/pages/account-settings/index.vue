@@ -35,12 +35,10 @@ const tabs = [
 ]
 
 const tabEvent = tab => {
-  console.log(tab, { tab: tab,  ...route.query })
   router.push({ query: { ...route.query, tab } })
 }
 
 watch(route, (nV, _) => {
-  console.log(nV.query.tab)
   activeTab.value = nV.query.tab || 'account'
 })
 </script>

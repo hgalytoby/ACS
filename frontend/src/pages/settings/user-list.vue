@@ -15,8 +15,7 @@ const headers = [
 
 const userStore = useUserStore()
 const route = useRoute()
-
-const totalVisible = ref()
+const router = useRouter()
 
 const search = ref(JSON.stringify({
   event: route.query.event,
@@ -28,17 +27,20 @@ const {
   loading,
   currentPage,
   currentSize,
+  totalVisible,
 } = usePagination(userStore.userList)
 
 const searchEmit = async params => {
+  await router.push({
+    query: {
+      // ...route.query,
+      // ...params,
+      page: currentPage.value,
+      size: currentSize.value,
+    },
+  })
   search.value = JSON.stringify(params)
 }
-
-onMounted(() => {
-  window.onresize = () => {
-    totalVisible.value = window.innerWidth >= 600 ? 6 : 3
-  }
-})
 </script>
 
 <template>

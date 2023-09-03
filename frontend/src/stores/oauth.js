@@ -17,6 +17,7 @@ export const useOAuthStore = defineStore({
     async authorize(payload) {
       await reqOAuthAuthorize(payload)
         .then(({ data }) => {
+          // console.log(data.authorization_url)
           window.location.href = data.authorization_url
         })
     },
@@ -42,7 +43,7 @@ export const useOAuthStore = defineStore({
         .then(async () => {
           const userStore = useUserStore()
 
-          await userStore.userInfo()
+          await userStore.me()
           this.$router.push({ name: 'AccountSettings' })
           toast.success(`綁定 ${providerName} 帳號成功!`)
         }).catch(() => {

@@ -1,5 +1,6 @@
 from uuid import UUID
 from fastapi import status, HTTPException, APIRouter
+from fastapi_pagination import add_pagination
 from fastapi_restful.cbv import cbv
 
 from app.crud import crud_user_log, crud_system_log
@@ -8,6 +9,7 @@ from app.dependencies.query.log import SuperUserLogQuery
 from app.dependencies.query.system import SystemLogQuery
 from app.schemas.log import UserLogRead, SystemLogRead, AllUserLogRead
 from app.utils.enums import APIAccess
+from app.utils.pagination import Page
 from app.utils.sql_query import QueryList
 
 router = APIRouter()
@@ -25,8 +27,8 @@ class LogView:
     async def get_multi_users(
             self,
             query: QueryList = web_params(SuperUserLogQuery),
-    ) -> list[AllUserLogRead]:
-        items = await crud_user_log.get_multi(query=query)
+    ) -> Page[AllUserLogRead]:
+        items = await crud_user_log.get_multi(query=query, paginated=True)
         return items
 
     @router.get(
@@ -55,3 +57,6 @@ class LogView:
         if not instance:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         return UserLogRead.from_orm(instance)
+
+
+add_pagination(router)

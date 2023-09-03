@@ -11,7 +11,7 @@ async function logout() {
   await authStore.logout()
 }
 
-const avatar = computed(() => userStore.me.avatar || defaultAvatar)
+const avatar = computed(() => userStore.meInfo.avatar || defaultAvatar)
 </script>
 
 <template>
@@ -72,7 +72,7 @@ const avatar = computed(() => userStore.me.avatar || defaultAvatar)
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              {{ userStore.me.username }}
+              {{ userStore.meInfo.username }}
             </VListItemTitle>
             <VListItemSubtitle>Admin</VListItemSubtitle>
           </VListItem>

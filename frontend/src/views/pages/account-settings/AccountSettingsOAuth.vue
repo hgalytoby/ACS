@@ -14,15 +14,15 @@ const currentOAuthAccounts = computed(() => {
       icon: item.icon,
       color: global.name.value === 'dark' ? item.colorInDark : item.color,
       message: `Link ${item.name}`,
-      click: unlinkEvent(item.name),
+      click: linkEvent(item.name),
     }
-    
+
     return acc
   }, {})
 
-  userStore.me.oauthAccounts.forEach(item => {
+  userStore.meInfo.oauthAccounts.forEach(item => {
     items[item.oauthName].message = `Unlink ${item.oauthName}`
-    items[item.oauthName].click = linkEvent(item.oauthName)
+    items[item.oauthName].click = unlinkEvent(item.oauthName)
   })
 
   return items
@@ -30,7 +30,7 @@ const currentOAuthAccounts = computed(() => {
 
 const linkEvent = providerName => {
   return async () => {
-    await oauthStore.authorize(providerName)
+    await oauthStore.associateAuthorize(providerName)
   }
 }
 

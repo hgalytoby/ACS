@@ -19,9 +19,12 @@ const isNewPasswordVisible = ref(false)
 const isConfirmPasswordVisible = ref(false)
 const submitBtnLoading = ref(false)
 
-async function submit(payload) {
+async function submit({ oldPassword, newPassword }) {
   submitBtnLoading.value = true
-  await userStore.updatePassword(payload)
+  await userStore.updateMePassword({
+    oldPassword,
+    newPassword,
+  })
   submitBtnLoading.value = false
 }
 </script>

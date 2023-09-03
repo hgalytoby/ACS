@@ -3,10 +3,34 @@ import { getToken } from '@/utils/auth'
 import { useUserStore } from '@/stores/user'
 import { authProviderItems } from '@/utils/oauth'
 import { useHealthStore } from '@/stores/health'
+import { useToast } from 'vue-toastification'
 
-const checkTokenSet = new Set(['ResetPassword', 'Verify'])
-const authSet = new Set(['Login', 'Register', 'ForgotPassword', 'ResetPassword', 'Verify', 'OAuth', 'Camera', 'Camera2'])
-const whiteSet = new Set(['Error404', 'NotAuthorized', 'UnderMaintenance', 'AuthCamera', 'OAuth', ...authSet])
+const toast = useToast()
+
+const checkTokenSet = new Set([
+  'ResetPassword', 
+  'Verify',
+])
+
+const authSet = new Set([
+  'Login',
+  'Register',
+  'ForgotPassword',
+  'ResetPassword',
+  'Verify',
+  'OAuth',
+  'Camera', 
+  'Camera2',
+])
+
+const whiteSet = new Set([
+  'Error404',
+  'NotAuthorized',
+  'UnderMaintenance',
+  'AuthCamera',
+  'OAuth',
+  ...authSet,
+])
 
 const checkQueryToken = (to, next) => {
   if (!to.query.token) {
@@ -46,7 +70,7 @@ router.beforeEach(async (to, from, next) => {
     return
   }
 
-  // 在需要確認健康狀態的頁面，確保已獲取健康狀態
+  // 在需要確認健康狀態的頁面，確保已後端健康狀態
   if (!healthStore.project) {
     try {
       await healthStore.health()
@@ -59,28 +83,29 @@ router.beforeEach(async (to, from, next) => {
   document.title = `${healthStore.project} ${to.meta.title}`
 
   if (hasToken) {
-    // 已經登錄的情況
+    // 已經登入的情況
     if (authSet.has(to.name)) {
-      // 已經登錄的頁面
-      next({ path: '/' })
+      // 已經登入的頁面
+      next('/')
     } else {
-      // 非登錄頁面，確保有用戶信息
-      const me = userStore.me
+      // 非登入頁面，確保有用戶訊息
+      const me = userStore.meInfo
       if (me.id) {
         next()
       } else {
         try {
-          await userStore.userInfo()
+          await userStore.me()
           next()
         } catch (error) {
-          // 用戶信息獲取失敗，重置 token 並跳轉到登錄頁面
+          // 用戶訊息取得失敗，重置 token 並跳轉到登入頁面
+          toast.warning('登入逾時，請重新登入')
           await userStore.resetToken()
           redirectToLogin(to, next)
         }
       }
     }
   } else if (whiteSet.has(to.name)) {
-    // 未登錄且在白名單中的頁面
+    // 未登入且在白名單中的頁面
     if (to.name === 'OAuth') {
       checkOAuthName(to, next)
     } else if (checkTokenSet.has(to.name)) {
@@ -89,7 +114,7 @@ router.beforeEach(async (to, from, next) => {
       next()
     }
   } else {
-    // 未登錄，不在白名單中的頁面，跳轉到登錄頁面
+    // 未登入，不在白名單中的頁面，跳轉到登入頁面
     redirectToLogin(to, next)
   }
 })

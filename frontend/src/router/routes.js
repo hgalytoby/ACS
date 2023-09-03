@@ -218,7 +218,7 @@ export default [
         component: () => import('../pages/oauth/oauth-associate.vue'),
         meta: {
           layout: 'blank',
-          title: '第三方綁定讞正',
+          title: '第三方綁定驗證',
         },
       },
     ],

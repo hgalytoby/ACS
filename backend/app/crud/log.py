@@ -1,9 +1,9 @@
 from sqlmodel import select, func
 from sqlmodel.sql.expression import Select, SelectOfScalar
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, outerjoin
 
 from app.crud.base import CRUDBase
-from app.models import UserLogModel, SystemLogModel
+from app.models import UserLogModel, SystemLogModel, UserModel
 from app.schemas.chart import EmailLogChartRead
 from app.schemas.log import (
     UserLogRead,

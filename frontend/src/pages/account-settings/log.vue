@@ -16,8 +16,6 @@ const headers = [
 const userStore = useUserStore()
 const route = useRoute()
 
-const totalVisible = ref()
-
 const search = ref(JSON.stringify({
   event: route.query.event,
   createdAt: route.query.createdAt,
@@ -28,17 +26,12 @@ const {
   loading,
   currentPage,
   currentSize,
+  totalVisible,
 } = usePagination(userStore.userLog)
 
 const searchEmit = async params => {
   search.value = JSON.stringify(params)
 }
-
-onMounted(() => {
-  window.onresize = () => {
-    totalVisible.value = window.innerWidth >= 600 ? 6 : 3
-  }
-})
 </script>
 
 <template>
@@ -82,7 +75,7 @@ onMounted(() => {
                 :items="[10, 25, 50]"
                 density="compact"
                 hide-details
-                @update:model-value="currentSize.value = $event"
+                @update:model-value="currentSize = $event"
               />
             </VCol>
           </VRow>

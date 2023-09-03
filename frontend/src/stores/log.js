@@ -20,8 +20,9 @@ export const useLogStore = defineStore({
     },
   }),
   actions: {
-    async logUsers() {
-      await reqLogUsers().then(({ data }) => {
+    async logUsers(params) {
+      await reqLogUsers(params).then(({ data }) => {
+        data.items.forEach(item => item.rawData = JSON.stringify(item.rawData))
         this.$patch({ users: data })
       })
     },

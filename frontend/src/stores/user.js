@@ -1,34 +1,39 @@
 import { defineStore } from 'pinia'
 import {
   reqUnlinkOAuthAccount,
-  reqUpdatePassword,
-  reqUpdateUserInfo,
-  reqUserInfo,
+  reqUpdateMePassword,
+  reqUpdateMeInfo,
+  reqMe,
   reqUserLog,
   reqUserList,
+  reqUserInfo,
 } from '@/api/user'
 import { getToken, removeToken } from '@/utils/auth'
 import { useToast } from 'vue-toastification'
 
 const toast = useToast()
 
+const getDefaultUserInfo = () => {
+  return {
+    id: '',
+    email: '',
+    isActive: false,
+    isSuperuser: false,
+    isVerified: false,
+    username: '',
+    createdAt: '',
+    updatedAt: '',
+    avatar: '',
+    roleList: [],
+    oauthAccounts: [],
+  }
+}
+
 export const useUserStore = defineStore({
   id: 'useUserStore',
   state: () => ({
     token: getToken(),
-    me: {
-      id: '',
-      email: '',
-      isActive: false,
-      isSuperuser: false,
-      isVerified: false,
-      username: '',
-      createdAt: '',
-      updatedAt: '',
-      avatar: '',
-      roleList: [],
-      oauthAccounts: [],
-    },
+    meInfo: getDefaultUserInfo(),
     log: {
       items: [],
       pages: 1,
@@ -39,15 +44,17 @@ export const useUserStore = defineStore({
       pages: 1,
       total: 1,
     },
+    user: getDefaultUserInfo(),
   }),
   actions: {
-    async userInfo() {
-      await reqUserInfo().then(({ data }) => {
-        this.$patch({ me: data })
-      })
+    async me() {
+      await reqMe()
+        .then(({ data }) => {
+          this.$patch({ meInfo: data })
+        })
     },
-    async updateUserInfo(payload) {
-      await reqUpdateUserInfo(payload)
+    async updateMeInfo(payload) {
+      await reqUpdateMeInfo(payload)
       toast.success('修改基本資料成功!')
     },
     resetToken() {
@@ -57,8 +64,8 @@ export const useUserStore = defineStore({
         resolve()
       })
     },
-    async updatePassword(payload) {
-      await reqUpdatePassword(payload)
+    async updateMePassword(payload) {
+      await reqUpdateMePassword(payload)
         .then(() => {
           toast.success('修改密碼成功!')
         }).catch(() => {
@@ -72,16 +79,39 @@ export const useUserStore = defineStore({
       })
     },
     async userList(params) {
-      await reqUserList(params).then(({ data }) => {
-        this.$patch({ list: data })
-      })
+      await reqUserList(params)
+        .then(({ data }) => {
+          this.$patch({ list: data })
+        })
     },
     async unlinkOauthAccount(providerName) {
       await reqUnlinkOAuthAccount({ providerName })
         .then(async () => {
-          await this.userInfo()
+          await this.me()
           toast.success(`解除 ${providerName} 綁定!`)
         })
+    },
+    async userInfo(payload) {
+      await reqUserInfo(payload).then(({ data }) => {
+        this.$patch({ user: data })
+      })
+    },
+    async resetUserInfo() {
+      this.$patch({ 
+        user: {
+          id: '',
+          email: '',
+          isActive: false,
+          isSuperuser: false,
+          isVerified: false,
+          username: '',
+          createdAt: '',
+          updatedAt: '',
+          avatar: '',
+          roleList: [],
+          oauthAccounts: [],
+        }, 
+      })
     },
   },
 })

@@ -17,7 +17,7 @@ class UserLogRead(LogBase, BaseCreatedAtRead, BaseUUIDRead):
     )
 
 
-class UserWithLogRead(BaseCreatedAtRead, UserBase):
+class UserWithLogRead(BaseCreatedAtRead, UserBase, BaseUUIDRead):
     ...
 
 

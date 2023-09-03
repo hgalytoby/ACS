@@ -4,17 +4,20 @@ export default function(getDataCallback) {
   const loading = ref(false)
   const currentPage = ref(Number(route.query.page) || 1)
   const currentSize = ref(Number(route.query.size) || 25)
+  const totalVisible = ref()
 
   const getData = async params => {
+    const query = params.reset ? {} : { ...route.query, ...params }
+
     await getDataCallback({
       page: currentPage.value,
       size: currentSize.value,
-      ...params,
+      ...query,
     })
+    query.tab = route.query.tab
     await router.push({
       query: {
-        ...route.query,
-        ...params,
+        ...query,
         page: currentPage.value,
         size: currentSize.value,
       },
@@ -38,10 +41,17 @@ export default function(getDataCallback) {
     loading.value = false
   }
 
+  onMounted(() => {
+    window.onresize = () => {
+      totalVisible.value = window.innerWidth >= 600 ? 6 : 3
+    }
+  })
+
   return {
     loadData,
     loading,
     currentPage,
     currentSize,
+    totalVisible,
   }
 }

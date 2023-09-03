@@ -4,18 +4,13 @@ import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import DatePicker from 'vue-datepicker-next'
 import useFilter from '@/hooks/useFilter'
+import { getCreatedAt } from '@/utils/misc'
 
 
 const emit = defineEmits(['searchEmit'])
 const route = useRoute()
 const selectedItem = ref(route.query.event)
-const _createAt = route.query.createdAt || []
-
-const createdAt = ref([
-  _createAt[0] || null,
-  _createAt[1] || null,
-])
-
+const createdAt = ref(getCreatedAt(route.query.createdAt))
 
 const {
   submitBtnLoading,
@@ -29,7 +24,12 @@ const formSchema = yup.object({
 
 const resetForm = () => {
   selectedItem.value = null
-  emit('searchEmit', {})
+  emit(
+    'searchEmit',
+    {
+      reset: true,
+    },
+  )
 }
 </script>
 

@@ -85,7 +85,6 @@ jwtRequest.interceptors.response.use(response => {
 }, error => {
   vue.config.globalProperties.$Progress.fail()
 
-  console.log('jwtRequest', error)
   if (error.response) {
     switch (error.response.status) {
     case 401:
@@ -126,8 +125,6 @@ acceptRequest.interceptors.response.use(
     return response
   },
   error => {
-    console.log('acceptRequest', error)
-
     return Promise.reject(error)
   },
 )

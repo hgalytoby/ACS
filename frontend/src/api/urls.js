@@ -18,12 +18,13 @@ const oauth = {
 
 const user = {
   me: '/api/v1/users/me',
-  updateUserInfo: '/api/v1/users/me/info',
-  updatePassword: '/api/v1/users/me/update-password',
+  updateMeInfo: '/api/v1/users/me/info',
+  updateMePassword: '/api/v1/users/me/update-password',
   log: '/api/v1/users/me/log',
   info: '/api/v1/users/me/info',
   unlinkOAuth: '/api/v1/users/me/unlink-oauth',
   list: '/api/v1/users',
+  user: id => `/api/v1/users/${id}`,
 }
 
 const member = {

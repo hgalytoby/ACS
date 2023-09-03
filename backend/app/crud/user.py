@@ -311,6 +311,16 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
         if not verified:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
         new_password = password_helper.hash(password=password.new_password)
+        user_log = UserLogCreate(
+            user_id=user.id,
+            event=UserLogEvent.UPDATE_USER,
+            raw_data={'msg': 'update password'},
+        )
+        await crud_user_log.create(
+            create_item=user_log,
+            db_session=db_session,
+            commit=False,
+        )
         await self.update(
             current_item=user,
             update_item={'hashed_password': new_password},
@@ -369,7 +379,6 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='UnLink.',
         )
-
 
 
 crud_user = CRUDUser(model=UserModel)

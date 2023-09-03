@@ -4,7 +4,15 @@ export default function(emit) {
 
   const submit = payload => {
     submitBtnLoading.value = true
-    emit('searchEmit', payload)
+
+    const result = {}
+
+    Object.keys(payload).forEach(key => {
+      if (payload[key] !== '') {
+        result[key] = payload[key]
+      }
+    })
+    emit('searchEmit', result)
     submitBtnLoading.value = false
   }
 

@@ -13,17 +13,14 @@ export const useAcceptStore = defineStore({
   }),
   actions: {
     async acceptLocation() {
-      console.log(123123)
       await reqAcceptLocation()
         .then(({ data }) => {
-          console.log(123)
           this.$patch({ acceptLocationList: data })
         }).catch(err => {console.log(err)})
     },
     async acceptApi(memberCome) {
       await reqAcceptApi(memberCome)
         .then(({ data }) => {
-          console.log(data)
           this.$patch({ acceptApi: data.api })
         })
         .catch(err => {})
