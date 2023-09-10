@@ -83,8 +83,8 @@ class UserView:
     async def get_multi_user(
             self,
             query: QueryList = web_params(UserQuery),
-    ) -> list[UserRead]:
-        users = await crud_user.get_multi(query=query)
+    ) -> Page[UserRead]:
+        users = await crud_user.get_multi(query=query, paginated=True)
         return users
 
     @router.patch(

@@ -11,11 +11,13 @@ const search = ref()
 
 const headers = [
   {
-    title: '事件', key: 'event', width: '15%', class: 'rounded-lg',
+    title: '事件', key: 'event',
   },
-  { title: '原始資料', key: 'rawData', sortable: false },
+  { 
+    title: '原始資料', key: 'rawData', sortable: false, 
+  },
   {
-    title: '建立時間', key: 'createdAt', width: '20%', class: 'rounded-lg',
+    title: '建立時間', key: 'createdAt',
   },
 ]
 

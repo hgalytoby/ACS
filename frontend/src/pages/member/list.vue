@@ -1,33 +1,44 @@
 <script setup>
-import { useUserStore } from '@/stores/user'
 import usePagination from '@/hooks/usePagination'
-import SettingsUserListFilterLog from '@/views/pages/settings/SettingsUserListFilterLog.vue'
-import { getSortNumQuery } from '@/utils/misc'
+import { useMemberStore } from '@/stores/member'
 
 const headers = [
   {
-    title: '頭像', key: 'avatar', sortable: false,
+    title: 'Qrcode', key: 'qrcode', class: 'rounded-lg',
   },
   {
-    title: '信箱', key: 'email',
+    title: '圖片', key: 'image', class: 'rounded-lg',
   },
   {
-    title: '名稱', key: 'username',
+    title: '名字', key: 'name', class: 'rounded-lg',
   },
   {
-    title: '創建日期', key: 'createdAt',
+    title: '血型', key: 'bloodType', class: 'rounded-lg',
+  },
+  {
+    title: '生日', key: 'birthday', class: 'rounded-lg',
+  },
+  {
+    title: '手機', key: 'phone', class: 'rounded-lg',
+  },
+  {
+    title: '公司', key: 'company', class: 'rounded-lg',
+  },
+  {
+    title: '職稱', key: 'jobTitle', class: 'rounded-lg',
+  },
+  {
+    title: '創建日期', key: 'createdAt', class: 'rounded-lg',
   },
 ]
 
-const fieldMappings = {
-  createdAt: { num: 'createdAtNum', sort: 'createdAtSort' },
-  email: { num: 'emailNum', sort: 'emailSort' },
-  username: { num: 'usernameNum', sort: 'usernameSort' },
-}
+const memberStore = useMemberStore()
+const route = useRoute()
+const router = useRouter()
 
-const userStore = useUserStore()
-const sortBy = ref(getSortNumQuery(fieldMappings))
-const search = ref()
+const search = ref(JSON.stringify({
+  createdAt: route.query.createdAt,
+}))
 
 const {
   loadData,
@@ -35,26 +46,27 @@ const {
   currentPage,
   currentSize,
   totalVisible,
-  searchEmit,
-} = usePagination(userStore.userList, search, sortBy)
+} = usePagination(memberStore.memberList)
+
+const searchEmit = async params => {
+  search.value = JSON.stringify(params)
+}
 </script>
 
 <template>
   <div class="pa-3">
-    <SettingsUserListFilterLog @search-emit="searchEmit" />
     <VCard
       class="mt-5"
       elevation="3"
       rounded="lg"
     >
       <VDataTableServer
-        v-model:sort-by="sortBy"
         v-model:items-per-page="currentSize"
         v-model:page="currentPage"
         :search="search"
         :headers="headers"
-        :items="userStore.list.items"
-        :items-length="userStore.list.total"
+        :items="memberStore.list.items"
+        :items-length="memberStore.list.total"
         :loading="loading"
         multi-sort
         @update:options="loadData"
@@ -67,7 +79,7 @@ const {
             >
               <VPagination
                 v-model="currentPage"
-                :length="userStore.list.pages"
+                :length="memberStore.list.pages"
                 :total-visible="totalVisible"
               />
             </VCol>
@@ -90,3 +102,7 @@ const {
     </VCard>
   </div>
 </template>
+
+<style scoped lang='scss'>
+
+</style>

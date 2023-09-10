@@ -70,20 +70,6 @@ const test = () => {
     title: 'Signed in successfully',
   })
 }
-
-const admins = [
-  ['Management', 'mdi-account-multiple-outline'],
-  ['Settings', 'mdi-cog-outline'],
-]
-
-const cruds = [
-  ['Create', 'mdi-plus-outline'],
-  ['Read', 'mdi-file-outline'],
-  ['Update', 'mdi-update'],
-  ['Delete', 'mdi-delete'],
-]
-
-const open = ['Users']
 </script>
 
 <template>
@@ -212,7 +198,10 @@ const open = ['Users']
                 cols="12"
                 class="d-flex flex-wrap gap-4"
               >
-                <VBtn type="submit">
+                <VBtn
+                  type="submit"
+                  :loading="submitBtnLoading"
+                >
                   Save changes
                 </VBtn>
 

@@ -2,10 +2,27 @@ from enum import Enum
 from functools import cache
 
 
-class AppEnv(Enum):
-    PRODUCTION = 'prod'
-    DEVELOPMENT = 'dev'
-    TESTING = 'test'
+class BaseEventEnum(Enum):
+    def __new__(cls, value, doc=None):
+        self = object.__new__(cls)
+        self._value_ = value
+        if doc is not None:
+            self.__doc__ = doc
+        return self
+
+    @classmethod
+    def md(cls):
+        result = '''
+        '''
+        result += '''
+        '''.join([f'{item.name} = {item.__doc__}' for item in cls])
+        return result
+
+
+class AppEnv(BaseEventEnum):
+    PRODUCTION = 'prod', '正式環境'
+    DEVELOPMENT = 'dev', '開發環境'
+    TESTING = 'test', '測試環境'
 
 
 class AllowedImageExtensions(str, Enum):
@@ -26,12 +43,12 @@ class AllowedImageExtensions(str, Enum):
         return type_ in cls.rule()
 
 
-class ImageFailDetail(str, Enum):
-    INVALID_IMAGE_FORMAT = 'INVALID_IMAGE_FORMAT'
+class ImageFailDetail(BaseEventEnum):
+    INVALID_IMAGE_FORMAT = 'INVALID_IMAGE_FORMAT', '無效圖片格式'
 
 
-class UserFailDetail(str, Enum):
-    USER_EMAIL_EXIST = 'USER_EMAIL_EXIST'
+class UserFailDetail(BaseEventEnum):
+    USER_EMAIL_EXIST = 'USER_EMAIL_EXIST', '使用者信箱已存在'
 
 
 class SteinsGate(str, Enum):
@@ -39,37 +56,11 @@ class SteinsGate(str, Enum):
     DIVERGENCE = '1.048596'
 
 
-class WebSocketEvent(str, Enum):
-    MEMBER_STATUS = 'MEMBER_STATUS'
-    MEMBER_STATUS_LIST = 'MEMBER_STATUS_LIST'
-    LOGIN = 'LOGIN'
-    CHANNEL = 'ACS'
-
-
-class BaseEventEnum(Enum):
-    def __new__(cls, value, doc=None):
-        self = object.__new__(cls)
-        self._value_ = value
-        if doc is not None:
-            self.__doc__ = doc
-        return self
-
-    @classmethod
-    def md(cls):
-        result = '''
-        '''
-        result += '''
-        '''.join([f'{item.name} = {item.__doc__}' for item in cls])
-        return result
-
-
-class BaseEvent(Enum):
-    USER_REGISTER = 'UserRegister', '使用者註冊'
-    USER_LOGIN_FAIL = 'UserLoginFail', '使用者登入失敗'
-    USER_FORGOT_PASSWORD = 'UserForgotPassword', '使用者忘記密碼'
-    USER_RESET_PASSWORD = 'UserResetPassword', '使用者重置密碼'
-    USER_VERIFY = 'UserVerify', '啟用使用者'
-    USER_DESTROY = 'UserDestroy', '刪除使用者'
+class WebSocketEvent(BaseEventEnum):
+    MEMBER_STATUS = 'MEMBER_STATUS', '成員狀態'
+    MEMBER_STATUS_LIST = 'MEMBER_STATUS_LIST', '成原列表'
+    LOGIN = 'LOGIN', '登入'
+    CHANNEL = 'ACS', '頻道'
 
 
 class UserLogEvent(BaseEventEnum):
@@ -125,9 +116,9 @@ class BloodType(str, Enum):
     O = 'O'
 
 
-class StorageType(str, Enum):
-    LOCAL = 'LOCAL'
-    GCP = 'GCP'
+class StorageType(BaseEventEnum):
+    LOCAL = 'LOCAL', '本地端'
+    GCP = 'GCP', 'Google Cloud Storage'
 
 
 class APIAccess(str, Enum):

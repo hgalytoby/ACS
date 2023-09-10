@@ -70,7 +70,7 @@ export default [
       {
         path: 'member-list',
         name: 'MemberList',
-        component: () => import('../pages/member/member-list.vue'),
+        component: () => import('../pages/member/list.vue'),
         meta: {
           title: '成員列表',
         },
@@ -78,7 +78,7 @@ export default [
       {
         path: 'member-create',
         name: 'MemberCreate',
-        component: () => import('../pages/member/member-create.vue'),
+        component: () => import('../pages/member/create.vue'),
         meta: {
           title: '新增成員',
         },
@@ -86,7 +86,7 @@ export default [
       {
         path: 'member-record-list',
         name: 'MemberRecordList',
-        component: () => import('../pages/member/member-record-list.vue'),
+        component: () => import('../pages/member/record-list.vue'),
         meta: {
           title: '成員紀錄列表',
         },

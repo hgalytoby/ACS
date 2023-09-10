@@ -14,24 +14,24 @@ import {
 export const useMemberStore = defineStore({
   id: 'useMemberStore',
   state: () => ({
-    memberList: {
+    list: {
       items: [],
       pages: 1,
       total: 1,
     },
-    memberRecordList: {
+    recordList: {
       items: [],
       pages: 1,
       total: 1,
     },
-    memberStatusList: [],
-    memberStatusInfoList: [],
-    memberLocationList: [],
+    statusList: [],
+    statusInfoList: [],
+    locationList: [],
   }),
   actions: {
     async memberList() {
       await reqMemberList().then(({ data }) => {
-        this.$patch({ memberList: data.items })
+        this.$patch({ list: data })
       })
     },
     async memberCreateOrUpdate(payload) {
@@ -53,7 +53,7 @@ export const useMemberStore = defineStore({
     async memberRecordList(params) {
       await reqMemberRecordList(params)
         .then(({ data }) => {
-          this.$patch({ memberRecordList: data })
+          this.$patch({ recordList: data })
         }).catch(err => {})
     },
     async memberRecordCreate(payload) {
@@ -64,7 +64,7 @@ export const useMemberStore = defineStore({
     async memberLocationList() {
       await reqMembersLocationList()
         .then(({ data }) => {
-          this.$patch({ memberLocationList: data })
+          this.$patch({ locationList: data })
         })
         .catch(err => {})
     },

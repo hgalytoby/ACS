@@ -8,10 +8,11 @@ export default function(emit) {
     const result = {}
 
     Object.keys(payload).forEach(key => {
-      if (payload[key] !== '') {
+      if (payload[key]?.length !== 0) {
         result[key] = payload[key]
       }
     })
+    console.log('result', result)
     emit('searchEmit', result)
     submitBtnLoading.value = false
   }

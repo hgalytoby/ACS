@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
+import { useHealthStore } from '@/stores/health'
 
 const formSchema = yup.object({
   email: yup.string().required().email(),
@@ -12,6 +13,7 @@ const formSchema = yup.object({
 
 const router = useRouter()
 const auth = useAuthStore()
+const healthStore = useHealthStore()
 const remember = ref(!!localStorage.getItem('REMEMBER'))
 const email = ref(localStorage.getItem('EMAIL'))
 const isPasswordVisible = ref(false)
@@ -32,7 +34,7 @@ async function submit({ email, password }) {
   <BaseContent>
     <template #header>
       <h5 class="text-h5 font-weight-semibold mb-1">
-        Welcome to ACS! 👋🏻
+        Welcome to {{ healthStore.project }}! 👋🏻
       </h5>
       <p class="mb-0">
         Please sign-in to your account and start the adventure

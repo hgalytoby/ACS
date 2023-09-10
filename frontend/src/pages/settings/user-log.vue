@@ -3,36 +3,41 @@ import usePagination from '@/hooks/usePagination'
 import SettingsUserLogFilterLog from '@/views/pages/settings/SettingsUserLogFilterLog.vue'
 import { useLogStore } from '@/stores/log'
 import SettingsUserLogDialogs from '@/views/pages/settings/SettingsUserLogDialogs.vue'
+import { getSortNumQuery } from '@/utils/misc'
 
 const headers = [
   {
-    title: '查看', key: 'user', class: 'rounded-lg',
+    title: '查看', key: 'user', sortable: false,
   },
   {
-    title: '事件', key: 'event', class: 'rounded-lg',
+    title: '事件', key: 'event',
   },
   {
-    title: '使用者信箱', key: 'user.email', class: 'rounded-lg',
+    title: '使用者信箱', key: 'user.email',
   },
   {
-    title: '使用者名稱', key: 'user.username', class: 'rounded-lg',
+    title: '使用者名稱', key: 'user.username',
   },
-  { title: '原始資料', key: 'rawData', sortable: false },
+  { 
+    title: '原始資料', key: 'rawData', sortable: false,
+  },
   {
-    title: '建立時間', key: 'createdAt', class: 'rounded-lg',
+    title: '建立時間', key: 'createdAt',
   },
 ]
 
-const sortBy = ref([{ key: 'calories', order: 'asc' }])
-const logStore = useLogStore()
-const route = useRoute()
-const dialog = ref(null)
-const router = useRouter()
+const fieldMappings = {
+  createdAt: { num: 'createdAtNum', sort: 'createdAtSort' },
+  'user.username': { num: 'usernameNum', sort: 'usernameSort' },
+  'user.email': { num: 'emailNum', sort: 'emailSort' },
+  event: { num: 'eventNum', sort: 'eventSort' },
+}
 
-const search = ref(JSON.stringify({
-  event: route.query.event,
-  createdAt: route.query.createdAt,
-}))
+const logStore = useLogStore()
+const search = ref()
+const sortBy = ref(getSortNumQuery(fieldMappings))
+const dialog = ref(null)
+
 
 const {
   loadData,
@@ -40,11 +45,8 @@ const {
   currentPage,
   currentSize,
   totalVisible,
-} = usePagination(logStore.logUsers)
-
-const searchEmit = async params => {
-  search.value = JSON.stringify(params)
-}
+  searchEmit,
+} = usePagination(logStore.logUsers, search, sortBy)
 
 const openDialog = userinfo => {
   dialog.value.openDialog(userinfo)
@@ -60,6 +62,7 @@ const openDialog = userinfo => {
       rounded="lg"
     >
       <VDataTableServer
+        v-model:sort-by="sortBy"
         v-model:items-per-page="currentSize"
         v-model:page="currentPage"
         :search="search"

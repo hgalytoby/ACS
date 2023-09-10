@@ -24,7 +24,13 @@ const formSchema = yup.object({
 
 const resetForm = () => {
   selectedItem.value = null
-  emit('searchEmit', {})
+  createdAt.value = []
+  emit(
+    'searchEmit',
+    {
+      reset: true,
+    },
+  )
 }
 </script>
 
@@ -106,6 +112,7 @@ const resetForm = () => {
               color="primary"
               type="submit"
               height="44"
+              :loading="submitBtnLoading"
             >
               Search
             </v-btn>

@@ -8,13 +8,6 @@ import { getCreatedAt } from '@/utils/misc'
 
 const emit = defineEmits(['searchEmit'])
 
-const defaultQuery = [
-  'event',
-  'createdAt',
-  'username',
-  'email',
-]
-
 const route = useRoute()
 const selectedItem = ref(route.query.event)
 const createdAt = ref(getCreatedAt(route.query.createdAt))
@@ -35,19 +28,24 @@ const formSchema = yup.object({
 })
 
 
-onMounted(async () => {
+const resetFormValue = () => {
   myForm.value.setFieldValue('email', email.value)
   myForm.value.setFieldValue('username', username.value)
+  myForm.value.setFieldValue('createdAt', createdAt.value)
+  myForm.value.setFieldValue('event', selectedItem.value)
+}
+
+onMounted(async () => {
+  resetFormValue()
 })
 
 
 const resetForm = () => {
-  selectedItem.value = null
+  selectedItem.value = undefined
   username.value = undefined
   email.value = undefined
-  myForm.value.setFieldValue('email', email.value)
-  myForm.value.setFieldValue('username', username.value)
   createdAt.value = []
+  resetFormValue()
   emit(
     'searchEmit',
     {

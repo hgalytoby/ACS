@@ -2,6 +2,7 @@
 import { useUserStore } from '@/stores/user'
 import AccountSettingsFilterLog from '@/views/pages/account-settings/AccountSettingsFilterLog.vue'
 import usePagination from '@/hooks/usePagination'
+import { getSortNumQuery } from '@/utils/misc'
 
 const headers = [
   {
@@ -13,13 +14,14 @@ const headers = [
   },
 ]
 
-const userStore = useUserStore()
-const route = useRoute()
+const fieldMappings = {
+  createdAt: { num: 'createdAtNum', sort: 'createdAtSort' },
+  event: { num: 'eventNum', sort: 'eventSort' },
+}
 
-const search = ref(JSON.stringify({
-  event: route.query.event,
-  createdAt: route.query.createdAt,
-}))
+const userStore = useUserStore()
+const search = ref()
+const sortBy = ref(getSortNumQuery(fieldMappings))
 
 const {
   loadData,
@@ -27,11 +29,8 @@ const {
   currentPage,
   currentSize,
   totalVisible,
-} = usePagination(userStore.userLog)
-
-const searchEmit = async params => {
-  search.value = JSON.stringify(params)
-}
+  searchEmit,
+} = usePagination(userStore.userLog, search, sortBy)
 </script>
 
 <template>
@@ -43,6 +42,7 @@ const searchEmit = async params => {
       rounded="lg"
     >
       <VDataTableServer
+        v-model:sort-by="sortBy"
         v-model:items-per-page="currentSize"
         v-model:page="currentPage"
         :search="search"

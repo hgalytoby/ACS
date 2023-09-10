@@ -1,4 +1,4 @@
-export default function(getDataCallback) {
+export default function(getDataCallback, searchRef, sortRef) {
   const route = useRoute()
   const router = useRouter()
   const loading = ref(false)
@@ -28,17 +28,30 @@ export default function(getDataCallback) {
     loading.value = true
     currentPage.value = page
     currentSize.value = itemsPerPage
+    console.log('???', sortBy, search)
 
     const params = search ? JSON.parse(search) : {}
-
+    if (params.reset) {
+      searchRef.ref = ''
+    }
     sortBy.forEach((item, i) => {
-      params[`${item.key}Num`] = i
-      params[`${item.key}Sort`] = item.order === 'asc'
+      const field = item.key.includes('.') ? item.key.split('.')[1] : item.key
+
+      params[`${field}Num`] = i
+      params[`${field}Sort`] = item.order === 'asc'
     })
 
     await getData(params)
 
     loading.value = false
+  }
+
+  const searchEmit = async params => {
+    if (params.reset) {
+      sortRef.value = []
+      searchRef.value = ''
+    }
+    searchRef.value = JSON.stringify(params)
   }
 
   onMounted(() => {
@@ -53,5 +66,6 @@ export default function(getDataCallback) {
     currentPage,
     currentSize,
     totalVisible,
+    searchEmit,
   }
 }
