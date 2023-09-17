@@ -6,6 +6,7 @@ import qs from 'qs'
 
 const formDataList = [
   urls.auth.login,
+  urls.member.members,
 ]
 
 export const request = axios.create()

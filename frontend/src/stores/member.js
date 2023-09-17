@@ -10,6 +10,9 @@ import {
   reqMembersLocationCreateOrUpdate,
   reqMembersLocationDestroy,
 } from '@/api/member'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 export const useMemberStore = defineStore({
   id: 'useMemberStore',
@@ -37,6 +40,7 @@ export const useMemberStore = defineStore({
     async memberCreateOrUpdate(payload) {
       await reqMemberCreateOrUpdate(payload)
         .then(() => {
+          payload?.id ? toast.success('更新成功!') : toast.success('新增成功!')
         })
         .catch(() => {
         })

@@ -1,13 +1,18 @@
+import { usePaginationStore } from '@/stores/pagination'
+
 export default function(getDataCallback, searchRef, sortRef) {
   const route = useRoute()
   const router = useRouter()
+  const paginationStore = usePaginationStore()
   const loading = ref(false)
   const currentPage = ref(Number(route.query.page) || 1)
   const currentSize = ref(Number(route.query.size) || 25)
   const totalVisible = ref()
 
   const getData = async params => {
-    const query = params.reset ? {} : { ...route.query, ...params }
+    const query = paginationStore.reset ? {} : { ...route.query, ...params }
+
+    paginationStore.updateReset(false)
 
     await getDataCallback({
       page: currentPage.value,
@@ -28,12 +33,9 @@ export default function(getDataCallback, searchRef, sortRef) {
     loading.value = true
     currentPage.value = page
     currentSize.value = itemsPerPage
-    console.log('???', sortBy, search)
 
     const params = search ? JSON.parse(search) : {}
-    if (params.reset) {
-      searchRef.ref = ''
-    }
+
     sortBy.forEach((item, i) => {
       const field = item.key.includes('.') ? item.key.split('.')[1] : item.key
 
@@ -47,9 +49,8 @@ export default function(getDataCallback, searchRef, sortRef) {
   }
 
   const searchEmit = async params => {
-    if (params.reset) {
+    if (paginationStore.reset) {
       sortRef.value = []
-      searchRef.value = ''
     }
     searchRef.value = JSON.stringify(params)
   }

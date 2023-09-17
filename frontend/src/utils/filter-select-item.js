@@ -11,3 +11,11 @@ export const userLogSelectItem = [
   { name: '更新使用者', value: 'UpdateUser' },
   { name: '刪除使用者', value: 'DestroyUser' },
 ]
+
+export const bloodTypeSelectItem = [
+  { name: '請選擇血型', value: null },
+  { name: 'A', value: 'A' },
+  { name: 'B', value: 'B' },
+  { name: 'AB', value: 'AB' },
+  { name: 'O', value: 'O' },
+]

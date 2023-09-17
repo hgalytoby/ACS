@@ -1,7 +1,7 @@
 <script setup>
 import BaseContent from '@/views/pages/auth/BaseContent.vue'
 import { useAuthStore } from '@/stores/auth'
-import { useForm } from 'vee-validate'
+import { Field, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { debounce } from 'lodash'
 

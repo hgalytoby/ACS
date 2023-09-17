@@ -12,7 +12,6 @@ export default function(emit) {
         result[key] = payload[key]
       }
     })
-    console.log('result', result)
     emit('searchEmit', result)
     submitBtnLoading.value = false
   }

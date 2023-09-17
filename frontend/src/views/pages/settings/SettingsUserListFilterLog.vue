@@ -5,12 +5,15 @@ import * as yup from 'yup'
 import DatePicker from 'vue-datepicker-next'
 import useFilter from '@/hooks/useFilter'
 import { getCreatedAt } from '@/utils/misc'
+import usePagination from '@/hooks/usePagination'
+import { usePaginationStore } from '@/stores/pagination'
 
 const emit = defineEmits(['searchEmit'])
 
 const route = useRoute()
 const selectedItem = ref(route.query.event)
 const createdAt = ref(getCreatedAt(route.query.createdAt))
+const paginationStore = usePaginationStore()
 
 const {
   submitBtnLoading,
@@ -25,12 +28,8 @@ const formSchema = yup.object({
 const resetForm = () => {
   selectedItem.value = null
   createdAt.value = []
-  emit(
-    'searchEmit',
-    {
-      reset: true,
-    },
-  )
+  paginationStore.updateReset(true)
+  emit('searchEmit')
 }
 </script>
 

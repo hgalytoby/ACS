@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import DatePicker from 'vue-datepicker-next'
 import useFilter from '@/hooks/useFilter'
 import { getCreatedAt } from '@/utils/misc'
+import { usePaginationStore } from '@/stores/pagination'
 
 const emit = defineEmits(['searchEmit'])
 
@@ -14,6 +15,7 @@ const createdAt = ref(getCreatedAt(route.query.createdAt))
 const email = ref(route.query.email)
 const username = ref(route.query.username)
 const myForm = ref(null)
+const paginationStore = usePaginationStore()
 
 const {
   submitBtnLoading,
@@ -46,12 +48,8 @@ const resetForm = () => {
   email.value = undefined
   createdAt.value = []
   resetFormValue()
-  emit(
-    'searchEmit',
-    {
-      reset: true,
-    },
-  )
+  paginationStore.updateReset(true)
+  emit('searchEmit')
 }
 </script>
 

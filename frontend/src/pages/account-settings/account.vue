@@ -44,7 +44,6 @@ const submit = async ({ username }) => {
   }
 
   payload.append('item', JSON.stringify({ username }))
-
   await userStore.updateMeInfo(payload)
     .then(async () => {
       await userStore.me()
@@ -58,6 +57,7 @@ const resetForm = setFieldValue => {
 }
 
 const resetAvatar = () => {
+  refInputEl.value.value = null
   avatar.value = undefined
 }
 
@@ -120,7 +120,7 @@ const test = () => {
                 <VBtn
                   type="reset"
                   color="error"
-                  variant="tonal"
+                  variant="outlined"
                   @click="resetAvatar"
                 >
                   <span class="d-none d-sm-block">Reset</span>
