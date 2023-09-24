@@ -61,7 +61,6 @@ class BaseStorage(metaclass=ABCMeta):
 
     @classmethod
     def resize(cls, image: ImageFile, size: tuple[int, int]) -> bytes:
-        print(123213)
         buffer = io.BytesIO()
         if image.mode == 'P':
             image = image.convert('RGB')

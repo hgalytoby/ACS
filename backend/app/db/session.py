@@ -10,7 +10,7 @@ engine = create_async_engine(
     settings.pg.url,
     echo=False,
     pool_pre_ping=True,
-    pool_size=5,
+    pool_size=8,
     max_overflow=64,
 )
 async_session_maker = sessionmaker(

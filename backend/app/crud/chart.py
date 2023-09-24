@@ -94,6 +94,7 @@ class ChartData:
         ]
 
         hard_disk_volume = cls.hard_disk_volume()
+        
         (
             email_log_classification,
             member_growth,

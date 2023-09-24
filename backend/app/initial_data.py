@@ -1,4 +1,5 @@
 import asyncio
+
 from app.db.init_db import init_db
 from app.db.session import async_session_maker
 

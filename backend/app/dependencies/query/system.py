@@ -10,7 +10,7 @@ from app.utils.sql_query import BaseQuery, QuerySql, SortSql
 class SystemLogQuery(BaseQuery):
     def __init__(
             self,
-            event: SystemLogEvent = Query(
+            event: Optional[SystemLogEvent] = Query(
                 default=None,
                 description=SystemLogEvent.md(),
             ),

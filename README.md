@@ -14,10 +14,7 @@
 - 套用 https://github.com/themeselection/materio-vuetify-vuejs-admin-template-free
 - 還沒開始寫。
 
-# nginx
-
-- 寫個大概還沒測試，肯定不能用。
-
 # docker
 
-- 寫個大概還沒測試，肯定不能用。
+- 已設定。
+

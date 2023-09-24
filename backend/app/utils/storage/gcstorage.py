@@ -37,7 +37,10 @@ class GCStorge(BaseStorage):
         return blob_metadata
 
     async def delete_file(self, blob_name: str):
-        await self.__storage_client.delete(bucket=self.__bucket_name, object_name=blob_name)
+        await self.__storage_client.delete(
+            bucket=self.__bucket_name,
+            object_name=blob_name,
+        )
 
     def link_to_filename(self, filename: str) -> str:
         return filename.replace(f'{self.__host}/{self.__bucket_name}/', '')
@@ -50,11 +53,14 @@ class GCStorge(BaseStorage):
     ):
         if not image:
             return
+
         image_name = f'{instance.get_folder_name()}/{instance.id}/{time.time()}_image_{image.filename}'
         file = await image.read()
         image_obj = self.valid_image(image=file)
+
         if size:
             file = self.resize(image=image_obj, size=size)
+
         metadata = await self.upload_file(file_data=file, filename=image_name)
         instance.set_file_value(value=metadata.link)
 
@@ -68,12 +74,15 @@ class GCStorge(BaseStorage):
             'id': str(instance.id),
             'project': settings.project,
         }
+
         image = qrcode.make(base64.b64encode(orjson.dumps(data)))
         image.save(buffer, kind='png', dark='#000000', light=None)
+
         metadata = await self.upload_file(
             file_data=buffer.getvalue(),
             filename=f'{instance.get_folder_name()}/{instance.id}/qrcode.png',
         )
+
         instance.set_qrcode_value(value=metadata.link)
 
     async def remove_qrcode(self, instance: QrCodeModelType):

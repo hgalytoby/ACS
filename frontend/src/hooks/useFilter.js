@@ -1,10 +1,25 @@
+import { usePaginationStore } from '@/stores/pagination'
 
-export default function(emit) {
-  const submitBtnLoading = ref(false)
+export default function(emit, formItems, initItems) {
+  const paginationStore = usePaginationStore()
+  const myForm = ref(null)
+
+  const setFormValue = () => {
+    for (const key in formItems) {
+      myForm.value.setFieldValue(key, formItems[key])
+    }
+  }
+
+  const resetForm = () => {
+    for (const key in initItems) {
+      formItems[key] = initItems[key]
+    }
+    setFormValue()
+    paginationStore.updateReset(true)
+    emit('searchEmit')
+  }
 
   const submit = payload => {
-    submitBtnLoading.value = true
-
     const result = {}
 
     Object.keys(payload).forEach(key => {
@@ -13,12 +28,15 @@ export default function(emit) {
       }
     })
     emit('searchEmit', result)
-    submitBtnLoading.value = false
   }
 
+  onMounted(async () => {
+    setFormValue()
+  })
   
   return {
-    emit,
+    myForm,
+    resetForm,
     submit,
   }
 }

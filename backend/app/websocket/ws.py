@@ -15,14 +15,6 @@ from app.utils.enums import WebSocketEvent
 
 router = APIRouter()
 
-
-# class MyBroadcast(Broadcast):
-#     async def connect(self) -> None:
-#         logger.info('連線 Redis!!，請確認有沒有啟用 Redis!!')
-#         await super(MyBroadcast, self).connect()
-#         logger.info('連線 Redis 成功!')
-
-
 broadcast = Broadcast(settings.redis.url)
 
 
@@ -81,10 +73,12 @@ class Client:
 
     async def sender(self):
         start_time = time.time()
+
         while not self.accept:
             if time.time() - start_time > 5:
                 await self.websocket.close()
             await asyncio.sleep(1)
+
         async with broadcast.subscribe(channel=settings.project) as subscriber:
             async for event in subscriber:
                 await self.handler_message(message=event.message)

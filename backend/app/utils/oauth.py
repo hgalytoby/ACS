@@ -1,12 +1,13 @@
 from typing import Optional
 import jwt
-from fastapi_users.authentication import AuthenticationBackend, Strategy, Authenticator
+from fastapi_users.authentication import Strategy
 from fastapi_users.exceptions import UserAlreadyExists
-from fastapi_users.jwt import SecretType, decode_jwt
+from fastapi_users.jwt import decode_jwt
 from fastapi_users.router.common import ErrorModel, ErrorCode
 from fastapi_users.router.oauth import (
     OAuth2AuthorizeResponse,
-    generate_state_token, STATE_TOKEN_AUDIENCE,
+    generate_state_token,
+    STATE_TOKEN_AUDIENCE,
 )
 from httpx_oauth.integrations.fastapi import (
     OAuth2AuthorizeCallback as _OAuth2AuthorizeCallback,
@@ -14,7 +15,13 @@ from httpx_oauth.integrations.fastapi import (
 from httpx_oauth.oauth2 import OAuth2Token, BaseOAuth2
 from fastapi import Request, HTTPException, status, Query, APIRouter, Depends
 
-from app.crud.user import UserManager, get_user_manager, auth_backend, SECRET, fastapi_users
+from app.crud.user import (
+    UserManager,
+    get_user_manager,
+    auth_backend,
+    SECRET,
+    fastapi_users,
+)
 from app.dependencies.oauth import is_oauth_linked
 from app.models import UserModel
 from app.schemas.user import UserRead
@@ -202,6 +209,7 @@ def get_oauth_associate_router(
             authorize_redirect_url = redirect_url
         else:
             authorize_redirect_url = str(request.url_for(callback_route_name))
+
         state_data: dict[str, str] = {'sub': str(user.id)}
         state = generate_state_token(state_data, SECRET)
         authorization_url = await oauth_client.get_authorization_url(

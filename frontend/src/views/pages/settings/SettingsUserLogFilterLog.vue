@@ -4,23 +4,9 @@ import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import DatePicker from 'vue-datepicker-next'
 import useFilter from '@/hooks/useFilter'
-import { getCreatedAt } from '@/utils/misc'
-import { usePaginationStore } from '@/stores/pagination'
+import { getSettingsUserLogFilterFormItems } from '@/utils/filter-form-items'
 
 const emit = defineEmits(['searchEmit'])
-
-const route = useRoute()
-const selectedItem = ref(route.query.event)
-const createdAt = ref(getCreatedAt(route.query.createdAt))
-const email = ref(route.query.email)
-const username = ref(route.query.username)
-const myForm = ref(null)
-const paginationStore = usePaginationStore()
-
-const {
-  submitBtnLoading,
-  submit,
-} = useFilter(emit)
 
 const formSchema = yup.object({
   event: yup.string().nullable(),
@@ -29,28 +15,20 @@ const formSchema = yup.object({
   email: yup.string().email().nullable(),
 })
 
-
-const resetFormValue = () => {
-  myForm.value.setFieldValue('email', email.value)
-  myForm.value.setFieldValue('username', username.value)
-  myForm.value.setFieldValue('createdAt', createdAt.value)
-  myForm.value.setFieldValue('event', selectedItem.value)
+const initItems = {
+  email: undefined,
+  username: undefined,
+  event: undefined,
+  createdAt: [],
 }
 
-onMounted(async () => {
-  resetFormValue()
-})
+const formItems = reactive(getSettingsUserLogFilterFormItems())
 
-
-const resetForm = () => {
-  selectedItem.value = undefined
-  username.value = undefined
-  email.value = undefined
-  createdAt.value = []
-  resetFormValue()
-  paginationStore.updateReset(true)
-  emit('searchEmit')
-}
+const {
+  myForm,
+  resetForm,
+  submit,
+} = useFilter(emit, initItems, initItems)
 </script>
 
 <template>
@@ -76,7 +54,7 @@ const resetForm = () => {
               type="text"
             >
               <VSelect
-                v-model="selectedItem"
+                v-model="formItems.event"
                 v-bind="field"
                 label="請選擇事件"
                 :items="userLogSelectItem"
@@ -101,7 +79,7 @@ const resetForm = () => {
             >
               <VTextField
                 v-bind="field"
-                v-model="email"
+                v-model="formItems.email"
                 label="Email"
                 type="email"
                 variant="outlined"
@@ -125,7 +103,7 @@ const resetForm = () => {
             >
               <VTextField
                 v-bind="field"
-                v-model="username"
+                v-model="formItems.username"
                 label="username"
                 type="text"
                 variant="outlined"
@@ -148,7 +126,7 @@ const resetForm = () => {
               type="text"
             >
               <DatePicker
-                v-model:value="createdAt"
+                v-model:value="formItems.createdAt"
                 v-bind="field"
                 type="datetime"
                 range
@@ -156,7 +134,7 @@ const resetForm = () => {
               >
                 <template #input>
                   <VTextField
-                    v-model="createdAt"
+                    v-model="formItems.createdAt"
                     label="搜尋創建日期"
                     hide-details
                     variant="outlined"

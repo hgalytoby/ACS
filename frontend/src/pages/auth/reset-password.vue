@@ -6,9 +6,6 @@ import * as yup from 'yup'
 import { useAuthStore } from '@/stores/auth'
 import { useRoute } from 'vue-router'
 
-const auth = useAuthStore()
-const route = useRoute()
-
 const formSchema = yup.object({
   confirmPassword: yup
     .string()
@@ -16,6 +13,8 @@ const formSchema = yup.object({
     .oneOf([yup.ref('password')], 'Passwords do not match'),
 })
 
+const auth = useAuthStore()
+const route = useRoute()
 const isPasswordVisible = ref(false)
 const isConfirmPasswordVisible = ref(false)
 const submitBtnLoading = ref(false)

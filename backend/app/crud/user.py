@@ -84,14 +84,18 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         except exceptions.UserNotExists:
             self.password_helper.hash(credentials.password)
             return None
+
         verified, updated_password_hash = self.password_helper.verify_and_update(
             credentials.password, user.hashed_password
         )
+
         if not verified:
             await self.on_after_login_fail(user=user)
             return None
+
         if updated_password_hash is not None:
             await self.user_db.update(user, {'hashed_password': updated_password_hash})
+
         return user
 
     async def oauth_callback(
@@ -191,6 +195,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
     ):
         if update_dict.get('password'):
             update_dict['password'] = '*' * len(update_dict['password'])
+
         print(f"User {user.id} has been updated with {update_dict}.")
         user_log = UserLogCreate(
             user_id=user.id,
@@ -308,8 +313,10 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
             plain_password=password.old_password,
             hashed_password=user.hashed_password,
         )
+
         if not verified:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
         new_password = password_helper.hash(password=password.new_password)
         user_log = UserLogCreate(
             user_id=user.id,
@@ -375,6 +382,7 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
                     db_session=db_session,
                 )
                 return UserRead.from_orm(user)
+
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='UnLink.',

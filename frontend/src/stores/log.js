@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import {
   reqLogUsers,
   reqLogSystems,
-  reqLogSystem,
 } from '@/api/log'
 
 export const useLogStore = defineStore({

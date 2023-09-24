@@ -11,7 +11,7 @@ from app.utils.sql_query import BaseQuery, QuerySql, SortSql
 class UserLogQuery(BaseQuery):
     def __init__(
             self,
-            event: UserLogEvent = Query(
+            event: Optional[UserLogEvent] = Query(
                 default=None,
                 description=UserLogEvent.md(),
             ),
@@ -68,7 +68,7 @@ class UserLogQuery(BaseQuery):
 class SuperUserLogQuery(BaseQuery):
     def __init__(
             self,
-            event: UserLogEvent = Query(
+            event: Optional[UserLogEvent] = Query(
                 default=None,
                 description=UserLogEvent.md(),
             ),

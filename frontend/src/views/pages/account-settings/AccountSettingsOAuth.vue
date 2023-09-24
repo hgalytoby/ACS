@@ -62,6 +62,3 @@ const unlinkEvent = providerName => {
   </VRow>
 </template>
 
-<style scoped lang='scss'>
-
-</style>

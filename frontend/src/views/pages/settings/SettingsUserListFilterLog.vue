@@ -1,40 +1,36 @@
 <script setup>
-import { userLogSelectItem } from '@/utils/filter-select-item'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import DatePicker from 'vue-datepicker-next'
 import useFilter from '@/hooks/useFilter'
-import { getCreatedAt } from '@/utils/misc'
-import usePagination from '@/hooks/usePagination'
-import { usePaginationStore } from '@/stores/pagination'
+import { getSettingsUserListFilterFormItems } from '@/utils/filter-form-items'
 
 const emit = defineEmits(['searchEmit'])
 
-const route = useRoute()
-const selectedItem = ref(route.query.event)
-const createdAt = ref(getCreatedAt(route.query.createdAt))
-const paginationStore = usePaginationStore()
-
-const {
-  submitBtnLoading,
-  submit,
-} = useFilter(emit)
-
 const formSchema = yup.object({
-  event: yup.string().nullable(),
+  email: yup.string().email().nullable(),
+  username: yup.string().nullable(),
   createdAt: yup.array().nullable(),
 })
 
-const resetForm = () => {
-  selectedItem.value = null
-  createdAt.value = []
-  paginationStore.updateReset(true)
-  emit('searchEmit')
+const initItems = {
+  email: undefined,
+  username: undefined,
+  createdAt: [],
 }
+
+const formItems = reactive(getSettingsUserListFilterFormItems())
+
+const {
+  myForm,
+  resetForm,
+  submit,
+} = useFilter(emit, formItems, initItems)
 </script>
 
 <template>
   <Form
+    ref="myForm"
     :validation-schema="formSchema"
     @submit="submit"
   >
@@ -47,31 +43,55 @@ const resetForm = () => {
         <VRow>
           <VCol
             cols="12"
-            sm="3"
+            sm="6"
           >
             <Field
               v-slot="{ field }"
-              name="event"
+              name="email"
               type="text"
             >
-              <VSelect
-                v-model="selectedItem"
+              <VTextField
                 v-bind="field"
-                label="請選擇事件"
-                :items="userLogSelectItem"
-                item-title="name"
-                item-value="value"
-                placeholder="請選擇事件"
-                prepend-inner-icon="mdi-gesture-tap"
+                v-model="formItems.email"
+                label="Email"
+                type="email"
                 variant="outlined"
                 density="compact"
+                prepend-inner-icon="mdi-email"
               />
             </Field>
-            <ErrorMessage name="event" />
+            <ErrorMessage
+              class="error-message"
+              name="email"
+            />
           </VCol>
           <VCol
             cols="12"
-            sm="5"
+            sm="6"
+          >
+            <Field
+              v-slot="{ field }"
+              name="username"
+              type="text"
+            >
+              <VTextField
+                v-bind="field"
+                v-model="formItems.username"
+                label="username"
+                type="text"
+                variant="outlined"
+                density="compact"
+                prepend-inner-icon="mdi-account"
+              />
+            </Field>
+            <ErrorMessage
+              class="error-message"
+              name="username"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="8"
           >
             <Field
               v-slot="{ field }"
@@ -79,7 +99,7 @@ const resetForm = () => {
               type="text"
             >
               <DatePicker
-                v-model:value="createdAt"
+                v-model:value="formItems.createdAt"
                 v-bind="field"
                 type="datetime"
                 range
@@ -87,7 +107,7 @@ const resetForm = () => {
               >
                 <template #input>
                   <VTextField
-                    v-model="createdAt"
+                    v-model="formItems.createdAt"
                     label="搜尋創建日期"
                     hide-details
                     variant="outlined"
@@ -111,7 +131,6 @@ const resetForm = () => {
               color="primary"
               type="submit"
               height="44"
-              :loading="submitBtnLoading"
             >
               Search
             </v-btn>

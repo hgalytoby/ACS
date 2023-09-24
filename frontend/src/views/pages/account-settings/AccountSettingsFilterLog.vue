@@ -4,35 +4,32 @@ import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import DatePicker from 'vue-datepicker-next'
 import useFilter from '@/hooks/useFilter'
-import { getCreatedAt } from '@/utils/misc'
-import { usePaginationStore } from '@/stores/pagination'
-
+import { getAccountSettingsUserListFilterFormItems } from '@/utils/filter-form-items'
 
 const emit = defineEmits(['searchEmit'])
-const route = useRoute()
-const selectedItem = ref(route.query.event)
-const createdAt = ref(getCreatedAt(route.query.createdAt))
-const paginationStore = usePaginationStore()
-
-const {
-  submitBtnLoading,
-  submit,
-} = useFilter(emit)
 
 const formSchema = yup.object({
   event: yup.string().nullable(),
   createdAt: yup.array().nullable(),
 })
 
-const resetForm = () => {
-  selectedItem.value = null
-  paginationStore.updateReset(true)
-  emit('searchEmit')
+const initItems = {
+  event: undefined,
+  createdAt: [],
 }
+
+const formItems = reactive(getAccountSettingsUserListFilterFormItems())
+
+const {
+  myForm,
+  resetForm,
+  submit,
+} = useFilter(emit, formItems, initItems)
 </script>
 
 <template>
   <Form
+    ref="myForm"
     :validation-schema="formSchema"
     @submit="submit"
   >
@@ -53,7 +50,7 @@ const resetForm = () => {
               type="text"
             >
               <VSelect
-                v-model="selectedItem"
+                v-model="formItems.event"
                 v-bind="field"
                 label="請選擇事件"
                 :items="userLogSelectItem"
@@ -77,7 +74,7 @@ const resetForm = () => {
               type="text"
             >
               <DatePicker
-                v-model:value="createdAt"
+                v-model:value="formItems.createdAt"
                 v-bind="field"
                 type="datetime"
                 range
@@ -85,7 +82,7 @@ const resetForm = () => {
               >
                 <template #input>
                   <VTextField
-                    v-model="createdAt"
+                    v-model="formItems.createdAt"
                     label="搜尋創建日期"
                     hide-details
                     variant="outlined"

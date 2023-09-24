@@ -142,23 +142,23 @@ class MemberModel(
 
 class MemberRecordBase(SQLModel):
     status: bool = Field(
-        title='狀態',
-        description='狀態',
+        title='進出入狀態',
+        description='進出入狀態',
         nullable=False,
     )
     member_location_id: UUID = Field(
-        title='成員 ID',
-        description='成員 ID',
+        title='成員地點 ID',
+        description='成員地點 ID',
     )
     member_location_name: str = Field(
-        title='地點名字',
-        description='地點名字',
+        title='成員地點名字',
+        description='成員地點名字',
         max_length=64,
         nullable=False,
     )
     member_location_image: str = Field(
-        title='地點圖片',
-        description='地點圖片',
+        title='成員地點圖片',
+        description='成員地點圖片',
         max_length=256,
         default=None,
         nullable=True,

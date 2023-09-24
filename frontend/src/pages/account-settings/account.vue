@@ -1,46 +1,31 @@
 <script setup>
 import { useUserStore } from '@/stores/user'
 import defaultAvatar from '@images/avatars/default-avatar.png'
-import ImageLazyProgress from '@/components/ImageLazyProgress.vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import AccountSettingsOAuth from '@/views/pages/account-settings/AccountSettingsOAuth.vue'
-
-const userStore = useUserStore()
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const formSchema = yup.object({
   username: yup.string().required().max(64),
 })
 
+const userStore = useUserStore()
+
 const formValues = {
   username: userStore.meInfo.username,
 }
 
-const refInputEl = ref()
-const avatar = ref()
 const submitBtnLoading = ref(false)
-
+const imageUploadRef = ref()
 const showAvatar = computed(() => userStore.meInfo.avatar || defaultAvatar)
-
-const changeAvatar = file => {
-  const fileReader = new FileReader()
-  const { files } = file.target
-  if (files && files.length) {
-    fileReader.readAsDataURL(files[0])
-    fileReader.onload = () => {
-      if (typeof fileReader.result === 'string')
-        avatar.value = fileReader.result
-    }
-  }
-}
 
 const submit = async ({ username }) => {
   submitBtnLoading.value = true
 
   const payload = new FormData()
-
-  if (refInputEl.value.files[0]) {
-    payload.append('avatar', refInputEl.value.files[0])
+  if (imageUploadRef.value.refInputEl.files[0]) {
+    payload.append('avatar', imageUploadRef.value.refInputEl.files[0])
   }
 
   payload.append('item', JSON.stringify({ username }))
@@ -56,10 +41,6 @@ const resetForm = setFieldValue => {
   setFieldValue('username', userStore.meInfo.username)
 }
 
-const resetAvatar = () => {
-  refInputEl.value.value = null
-  avatar.value = undefined
-}
 
 import Swal from 'sweetalert2'
 import SweetalertIcon from 'vue-sweetalert-icons/src/components/icon.vue'
@@ -84,57 +65,10 @@ const test = () => {
           @submit="submit"
         >
           <VCardText class="d-flex">
-            <VImg
-              class="me-6 custom-image"
-              width="100"
-              max-width="200"
-              :src="avatar || showAvatar"
-              :lazy-src="avatar || showAvatar"
-            >
-              <template #placeholder>
-                <ImageLazyProgress />
-              </template>
-            </VImg>
-            <div class="d-flex flex-column justify-center gap-5">
-              <div class="d-flex flex-wrap gap-2">
-                <VBtn
-                  color="primary"
-                  @click="refInputEl?.click()"
-                >
-                  <VIcon
-                    icon="mdi-cloud-upload-outline"
-                    class="d-sm-none"
-                  />
-                  <span class="d-none d-sm-block">Upload new photo</span>
-                </VBtn>
-
-                <input
-                  ref="refInputEl"
-                  type="file"
-                  name="file"
-                  accept=".jpeg,.png,.jpg,GIF"
-                  hidden
-                  @input="changeAvatar"
-                >
-
-                <VBtn
-                  type="reset"
-                  color="error"
-                  variant="outlined"
-                  @click="resetAvatar"
-                >
-                  <span class="d-none d-sm-block">Reset</span>
-                  <VIcon
-                    icon="mdi-refresh"
-                    class="d-sm-none"
-                  />
-                </VBtn>
-              </div>
-
-              <p class="text-body-1 mb-0">
-                Allowed JPG, GIF or PNG. Max size of 800K
-              </p>
-            </div>
+            <ImageUpload
+              ref="imageUploadRef"
+              :default-img="showAvatar"
+            />
           </VCardText>
           <VCardText>
             <VIcon icon="mdi-shield-account" />

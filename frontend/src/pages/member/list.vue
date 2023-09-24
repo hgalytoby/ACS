@@ -1,44 +1,54 @@
 <script setup>
 import usePagination from '@/hooks/usePagination'
 import { useMemberStore } from '@/stores/member'
+import MemberFilterMemberList from '@/views/pages/member/MemberFilterMemberList.vue'
+import { getSortNumQuery } from '@/utils/misc'
+import { getMemberListFilterFormItems } from '@/utils/filter-form-items'
 
 const headers = [
   {
-    title: 'Qrcode', key: 'qrcode', class: 'rounded-lg',
+    title: 'Qrcode', key: 'qrcode', sortable: false,
   },
   {
-    title: '圖片', key: 'image', class: 'rounded-lg',
+    title: '圖片', key: 'image', sortable: false,
   },
   {
-    title: '名字', key: 'name', class: 'rounded-lg',
+    title: '名字', key: 'name',
   },
   {
-    title: '血型', key: 'bloodType', class: 'rounded-lg',
+    title: '血型', key: 'bloodType',
   },
   {
-    title: '生日', key: 'birthday', class: 'rounded-lg',
+    title: '生日', key: 'birthday',
   },
   {
-    title: '手機', key: 'phone', class: 'rounded-lg',
+    title: '手機', key: 'phone',
   },
   {
-    title: '公司', key: 'company', class: 'rounded-lg',
+    title: '公司', key: 'company',
   },
   {
-    title: '職稱', key: 'jobTitle', class: 'rounded-lg',
+    title: '職稱', key: 'jobTitle',
   },
   {
-    title: '創建日期', key: 'createdAt', class: 'rounded-lg',
+    title: '創建日期', key: 'createdAt',
   },
 ]
 
-const memberStore = useMemberStore()
-const route = useRoute()
-const router = useRouter()
+const fieldMappings = {
+  createdAt: { num: 'createdAtNum', sort: 'createdAtSort' },
+  username: { num: 'usernameNum', sort: 'usernameSort' },
+  bloodType: { num: 'bloodTypeNum', sort: 'bloodTypeSort' },
+  birthday: { num: 'birthdayNum', sort: 'birthdaySort' },
+  phone: { num: 'phoneNum', sort: 'phoneSort' },
+  company: { num: 'companyNum', sort: 'companySort' },
+  jobTitle: { num: 'jobTitleNum', sort: 'jobTitleSort' },
+  event: { num: 'eventNum', sort: 'eventSort' },
+}
 
-const search = ref(JSON.stringify({
-  createdAt: route.query.createdAt,
-}))
+const memberStore = useMemberStore()
+const search = ref(JSON.stringify(getMemberListFilterFormItems()))
+const sortBy = ref(getSortNumQuery(fieldMappings))
 
 const {
   loadData,
@@ -46,21 +56,20 @@ const {
   currentPage,
   currentSize,
   totalVisible,
-} = usePagination(memberStore.memberList)
-
-const searchEmit = async params => {
-  search.value = JSON.stringify(params)
-}
+  searchEmit,
+} = usePagination(memberStore.memberList, search, sortBy)
 </script>
 
 <template>
   <div class="pa-3">
+    <MemberFilterMemberList @search-emit="searchEmit" />
     <VCard
       class="mt-5"
       elevation="3"
       rounded="lg"
     >
       <VDataTableServer
+        v-model:sort-by="sortBy"
         v-model:items-per-page="currentSize"
         v-model:page="currentPage"
         :search="search"
@@ -103,6 +112,3 @@ const searchEmit = async params => {
   </div>
 </template>
 
-<style scoped lang='scss'>
-
-</style>

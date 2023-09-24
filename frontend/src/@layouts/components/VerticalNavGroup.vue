@@ -1,6 +1,4 @@
 <script setup>
-import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
-
 const props = defineProps({
   item: {
     type: null,

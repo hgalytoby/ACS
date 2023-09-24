@@ -1,32 +1,34 @@
 <script setup>
-import { bloodTypeSelectItem } from '@/utils/filter-select-item'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import DatePicker from 'vue-datepicker-next'
 import useFilter from '@/hooks/useFilter'
-import { getMemberListFilterFormItems } from '@/utils/filter-form-items'
+import { getMemberRecordListFilterFormItems } from '@/utils/filter-form-items'
+import { statusSelectItem } from '@/utils/filter-select-item'
 
 const emit = defineEmits(['searchEmit'])
 
 const formSchema = yup.object({
+  status: yup.string().nullable(),
+  memberLocationName: yup.string().nullable(),
   memberName: yup.string().nullable(),
-  bloodType: yup.string().nullable(),
-  phone: yup.string().nullable(),
-  company: yup.string().nullable(),
-  jobTitle: yup.string().nullable(),
+  memberPhone: yup.string().nullable(),
+  memberCompany: yup.string().nullable(),
+  memberJobTitle: yup.string().nullable(),
   createdAt: yup.array().nullable(),
 })
 
 const initItems = {
-  username: undefined,
-  bloodType: undefined,
-  phone: undefined,
-  company: undefined,
-  jobTitle: undefined,
+  status: undefined,
+  memberLocationName: undefined,
+  memberName: undefined,
+  memberPhone: undefined,
+  memberCompany: undefined,
+  memberJobTitle: undefined,
   createdAt: [],
 }
 
-const formItems = reactive(getMemberListFilterFormItems())
+const formItems = reactive(getMemberRecordListFilterFormItems())
 
 const {
   myForm,
@@ -49,18 +51,18 @@ const {
       <VCardText>
         <VRow>
           <VCol
-            cols="12"
+            cols="15"
             sm="3"
           >
             <Field
               v-slot="{ field }"
-              name="username"
+              name="memberName"
               type="text"
             >
               <VTextField
                 v-bind="field"
-                v-model="formItems.username"
-                label="Username"
+                v-model="formItems.memberName"
+                label="MemberName"
                 type="text"
                 variant="outlined"
                 density="compact"
@@ -69,55 +71,7 @@ const {
             </Field>
             <ErrorMessage
               class="error-message"
-              name="username"
-            />
-          </VCol>
-          <VCol
-            cols="15"
-            sm="2"
-          >
-            <Field
-              v-slot="{ field }"
-              name="bloodType"
-              type="text"
-            >
-              <VSelect
-                v-model="formItems.bloodType"
-                v-bind="field"
-                label="請選擇血型"
-                :items="bloodTypeSelectItem"
-                item-title="name"
-                item-value="value"
-                placeholder="請選擇血型"
-                prepend-inner-icon="mdi-ab-testing"
-                variant="outlined"
-                density="compact"
-              />
-            </Field>
-            <ErrorMessage name="bloodType" />
-          </VCol>
-          <VCol
-            cols="15"
-            sm="2"
-          >
-            <Field
-              v-slot="{ field }"
-              name="phone"
-              type="text"
-            >
-              <VTextField
-                v-bind="field"
-                v-model="formItems.phone"
-                label="Phone"
-                type="text"
-                variant="outlined"
-                density="compact"
-                prepend-inner-icon="mdi-phone-outline"
-              />
-            </Field>
-            <ErrorMessage
-              class="error-message"
-              name="phone"
+              name="memberName"
             />
           </VCol>
           <VCol
@@ -126,13 +80,37 @@ const {
           >
             <Field
               v-slot="{ field }"
-              name="company"
+              name="memberPhone"
               type="text"
             >
               <VTextField
                 v-bind="field"
-                v-model="formItems.company"
-                label="Company"
+                v-model="formItems.memberPhone"
+                label="MemberPhone"
+                type="text"
+                variant="outlined"
+                density="compact"
+                prepend-inner-icon="mdi-phone-outline"
+              />
+            </Field>
+            <ErrorMessage
+              class="error-message"
+              name="memberPhone"
+            />
+          </VCol>
+          <VCol
+            cols="15"
+            sm="3"
+          >
+            <Field
+              v-slot="{ field }"
+              name="memberCompany"
+              type="text"
+            >
+              <VTextField
+                v-bind="field"
+                v-model="formItems.memberCompany"
+                label="MemberCompany"
                 type="text"
                 variant="outlined"
                 density="compact"
@@ -141,22 +119,22 @@ const {
             </Field>
             <ErrorMessage
               class="error-message"
-              name="company"
+              name="memberCompany"
             />
           </VCol>
           <VCol
             cols="15"
-            sm="2"
+            sm="3"
           >
             <Field
               v-slot="{ field }"
-              name="jobTitle"
+              name="memberJobTitle"
               type="text"
             >
               <VTextField
                 v-bind="field"
-                v-model="formItems.jobTitle"
-                label="JobTitle"
+                v-model="formItems.memberJobTitle"
+                label="MemberJobTitle"
                 type="text"
                 variant="outlined"
                 density="compact"
@@ -165,49 +143,60 @@ const {
             </Field>
             <ErrorMessage
               class="error-message"
-              name="jobTitle"
+              name="memberJobTitle"
             />
           </VCol>
           <VCol
             cols="12"
-            sm="5"
+            sm="3"
           >
             <Field
               v-slot="{ field }"
-              name="birthday"
+              name="memberLocationName"
               type="text"
             >
-              <DatePicker
-                v-model:value="formItems.birthday"
+              <VTextField
                 v-bind="field"
-                type="datetime"
-                range
-                value-type="format"
-              >
-                <template #input>
-                  <VTextField
-                    v-model="formItems.birthday"
-                    label="Birthday"
-                    hide-details
-                    variant="outlined"
-                    density="compact"
-                    readonly
-                    placeholder="Birthday"
-                    prepend-inner-icon="mdi-calendar-outline"
-                  />
-                </template>
-                <template #icon-calendar />
-              </DatePicker>
+                v-model="formItems.memberLocationName"
+                label="LocationName"
+                type="text"
+                variant="outlined"
+                density="compact"
+                prepend-inner-icon="mdi-map-marker-outline"
+              />
             </Field>
             <ErrorMessage
               class="error-message"
-              name="birthday"
+              name="memberLocationName"
             />
           </VCol>
-
+          <VCol
+            cols="15"
+            sm="3"
+          >
+            <Field
+              v-slot="{ field }"
+              name="status"
+              type="text"
+            >
+              <VSelect
+                v-model="formItems.status"
+                v-bind="field"
+                label="請選擇進出入狀態"
+                :items="statusSelectItem"
+                item-title="name"
+                item-value="value"
+                placeholder="進出入狀態"
+                prepend-inner-icon="mdi-exit-run"
+                variant="outlined"
+                density="compact"
+              />
+            </Field>
+            <ErrorMessage name="status" />
+          </VCol>
           <VCol
             cols="12"
-            sm="5"
+            sm="4"
           >
             <Field
               v-slot="{ field }"
@@ -236,7 +225,10 @@ const {
                 <template #icon-calendar />
               </DatePicker>
             </Field>
-            <ErrorMessage name="date" />
+            <ErrorMessage
+              class="error-message"
+              name="createdAt"
+            />
           </VCol>
           <VCol
             cols="12"

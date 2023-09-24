@@ -25,7 +25,11 @@ class CRUDUserLog(
     ]
 ):
     def get_select(self) -> Select | SelectOfScalar:
-        return select(self.model).options(joinedload(self.model.user)).join(self.model.user)
+        return (
+            select(self.model)
+            .options(joinedload(self.model.user))
+            .join(self.model.user)
+        )
 
 
 class CRUDSystemLog(

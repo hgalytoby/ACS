@@ -32,15 +32,20 @@ export const useMemberStore = defineStore({
     locationList: [],
   }),
   actions: {
-    async memberList() {
-      await reqMemberList().then(({ data }) => {
+    async memberList(params) {
+      await reqMemberList(params).then(({ data }) => {
         this.$patch({ list: data })
       })
     },
     async memberCreateOrUpdate(payload) {
       await reqMemberCreateOrUpdate(payload)
         .then(() => {
-          payload?.id ? toast.success('更新成功!') : toast.success('新增成功!')
+          if (payload?.id){
+            toast.success('更新成功!')
+          } else {
+            toast.success('新增成功!')
+            this.$router.push({ name: 'MemberList' })
+          }
         })
         .catch(() => {
         })

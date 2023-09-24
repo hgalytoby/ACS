@@ -4,6 +4,7 @@ import SettingsUserLogFilterLog from '@/views/pages/settings/SettingsUserLogFilt
 import { useLogStore } from '@/stores/log'
 import SettingsUserLogDialogs from '@/views/pages/settings/SettingsUserLogDialogs.vue'
 import { getSortNumQuery } from '@/utils/misc'
+import { getSettingsUserLogFilterFormItems } from '@/utils/filter-form-items'
 
 const headers = [
   {
@@ -34,10 +35,9 @@ const fieldMappings = {
 }
 
 const logStore = useLogStore()
-const search = ref()
+const search = ref(JSON.stringify(getSettingsUserLogFilterFormItems()))
 const sortBy = ref(getSortNumQuery(fieldMappings))
 const dialog = ref(null)
-
 
 const {
   loadData,

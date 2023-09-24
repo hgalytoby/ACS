@@ -17,28 +17,28 @@ class MemberRecordQuery(BaseQuery):
             ),
             member_location_name: Optional[str] = Query(
                 default=None,
-                description='會員位置名字',
+                description='成員地點名字',
                 alias='memberLocationName',
             ),
             member_name: Optional[str] = Query(
                 default=None,
-                description='會員名字',
+                description='成員名字',
                 alias='memberName',
             ),
             member_phone: Optional[str] = Query(
                 default=None,
-                description='會員手機',
-                regex=r'^09[0-9]{0,8}$',
+                description='成員手機',
+                regex=r'09\d{8}$',
                 alias='memberPhone',
             ),
             member_company: Optional[str] = Query(
                 default=None,
-                description='會員公司',
+                description='成員公司',
                 alias='memberCompany',
             ),
             member_job_title: Optional[str] = Query(
                 default=None,
-                description='會員職稱',
+                description='成員職稱',
                 alias='memberJobTitle',
             ),
             created_at: Optional[tuple[datetime | date, datetime | date]] = Query(
@@ -53,27 +53,27 @@ class MemberRecordQuery(BaseQuery):
             ),
             member_company_num: Optional[int] = Query(
                 default=None,
-                description='排序會員公司順序',
+                description='排序成員公司順序',
                 alias='memberCompanyNum',
             ),
             member_job_title_num: Optional[int] = Query(
                 default=None,
-                description='排序會員職稱順序',
+                description='排序成員職稱順序',
                 alias='memberJosTitleNum',
             ),
-            member_location_id_num: Optional[int] = Query(
+            member_location_name_num: Optional[int] = Query(
                 default=None,
-                description='排序會員地點順序',
-                alias='memberLocationIdNum',
+                description='排序成員地點順序',
+                alias='memberLocationNameNum',
             ),
             member_name_num: Optional[int] = Query(
                 default=None,
-                description='排序會員名字順序',
+                description='排序成員名字順序',
                 alias='memberNameNum',
             ),
             member_phone_num: Optional[int] = Query(
                 default=None,
-                description='排序會員手機順序',
+                description='排序成員手機順序',
                 alias='memberPhoneNum',
             ),
             created_at_num: Optional[int] = Query(
@@ -86,29 +86,29 @@ class MemberRecordQuery(BaseQuery):
                 description='排序進出入',
                 alias='statusSort',
             ),
-            member_location_id_sort: Optional[bool] = Query(
+            member_location_name_sort: Optional[bool] = Query(
                 default=None,
-                description='排序會員地點',
-                alias='memberLocationIdSort',
+                description='排序成員地點',
+                alias='memberLocationNameSort',
             ),
             member_name_sort: Optional[bool] = Query(
                 default=None,
-                description='排序會員名字',
+                description='排序成員名字',
                 alias='memberNameSort',
             ),
             member_phone_sort: Optional[bool] = Query(
                 default=None,
-                description='排序會員手機',
+                description='排序成員手機',
                 alias='memberPhoneSort',
             ),
             member_job_title_sort: Optional[bool] = Query(
                 default=None,
-                description='排序會員職稱',
+                description='排序成員職稱',
                 alias='memberJobTitleSort',
             ),
             member_company_sort: Optional[bool] = Query(
                 default=None,
-                description='排序會員公司',
+                description='排序成員公司',
                 alias='memberCompanySort',
             ),
             created_at_sort: Optional[bool] = Query(
@@ -181,9 +181,9 @@ class MemberRecordQuery(BaseQuery):
                 num=status_num,
             ),
             SortSql(
-                sql_field=MemberRecordModel.member_location_id,
-                sort=member_location_id_sort,
-                num=member_location_id_num,
+                sql_field=MemberRecordModel.member_location_name,
+                sort=member_location_name_sort,
+                num=member_location_name_num,
             ),
             SortSql(
                 sql_field=MemberRecordModel.created_at,
@@ -235,7 +235,7 @@ class MemberQuery(BaseQuery):
             phone: Optional[str] = Query(
                 default=None,
                 description='手機號碼',
-                regex=r'\d+',
+                regex=r'09\d{8}$',
             ),
             name_num: Optional[int] = Query(
                 default=None,

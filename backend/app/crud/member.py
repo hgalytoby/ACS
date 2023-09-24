@@ -89,11 +89,13 @@ class CRUDMemberLocation(
                 ],
             ),
         )
+
         if member_exist:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail='Deletion not allowed. Members exist.',
             )
+
         instance = await super().destroy(item_id=item_id, db_session=db_session)
         return instance
 
@@ -149,6 +151,7 @@ class CRUDMember(
                 ],
             ),
         )
+
         if member_status_exist:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -156,6 +159,7 @@ class CRUDMember(
                        f'The member is located within the {member_status_exist.member_location.name} '
                        f'and cannot be deleted.',
             )
+
         instance = await super().destroy(item_id=item_id, db_session=db_session)
         await Storage.remove_qr_code(instance=instance)
         await Storage.remove_image(instance=instance)
@@ -214,8 +218,10 @@ class CRUDMemberRecord(
     ) -> MemberRecordHourlyCountRead:
         items = await self.get_multi(query=query)
         result = [MemberRecordHourlyCountDataRead(hour=i) for i in range(25)]
+
         for item in items:  # type: MemberRecordModel
             result[item.created_at.hour].count += 1
+
         return MemberRecordHourlyCountRead(
             data=result,
             start_date=query.date_range[0],
@@ -262,6 +268,7 @@ class CRUDMemberStatus(
         )
 
         data = defaultdict(list)
+
         for item in items:  # type: MemberStatusModel
             data[item.member_location_id.hex].append(item.member)
 
@@ -270,6 +277,7 @@ class CRUDMemberStatus(
                 sort=[MemberLocationModel.created_at.asc()]
             ),
         )
+
         result = [
             MemberStatusRead(
                 member_location=member_location,
@@ -294,6 +302,7 @@ class CRUDMemberStatus(
         member_location = await crud_member_location.get(
             item_id=create_item.member_location_id,
         )
+
         if not member_location:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -315,6 +324,7 @@ class CRUDMemberStatus(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail=f'請從{instance.member_location.name}離開!'
                 )
+
             await db_session.delete(instance)
         elif not create_item.status:
             raise HTTPException(
@@ -324,6 +334,7 @@ class CRUDMemberStatus(
         else:
             db_obj = self.model.from_orm(create_item)
             db_session.add(db_obj)
+
         return member, member_location
 
     async def create(

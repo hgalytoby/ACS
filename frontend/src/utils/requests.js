@@ -51,7 +51,15 @@ request.interceptors.response.use(
 export const jwtRequest = axios.create(
   {
     paramsSerializer: params => {
-      return qs.stringify(params, { arrayFormat: 'repeat' })
+      const filteredParams = {}
+
+      for (const key in params) {
+        if (params[key] !== null) {
+          filteredParams[key] = params[key]
+        }
+      }
+      
+      return qs.stringify(filteredParams, { arrayFormat: 'repeat' })
     },
   },
 )

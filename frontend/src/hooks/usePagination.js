@@ -15,9 +15,9 @@ export default function(getDataCallback, searchRef, sortRef) {
     paginationStore.updateReset(false)
 
     await getDataCallback({
+      ...query,
       page: currentPage.value,
       size: currentSize.value,
-      ...query,
     })
     query.tab = route.query.tab
     await router.push({
@@ -33,6 +33,7 @@ export default function(getDataCallback, searchRef, sortRef) {
     loading.value = true
     currentPage.value = page
     currentSize.value = itemsPerPage
+    console.log(sortBy)
 
     const params = search ? JSON.parse(search) : {}
 
@@ -42,6 +43,7 @@ export default function(getDataCallback, searchRef, sortRef) {
       params[`${field}Num`] = i
       params[`${field}Sort`] = item.order === 'asc'
     })
+    console.log(params)
 
     await getData(params)
 

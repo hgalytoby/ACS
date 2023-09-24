@@ -3,6 +3,7 @@ import { useUserStore } from '@/stores/user'
 import usePagination from '@/hooks/usePagination'
 import SettingsUserListFilterLog from '@/views/pages/settings/SettingsUserListFilterLog.vue'
 import { getSortNumQuery } from '@/utils/misc'
+import { getSettingsUserListFilterFormItems } from '@/utils/filter-form-items'
 
 const headers = [
   {
@@ -26,8 +27,8 @@ const fieldMappings = {
 }
 
 const userStore = useUserStore()
+const search = ref(JSON.stringify(getSettingsUserListFilterFormItems()))
 const sortBy = ref(getSortNumQuery(fieldMappings))
-const search = ref()
 
 const {
   loadData,

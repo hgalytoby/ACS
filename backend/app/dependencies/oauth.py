@@ -10,13 +10,13 @@ def is_oauth_linked(
     def _(
             user: UserModel = Depends(current_active_verified_user),
     ):
-
         for oauth in user.oauth_accounts:
             if oauth.oauth_name == provider_name:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail='Linked.',
                 )
+
         return user
 
     return _

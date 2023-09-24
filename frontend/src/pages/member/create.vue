@@ -1,15 +1,13 @@
 <script setup>
 import { useMemberStore } from '@/stores/member'
-import defaultAvatar from '@images/avatars/default-avatar.png'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import { bloodTypeSelectItem } from '@/utils/filter-select-item'
 import DatePicker from 'vue-datepicker-next'
-import ImageLazyProgress from '@/components/ImageLazyProgress.vue'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const formSchema = yup.object({
   image: yup.string().required(),
-
   name: yup.string().required().max(32),
   bloodType: yup.string().required(),
   birthday: yup.string().required(),
@@ -25,27 +23,11 @@ const formSchema = yup.object({
 const memberStore = useMemberStore()
 const submitBtnLoading = ref(false)
 const birthday = ref()
-const refInputEl = ref()
-const fileModel = ref()
 const myForm = ref(null)
-const test = ref(true)
+const imageUploadRef = ref()
 
-const imageChange = file => {
-  const fileReader = new FileReader()
-  const { files } = file.target
-
-  if (files && files.length) {
-    fileReader.readAsDataURL(files[0])
-    fileReader.onload = () => {
-      if (typeof fileReader.result === 'string')
-        fileModel.value = fileReader.result
-    }
-  }
-}
-
-const resetFile = () => {
-  refInputEl.value.value = null
-  fileModel.value = undefined
+const resetFormImg = () => {
+  myForm.value.setFieldValue('image', null)
 }
 
 const submit = async ({ image, ...payload }) => {
@@ -53,7 +35,7 @@ const submit = async ({ image, ...payload }) => {
 
   const data = new FormData()
 
-  data.append('image', refInputEl.value.files[0])
+  data.append('image', imageUploadRef.value.refInputEl.files[0])
   data.append('item', JSON.stringify(payload))
   await memberStore.memberCreateOrUpdate(data)
   submitBtnLoading.value = false
@@ -61,126 +43,17 @@ const submit = async ({ image, ...payload }) => {
 </script>
 
 <template>
-  <Form
-    ref="myForm"
-    :validation-schema="formSchema"
-    @submit="submit"
-  >
-    <VCard
-      flat
-      class="pa-3"
+  <VCard class="pa-3">
+    <Form
+      ref="myForm"
+      :validation-schema="formSchema"
+      @submit="submit"
     >
       <VCardText class="d-flex">
-        <!--        <UploadFile /> -->
-        <VImg
-          class="me-6 custom-image"
-          width="100"
-          max-width="120"
-          :src="fileModel || defaultAvatar"
-          :lazy-src="fileModel || defaultAvatar"
-        >
-          <template #placeholder>
-            <ImageLazyProgress />
-          </template>
-        </VImg>
-        <div class="d-flex flex-column justify-center gap-5">
-          <div class="d-flex flex-wrap gap-2">
-            <VBtn
-              color="primary"
-              @click="refInputEl?.click()"
-            >
-              <VIcon
-                icon="mdi-cloud-upload-outline"
-                class="d-sm-none"
-              />
-              <span class="d-none d-sm-block">Upload new photo</span>
-            </VBtn>
-
-            <Field
-              v-slot="{ field }"
-              name="image"
-              type="file"
-            >
-              <input
-                v-bind="field"
-                ref="refInputEl"
-                type="file"
-                name="file"
-                accept=".jpeg,.png,.jpg,GIF"
-                hidden
-                @change="imageChange"
-              >
-            </Field>
-            <VBtn
-              color="error"
-              variant="outlined"
-              @click="resetFile"
-            >
-              <span class="d-none d-sm-block">Reset</span>
-              <VIcon
-                icon="mdi-refresh"
-                class="d-sm-none"
-              />
-            </VBtn>
-          </div>
-          <ErrorMessage
-            class="error-message"
-            name="image"
-          />
-          <p class="text-body-1 mb-0">
-            Allowed JPG, GIF or PNG. Max size of 800K
-          </p>
-        </div>
-        <!--        <div> -->
-        <!--          <VBtn -->
-        <!--            color="primary" -->
-        <!--            class="me-3 my-5" -->
-        <!--            @click="refInputEl?.click()" -->
-        <!--          > -->
-        <!--            <VIcon -->
-        <!--              class="d-sm-none" -->
-        <!--              icon="mdi-cloud-upload-outline" -->
-        <!--            /> -->
-        <!--            <span class="d-none d-sm-block">Upload new photo</span> -->
-        <!--          </VBtn> -->
-        <!--          <Field -->
-        <!--            v-slot="{ field }" -->
-        <!--            v-model="image" -->
-        <!--            name="image" -->
-        <!--            type="file" -->
-        <!--          > -->
-        <!--            <input -->
-        <!--              v-bind="field" -->
-        <!--              ref="refInputEl" -->
-        <!--              type="file" -->
-        <!--              name="file" -->
-        <!--              accept=".jpeg,.png,.jpg,GIF" -->
-        <!--              hidden -->
-        <!--              @change="imageChange" -->
-        <!--            > -->
-        <!--          </Field> -->
-
-        <!--          <VBtn -->
-        <!--            color="error" -->
-        <!--            variant="outlined" -->
-        <!--            class="mx-3 my-5" -->
-        <!--            @click="resetImage" -->
-        <!--          > -->
-        <!--            <span class="d-none d-sm-block">Reset</span> -->
-        <!--            <VIcon -->
-        <!--              icon="mdi-refresh" -->
-        <!--              class="d-sm-none" -->
-        <!--            /> -->
-        <!--          </VBtn> -->
-        <!--          <br> -->
-        <!--          <ErrorMessage -->
-        <!--            class="error-message" -->
-        <!--            name="image" -->
-        <!--          /> -->
-        <!--          <p class="text-sm"> -->
-        <!--            Allowed JPG, GIF or PNG. Max size of 800K -->
-        <!--          </p> -->
-        <!--        </div> -->
+        <ImageUpload
+          ref="imageUploadRef"
+          :reset-callback="resetFormImg"
+        />
       </VCardText>
       <VCardText>
         <v-row>
@@ -335,7 +208,6 @@ const submit = async ({ image, ...payload }) => {
           </VCol>
           <VCol cols="12">
             <VBtn
-
               color="primary"
               type="submit"
             >
@@ -346,15 +218,15 @@ const submit = async ({ image, ...payload }) => {
               color="error"
               variant="outlined"
               type="reset"
-              @click="resetFile"
+              @click="imageUploadRef?.resetImgModel"
             >
               重置
             </VBtn>
           </VCol>
         </v-row>
       </VCardText>
-    </VCard>
-  </Form>
+    </Form>
+  </VCard>
 </template>
 
 <style lang='scss' scoped>

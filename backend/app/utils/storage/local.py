@@ -19,11 +19,14 @@ class LocalStorge(BaseStorage):
     ):
         if not image:
             return
+
         file = await image.read()
         path = f'/static/{instance.get_folder_name()}/{instance.id}/{time.time()}_image_{image.filename}'
         img_obj = self.valid_image(image=file)
+
         if size:
             file = self.resize(image=img_obj, size=size)
+
         await FileTool.save(path=f'.{path}', file=file)
         instance.set_file_value(value=path)
 
@@ -37,8 +40,10 @@ class LocalStorge(BaseStorage):
             'id': str(instance.id),
             'project': settings.project,
         }
+
         image = qrcode.make(base64.b64encode(orjson.dumps(data)))
         image.save(f'.{path}', kind='png', dark='#000000', light=None)
+
         instance.set_qrcode_value(value=path)
 
     async def remove_qrcode(self, instance: QrCodeModelType):

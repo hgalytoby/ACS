@@ -7,7 +7,12 @@ from redis.exceptions import LockError
 
 from app.dependencies.deps import authorize_api
 from app.core.config import settings
-from app.crud import crud_member_location, crud_member_record, crud_member, crud_member_status
+from app.crud import (
+    crud_member_location,
+    crud_member_record,
+    crud_member,
+    crud_member_status,
+)
 from app.dependencies.base import web_params
 from app.dependencies.query import MemberQuery, MemberRecordQuery
 from app.schemas.member import (

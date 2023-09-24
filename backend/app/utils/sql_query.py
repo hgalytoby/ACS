@@ -17,10 +17,13 @@ class BaseQuery:
     ):
         if not date_arr:
             return
+
         start_date, end_date = date_arr[0], date_arr[1]
+
         if start_date:
             if isinstance(start_date, datetime):
                 start_date = datetime.strptime(f'{start_date.date()} {start_date.time()}', '%Y-%m-%d %H:%M:%S')
+
             self.query_list.append(
                 QuerySql(
                     expression=ge(sql_field, start_date),
@@ -28,9 +31,11 @@ class BaseQuery:
                     include_none=False,
                 ),
             )
+
         if end_date:
             if isinstance(end_date, datetime):
                 end_date = datetime.strptime(f'{end_date.date()} {end_date.time()}', '%Y-%m-%d %H:%M:%S')
+
             self.query_list.append(
                 QuerySql(
                     expression=le(sql_field, end_date),
@@ -46,6 +51,7 @@ class BaseQuery:
                 # 如果是 Value 是 None 且 include_null 是 False 就不做搜尋。
                 continue
             result.append(q.expression)
+
         return result
 
     def sort(self) -> list[UnaryExpression]:
@@ -56,6 +62,7 @@ class BaseQuery:
                     result[item.num] = item.sql_field.desc()
                 else:
                     result[item.num] = item.sql_field.asc()
+
         return list(map(lambda x: result[x], sorted(result.keys())))
 
 

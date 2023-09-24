@@ -19,3 +19,9 @@ export const bloodTypeSelectItem = [
   { name: 'AB', value: 'AB' },
   { name: 'O', value: 'O' },
 ]
+
+export const statusSelectItem = [
+  { name: '請選擇進出入狀態', value: null },
+  { name: '進入', value: true },
+  { name: '離開', value: false },
+]

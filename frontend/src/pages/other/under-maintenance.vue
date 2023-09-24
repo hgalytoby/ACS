@@ -13,6 +13,3 @@ import underMaintenance from '@images/pages/under-maintenance.png'
     </template>
   </OtherBase>
 </template>
-
-<style lang="scss">
-</style>

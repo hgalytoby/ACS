@@ -43,16 +43,18 @@ app = FastAPI(
     docs_url='/docs' if is_dev else None,
     lifespan=lifespan,
 )
-app.add_middleware(
-    DebugToolbarMiddleware,
-    panels=['app.db.session.SQLAlchemyPanel'],
-)
+
 app.add_middleware(
     SQLAlchemyMiddleware,
     custom_engine=engine,
 )
 
 if is_dev:
+    # 加 DebugToolbarMiddleware 速度會變慢。
+    app.add_middleware(
+        DebugToolbarMiddleware,
+        panels=['app.db.session.SQLAlchemyPanel'],
+    )
     app.mount('/static', StaticFiles(directory='static'), name='static')
 
 app.include_router(router, prefix='/api')
@@ -72,4 +74,6 @@ if __name__ == '__main__':
         host=settings.server_host,
         port=settings.server_port,
         reload=True,
+        proxy_headers=True,
+        forwarded_allow_ips='*',
     )

@@ -13,7 +13,7 @@ const props = defineProps({
 
 <template>
   <IconBtn>
-    <VIcon icon="mdi-dots-vertical"`/>
+    <VIcon icon="mdi-dots-vertical"/>
 
     <VMenu
       v-if="props.menuList"

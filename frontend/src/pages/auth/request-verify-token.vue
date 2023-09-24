@@ -5,14 +5,12 @@ import { Form, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import { useAuthStore } from '@/stores/auth'
 
-const auth = useAuthStore()
-
 const formSchema = yup.object({
   email: yup.string().required().email(),
 })
 
+const auth = useAuthStore()
 const submitBtnLoading = ref(false)
-
 async function submit(payload) {
   submitBtnLoading.value = true
   await auth.requestVerifyToken(payload)
