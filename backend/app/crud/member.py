@@ -48,11 +48,11 @@ class CRUDMemberLocation(
     ]
 ):
     async def create(
-            self,
-            *,
-            create_item: MemberLocationCreate | MemberLocationModel,
-            image: UploadFile = File(),
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        create_item: MemberLocationCreate | MemberLocationModel,
+        image: UploadFile = File(),
+        db_session: Optional[AsyncSession] = None,
     ) -> MemberLocationModel:
         instance = await super().create(create_item=create_item, db_session=db_session)
         await Storage.save_image(instance=instance, image=image)
@@ -60,12 +60,12 @@ class CRUDMemberLocation(
         return instance
 
     async def update(
-            self,
-            *,
-            current_item: MemberLocationModel,
-            update_item: MemberLocationUpdate | dict[str, Any] | MemberLocationModel,
-            db_session: Optional[AsyncSession] = None,
-            image: UploadFile = File(default=None),
+        self,
+        *,
+        current_item: MemberLocationModel,
+        update_item: MemberLocationUpdate | dict[str, Any] | MemberLocationModel,
+        db_session: Optional[AsyncSession] = None,
+        image: UploadFile = File(default=None),
     ) -> MemberLocationModel:
         instance = await super().update(
             current_item=current_item,
@@ -77,10 +77,10 @@ class CRUDMemberLocation(
         return instance
 
     async def destroy(
-            self,
-            *,
-            item_id: UUID | str,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        item_id: UUID | str,
+        db_session: Optional[AsyncSession] = None,
     ) -> MemberLocationModel:
         member_exist = await crud_member_status.get_first(
             query=QueryList(
@@ -109,25 +109,29 @@ class CRUDMember(
     ]
 ):
     async def create(
-            self,
-            *,
-            create_item: MemberCreate | MemberModel,
-            image: UploadFile = File(),
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        create_item: MemberCreate | MemberModel,
+        image: UploadFile = File(),
+        db_session: Optional[AsyncSession] = None,
     ) -> MemberModel:
-        instance = await super().create(create_item=create_item, db_session=db_session)
+        instance = await super().create(
+            create_item=create_item,
+            db_session=db_session,
+        )
+        print(123)
         await Storage.save_image(instance=instance, image=image)
         await Storage.save_qrcode(instance=instance)
         instance = await self.save(instance=instance)
         return instance
 
     async def update(
-            self,
-            *,
-            current_item: MemberModel,
-            update_item: MemberUpdate | dict[str, Any] | MemberModel,
-            db_session: Optional[AsyncSession] = None,
-            image: UploadFile = File(default=None),
+        self,
+        *,
+        current_item: MemberModel,
+        update_item: MemberUpdate | dict[str, Any] | MemberModel,
+        db_session: Optional[AsyncSession] = None,
+        image: UploadFile = File(default=None),
     ) -> MemberModel:
         instance = await super().update(
             current_item=current_item,
@@ -139,10 +143,10 @@ class CRUDMember(
         return instance
 
     async def destroy(
-            self,
-            *,
-            item_id: UUID | str,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        item_id: UUID | str,
+        db_session: Optional[AsyncSession] = None,
     ) -> MemberModel:
         member_status_exist = await crud_member_status.get_first(
             query=QueryList(
@@ -166,8 +170,8 @@ class CRUDMember(
         return instance
 
     async def growth_chart(
-            self,
-            query: DateRelatedQueryList,
+        self,
+        query: DateRelatedQueryList,
     ) -> list[BaseGrowthRead]:
         items = await self.get_multi(query=query)
         result = DateGrowthChart.calculate_date_growth(
@@ -179,8 +183,8 @@ class CRUDMember(
         return result
 
     async def new_member_growth_chart(
-            self,
-            query: DateRelatedQueryList,
+        self,
+        query: DateRelatedQueryList,
     ) -> list[BaseGrowthRead]:
         items = await self.get_multi(query=query)
         result = DateGrowthChart.calculate_date_growth(
@@ -201,8 +205,8 @@ class CRUDMemberRecord(
     ]
 ):
     async def member_record_growth_chart(
-            self,
-            query: DateRelatedQueryList,
+        self,
+        query: DateRelatedQueryList,
     ) -> list[BaseGrowthRead]:
         items = await self.get_multi(query=query)
         return DateGrowthChart.calculate_date_growth(
@@ -213,8 +217,8 @@ class CRUDMemberRecord(
         )
 
     async def member_record_hourly_count_chart(
-            self,
-            query: DateRelatedQueryList,
+        self,
+        query: DateRelatedQueryList,
     ) -> MemberRecordHourlyCountRead:
         items = await self.get_multi(query=query)
         result = [MemberRecordHourlyCountDataRead(hour=i) for i in range(25)]
@@ -244,10 +248,10 @@ class CRUDMemberStatus(
         )
 
     async def get(
-            self,
-            *,
-            item_id: UUID,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        item_id: UUID,
+        db_session: Optional[AsyncSession] = None,
     ) -> Optional[MemberStatusModel]:
         db_session = db_session or self.db.session
         query = self.get_select().where(self.model.member_id == item_id)
@@ -255,10 +259,10 @@ class CRUDMemberStatus(
         return response.scalar_one_or_none()
 
     async def get_multi(
-            self,
-            query: Optional[QueryList] = None,
-            db_session: Optional[AsyncSession] = None,
-            paginated: bool = False,
+        self,
+        query: Optional[QueryList] = None,
+        db_session: Optional[AsyncSession] = None,
+        paginated: bool = False,
     ) -> list[MemberStatusRead]:
         query = query or QueryList()
         items = await super().get_multi(
@@ -288,9 +292,9 @@ class CRUDMemberStatus(
         return result
 
     async def handler_member_status(
-            self,
-            create_item: MemberStatusCreate,
-            db_session: AsyncSession,
+        self,
+        create_item: MemberStatusCreate,
+        db_session: AsyncSession,
     ) -> tuple[MemberModel, MemberLocationModel]:
         member = await crud_member.get(item_id=create_item.member_id)
         if not member:
@@ -338,9 +342,9 @@ class CRUDMemberStatus(
         return member, member_location
 
     async def create(
-            self,
-            create_item: MemberStatusCreate,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        create_item: MemberStatusCreate,
+        db_session: Optional[AsyncSession] = None,
     ) -> MemberStatusCreatedRead:
         db_session = db_session or self.db.session
         member, member_location = await self.handler_member_status(

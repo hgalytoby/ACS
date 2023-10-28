@@ -123,10 +123,10 @@ async function submit({ email, password }) {
           >
             <RouterLink
               class="text-primary ms-2"
-              :to="{name:'Camera'}"
+              :to="{name:'AuthCamera'}"
             >
               <VIcon icon="mdi-camera-marker-outline" />
-              Create an account
+              Camera
             </RouterLink>
           </VCol>
         </VRow>

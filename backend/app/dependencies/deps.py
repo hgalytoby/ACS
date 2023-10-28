@@ -14,8 +14,8 @@ def valid_accept_token(divergence: str = Header()):
 
 
 async def authorize_api(
-        request: Request,
-        user: UserModel = Depends(current_active_verified_user),
+    request: Request,
+    user: UserModel = Depends(current_active_verified_user),
 ):
     if user.is_superuser:
         return

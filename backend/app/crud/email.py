@@ -20,10 +20,10 @@ class CRUDEmailSettings(
     ],
 ):
     async def get_event(
-            self,
-            *,
-            event: SystemLogEvent,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        event: SystemLogEvent,
+        db_session: Optional[AsyncSession] = None,
     ) -> Optional[EmailSettingsModel]:
         db_session = db_session or self.db.session
         query = self.get_select().where(self.model.event == event)

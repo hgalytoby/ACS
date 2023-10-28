@@ -25,10 +25,10 @@ class CRUDFrontend(
         return select(self.model).options(selectinload(self.model.children))
 
     async def get_multi(
-            self,
-            query: Optional[QueryList] = None,
-            db_session: Optional[AsyncSession] = None,
-            paginated: bool = False,
+        self,
+        query: Optional[QueryList] = None,
+        db_session: Optional[AsyncSession] = None,
+        paginated: bool = False,
     ) -> list[FrontendRead | FrontendModel]:
         """"""
         db_session = db_session or self.db.session

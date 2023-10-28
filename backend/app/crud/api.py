@@ -27,11 +27,11 @@ class CRUDApiGroup(
     ]
 ):
     async def update_api_ids(
-            self,
-            *,
-            current_item: ApiGroupModel,
-            api_items: list[ApiModel],
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        current_item: ApiGroupModel,
+        api_items: list[ApiModel],
+        db_session: Optional[AsyncSession] = None,
     ) -> ApiGroupDetailRead:
         db_session = db_session or self.db.session
         current_item.api_list = api_items

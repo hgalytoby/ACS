@@ -48,9 +48,9 @@ class UserRoleView:
         tags=['角色'],
     )
     async def update_user_ids(
-            self,
-            role_id: UUID,
-            user_ids: list[UUID],
+        self,
+        role_id: UUID,
+        user_ids: list[UUID],
     ) -> RoleUserRead:
         role = await crud_role.get(item_id=role_id)
         if not role:
@@ -67,9 +67,9 @@ class UserRoleView:
         tags=['角色'],
     )
     async def update_api_ids(
-            self,
-            role_id: UUID,
-            api_ids: list[UUID],
+        self,
+        role_id: UUID,
+        api_ids: list[UUID],
     ) -> RoleApiRead:
         role = await crud_role.get(item_id=role_id)
         if not role:
@@ -86,9 +86,9 @@ class UserRoleView:
         tags=['角色'],
     )
     async def update_role_to_frontends(
-            self,
-            role_id: UUID,
-            frontend_ids: list[UUID],
+        self,
+        role_id: UUID,
+        frontend_ids: list[UUID],
     ) -> RoleFrontendListRead:
         frontend_list = await crud_frontend.get_by_ids(list_ids=frontend_ids)
         role = await crud_role.get(item_id=role_id)
@@ -105,13 +105,13 @@ class UserRoleView:
         tags=['角色'],
     )
     async def get(
-            self,
-            role_id: UUID,
-            detail: bool = Query(
-                default=False,
-                description='詳細資料',
-                title='詳細資料',
-            ),
+        self,
+        role_id: UUID,
+        detail: bool = Query(
+            default=False,
+            description='詳細資料',
+            title='詳細資料',
+        ),
     ) -> RoleRead | RoleDetailRead:
         instance = await crud_role.get(item_id=role_id)
         if not instance:

@@ -18,6 +18,9 @@ export const getSortNumQuery = fieldMappings => {
     }
   }
   result.sort((a, b) => a.num - b.num)
+  if (result.length === 0) {
+    return [{ key: 'createdAt', order: 'desc' }]
+  } 
   
   return result
 }

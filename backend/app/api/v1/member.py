@@ -45,8 +45,8 @@ class MemberView:
         tags=['成員'],
     )
     async def get_multi(
-            self,
-            query=web_params(MemberQuery),
+        self,
+        query=web_params(MemberQuery),
     ) -> Page[MemberRead]:
         items = await crud_member.get_multi(query=query, paginated=True)
         return items
@@ -59,9 +59,9 @@ class MemberView:
         tags=['成員']
     )
     async def create(
-            self,
-            item: MemberCreate,
-            image: UploadFile = File(),
+        self,
+        item: MemberCreate,
+        image: UploadFile = File(),
     ) -> MemberRead:
         instance = await crud_member.create(create_item=item, image=image)
         return instance
@@ -87,10 +87,10 @@ class MemberView:
         tags=['成員']
     )
     async def update(
-            self,
-            member_id: UUID,
-            item: MemberUpdate,
-            image: Optional[UploadFile] = File(None),
+        self,
+        member_id: UUID,
+        item: MemberUpdate,
+        image: Optional[UploadFile] = File(None),
     ) -> MemberRead:
         instance = await crud_member.get(item_id=member_id)
         if not instance:
@@ -124,8 +124,8 @@ class MemberRecordView:
         dependencies=[Depends(authorize_api)],
     )
     async def get_multi(
-            self,
-            query=web_params(MemberRecordQuery),
+        self,
+        query=web_params(MemberRecordQuery),
     ) -> Page[MemberRecordRead]:
         items = await crud_member_record.get_multi(query=query, paginated=True)
         return items
@@ -168,9 +168,9 @@ class MemberLocationView:
         tags=['成員'],
     )
     async def create(
-            self,
-            item: MemberLocationCreate,
-            image: UploadFile = File(),
+        self,
+        item: MemberLocationCreate,
+        image: UploadFile = File(),
     ) -> MemberLocationRead:
         instance = await crud_member_location.create(
             create_item=item,
@@ -200,10 +200,10 @@ class MemberLocationView:
         tags=['成員'],
     )
     async def update(
-            self,
-            location_id: UUID,
-            item: MemberLocationUpdate,
-            image: Optional[UploadFile] = File(None),
+        self,
+        location_id: UUID,
+        item: MemberLocationUpdate,
+        image: Optional[UploadFile] = File(None),
     ) -> MemberLocationRead:
         instance = await crud_member_location.get(item_id=location_id)
         if not instance:
@@ -241,34 +241,6 @@ class MemberStatusView:
     )
     async def get_multi(self) -> list[MemberStatusRead]:
         return await crud_member_status.get_multi()
-
-    @router.post(
-        '/members-status',
-        name=APIAccess.PRIVATE,
-        summary='新增進出資料',
-        status_code=status.HTTP_200_OK,
-        tags=['成員'],
-    )
-    async def create(
-            self,
-            item: MemberStatusCreate,
-            request: Request,
-    ) -> MemberStatusCreatedRead:
-        redis = request.state.redis
-        try:
-            async with redis.lock(item.member_id.hex, blocking_timeout=0.1, timeout=0.5):
-                result = await crud_member_status.create(create_item=item)
-                message = WebSocketEventSchema(
-                    event=WebSocketEvent.MEMBER_STATUS,
-                    data=result,
-                ).json()
-                await broadcast.publish(channel=settings.project, message=message)
-        except LockError:
-            raise HTTPException(status_code=status.HTTP_423_LOCKED, detail='too fast.')
-        else:
-            message = WebSocketEventSchema(event=WebSocketEvent.MEMBER_STATUS_LIST).json()
-            await broadcast.publish(channel=settings.project, message=message)
-            return result
 
 
 add_pagination(router)

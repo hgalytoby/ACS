@@ -11,6 +11,7 @@ import {
   reqMembersLocationDestroy,
 } from '@/api/member'
 import { useToast } from 'vue-toastification'
+import { it } from 'vuetify/locale'
 
 const toast = useToast()
 

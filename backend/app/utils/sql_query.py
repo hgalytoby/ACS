@@ -11,9 +11,9 @@ class BaseQuery:
         self.sort_list: list[SortSql] = []
 
     def convert_datetime_to_query(
-            self,
-            sql_field: datetime | date,
-            date_arr: Optional[tuple[datetime | date, datetime | date]] = None,
+        self,
+        sql_field: datetime | date,
+        date_arr: Optional[tuple[datetime | date, datetime | date]] = None,
     ):
         if not date_arr:
             return
@@ -58,6 +58,7 @@ class BaseQuery:
         result = {}
         for item in self.sort_list:
             if item.sort is not None:
+                print(item.sort)
                 if item.sort is True:
                     result[item.num] = item.sql_field.desc()
                 else:

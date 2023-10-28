@@ -2,27 +2,26 @@ from enum import Enum
 from functools import cache
 
 
-class BaseEventEnum(Enum):
-    def __new__(cls, value, doc=None):
-        self = object.__new__(cls)
-        self._value_ = value
-        if doc is not None:
-            self.__doc__ = doc
-        return self
-
-    @classmethod
-    def md(cls):
-        result = '''
-        '''
-        result += '''
-        '''.join([f'{item.name} = {item.__doc__}' for item in cls])
-        return result
+class AppEnvPath(str, Enum):
+    """
+    PROD = 正式環境
+    DEV = 開發環境
+    TEST = 測試環境
+    """
+    PROD = '.env'
+    DEV = '.env.dev'
+    TEST = '.env.test'
 
 
-class AppEnv(BaseEventEnum):
-    PRODUCTION = 'prod', '正式環境'
-    DEVELOPMENT = 'dev', '開發環境'
-    TESTING = 'test', '測試環境'
+class AppEnv(str, Enum):
+    """
+    PROD = 正式環境
+    DEV = 開發環境
+    TEST = 測試環境
+    """
+    PROD = 'PROD'
+    DEV = 'DEV'
+    TEST = 'TEST'
 
 
 class AllowedImageExtensions(str, Enum):
@@ -43,12 +42,18 @@ class AllowedImageExtensions(str, Enum):
         return type_ in cls.rule()
 
 
-class ImageFailDetail(BaseEventEnum):
-    INVALID_IMAGE_FORMAT = 'INVALID_IMAGE_FORMAT', '無效圖片格式'
+class ImageFailDetail(str, Enum):
+    """
+    INVALID_IMAGE_FORMAT = 無效圖片格式
+    """
+    INVALID_IMAGE_FORMAT = 'INVALID_IMAGE_FORMAT'
 
 
-class UserFailDetail(BaseEventEnum):
-    USER_EMAIL_EXIST = 'USER_EMAIL_EXIST', '使用者信箱已存在'
+class UserFailDetail(str, Enum):
+    """
+    USER_EMAIL_EXIST = 使用者信箱已存在
+    """
+    USER_EMAIL_EXIST = 'USER_EMAIL_EXIST'
 
 
 class SteinsGate(str, Enum):
@@ -56,35 +61,62 @@ class SteinsGate(str, Enum):
     DIVERGENCE = '1.048596'
 
 
-class WebSocketEvent(BaseEventEnum):
-    MEMBER_STATUS = 'MEMBER_STATUS', '成員狀態'
-    MEMBER_STATUS_LIST = 'MEMBER_STATUS_LIST', '成原列表'
-    LOGIN = 'LOGIN', '登入'
-    CHANNEL = 'ACS', '頻道'
+class WebSocketEvent(str, Enum):
+    """
+    MEMBER_STATUS = 成員狀態
+    MEMBER_STATUS_LIST = 成原列表
+    LOGIN = 登入
+    CHANNEL = 頻道
+    """
+    MEMBER_STATUS = 'MEMBER_STATUS'
+    MEMBER_STATUS_LIST = 'MEMBER_STATUS_LIST'
+    LOGIN = 'LOGIN'
+    CHANNEL = 'ACS'
 
 
-class UserLogEvent(BaseEventEnum):
-    CREATE_MEMBER = 'CreateMember', '新增成員'
-    UPDATE_MEMBER = 'UpdateMember', '更新成員'
-    DESTROY_MEMBER = 'DestroyMember', '刪除成員'
-    CREATE_MEMBER_LOCATION = 'CreateMemberLocation', '新增地點'
-    UPDATE_MEMBER_LOCATION = 'UpdateMemberLocation', '更新地點'
-    DESTROY_MEMBER_LOCATION = 'DestroyMemberLocation', '刪除地點'
-    LOGIN_USER = 'LoginUser', '使用者登入'
-    VERIFY_USER = 'VerifyUser', '啟用使用者'
-    UPDATE_USER = 'UpdateUser', '更新使用者'
-    DESTROY_USER = 'DestroyUser', '刪除使用者'
+class UserLogEvent(str, Enum):
+    """
+    CREATE_MEMBER = 新增成員
+    UPDATE_MEMBER = 更新成員
+    DESTROY_MEMBER = 刪除成員
+    CREATE_MEMBER_LOCATION = 新增地點
+    UPDATE_MEMBER_LOCATION = 更新地點
+    DESTROY_MEMBER_LOCATION = 刪除地點
+    LOGIN_USER = 使用者登入
+    VERIFY_USER = 啟用使用者
+    UPDATE_USER = 更新使用者
+    DESTROY_USER = 刪除使用者
+    """
+    CREATE_MEMBER = 'CreateMember'
+    UPDATE_MEMBER = 'UpdateMember'
+    DESTROY_MEMBER = 'DestroyMember'
+    CREATE_MEMBER_LOCATION = 'CreateMemberLocation'
+    UPDATE_MEMBER_LOCATION = 'UpdateMemberLocation'
+    DESTROY_MEMBER_LOCATION = 'DestroyMemberLocation'
+    LOGIN_USER = 'LoginUser'
+    VERIFY_USER = 'VerifyUser'
+    UPDATE_USER = 'UpdateUser'
+    DESTROY_USER = 'DestroyUser'
 
 
 # 無法繼承拓展。
-class SystemLogEvent(BaseEventEnum):
-    USER_REGISTER = 'UserRegister', '使用者註冊'
-    USER_LOGIN_FAIL = 'UserLoginFail', '使用者登入失敗'
-    USER_FORGOT_PASSWORD = 'UserForgotPassword', '使用者忘記密碼'
-    USER_RESET_PASSWORD = 'UserResetPassword', '使用者重置密碼'
-    USER_VERIFY = 'UserVerify', '啟用使用者'
-    USER_DESTROY = 'UserDestroy', '刪除使用者'
-    TRY_SEND_EMAIL = 'TrySendEmail', '測試送信'
+class SystemLogEvent(str, Enum):
+    """
+    USER_REGISTER = 使用者註冊
+    USER_LOGIN_FAIL = 使用者登入失敗
+    USER_FORGOT_PASSWORD = 使用者忘記密碼
+    USER_RESET_PASSWORD = 使用者重置密碼
+    USER_VERIFY = 啟用使用者
+    USER_DESTROY = 刪除使用者
+    TRY_SEND_EMAIL = 測試送信
+    """
+    USER_REGISTER = 'UserRegister'
+    USER_LOGIN_FAIL = 'UserLoginFail'
+    USER_FORGOT_PASSWORD = 'UserForgotPassword'
+    USER_RESET_PASSWORD = 'UserResetPassword'
+    USER_VERIFY = 'UserVerify'
+    USER_DESTROY = 'UserDestroy'
+    TRY_SEND_EMAIL = 'TrySendEmail'
 
 
 class EmailEventDefaultValue(str, Enum):
@@ -116,11 +148,19 @@ class BloodType(str, Enum):
     O = 'O'
 
 
-class StorageType(BaseEventEnum):
-    LOCAL = 'LOCAL', '本地端'
-    GCP = 'GCP', 'Google Cloud Storage'
+class StorageType(str, Enum):
+    """
+    LOCAL = 本地端
+    GCP = Google Cloud Storage
+    """
+    LOCAL = 'LOCAL'
+    GCP = 'GCP'
 
 
 class APIAccess(str, Enum):
+    """
+    PUBLIC = 公
+    PRIVATE = 私
+    """
     PUBLIC = 'PUBLIC'
     PRIVATE = 'PRIVATE'

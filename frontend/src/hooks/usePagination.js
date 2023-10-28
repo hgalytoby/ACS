@@ -33,17 +33,22 @@ export default function(getDataCallback, searchRef, sortRef) {
     loading.value = true
     currentPage.value = page
     currentSize.value = itemsPerPage
-    console.log(sortBy)
 
     const params = search ? JSON.parse(search) : {}
+    if (sortBy.length){
+      sortBy.forEach((item, i) => {
+        const field = item.key.includes('.') ? item.key.split('.')[1] : item.key
 
-    sortBy.forEach((item, i) => {
-      const field = item.key.includes('.') ? item.key.split('.')[1] : item.key
-
-      params[`${field}Num`] = i
-      params[`${field}Sort`] = item.order === 'asc'
-    })
-    console.log(params)
+        params[`${field}Num`] = i
+        params[`${field}Sort`] = item.order === 'desc'
+      })
+    } else {
+      for (const key in route.query){
+        if (key.endsWith('Sort') || key.endsWith('Num')){
+          params[key] = undefined
+        }
+      }
+    }
 
     await getData(params)
 

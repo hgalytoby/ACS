@@ -34,32 +34,32 @@ class ChartData:
 
     @classmethod
     async def member_growth(
-            cls,
-            query: DateRelatedQueryList
+        cls,
+        query: DateRelatedQueryList
     ) -> list[BaseGrowthRead]:
         items = await crud_member.growth_chart(query=query)
         return items
 
     @classmethod
     async def new_member_growth(
-            cls,
-            query: DateRelatedQueryList
+        cls,
+        query: DateRelatedQueryList
     ) -> list[BaseGrowthRead]:
         items = await crud_member.new_member_growth_chart(query=query)
         return items
 
     @classmethod
     async def member_record_growth(
-            cls,
-            query: DateRelatedQueryList
+        cls,
+        query: DateRelatedQueryList
     ) -> list[BaseGrowthRead]:
         items = await crud_member_record.member_record_growth_chart(query=query)
         return items
 
     @classmethod
     async def member_record_hourly_count(
-            cls,
-            query: DateRelatedQueryList
+        cls,
+        query: DateRelatedQueryList
     ) -> MemberRecordHourlyCountRead:
         items = await crud_member_record.member_record_hourly_count_chart(
             query=query,
@@ -94,7 +94,7 @@ class ChartData:
         ]
 
         hard_disk_volume = cls.hard_disk_volume()
-        
+
         (
             email_log_classification,
             member_growth,
@@ -102,7 +102,8 @@ class ChartData:
             member_record_growth,
             member_record_hourly_count,
         ) = await asyncio.gather(*tasks)
-
+        for i in r:
+            continue
         result = AllChartRead(
             hard_disk_volume=hard_disk_volume,
             email_log_classification=email_log_classification,

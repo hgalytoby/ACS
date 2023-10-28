@@ -4,6 +4,7 @@ import usePagination from '@/hooks/usePagination'
 import SettingsUserListFilterLog from '@/views/pages/settings/SettingsUserListFilterLog.vue'
 import { getSortNumQuery } from '@/utils/misc'
 import { getSettingsUserListFilterFormItems } from '@/utils/filter-form-items'
+import MyVImg from '@/components/MyVImg.vue'
 
 const headers = [
   {
@@ -60,6 +61,14 @@ const {
         multi-sort
         @update:options="loadData"
       >
+        <template #item.avatar="{ item }">
+          <VAvatar
+            color="primary"
+            variant="tonal"
+          >
+            <MyVImg :img-obj="item" />
+          </VAvatar>
+        </template>
         <template #bottom>
           <VRow class="text-center px-2 pa-2">
             <VCol

@@ -42,7 +42,6 @@ router.include_router(
     tags=['OAuth'],
 )
 
-
 router.include_router(
     get_oauth_associate_router(
         oauth_client=github_associate_oauth_client,

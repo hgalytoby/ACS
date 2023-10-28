@@ -12,35 +12,38 @@ from app.api import router
 from app.core.config import settings, logger
 from app.crud import crud_user
 from app.db.session import engine
-from app.utils.enums import AppEnv
 from app.utils.redis import init_redis_pool
 from app.websocket import broadcast, router as ws_router
-
-is_dev = settings.app_env == AppEnv.DEVELOPMENT
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     if not os.path.isdir('static'):
         os.mkdir('static')
+
     logger.info('程式啟動! 如果無法訪問請確認 Redis 有沒有啟動成功!')
+
     await broadcast.connect()
+
     async with db():
         first_user = await crud_user.get_first_created_at_user()
+
     items = {
         'initial_time': first_user.created_at,
         'arq': await create_pool(RedisSettings(host=settings.redis.host)),
         'redis': await init_redis_pool(),
         'db': db,
     }
+
     yield items
+
     await items['redis'].close()
     await broadcast.disconnect()
 
 
 app = FastAPI(
-    debug=is_dev,
-    docs_url='/docs' if is_dev else None,
+    debug=not settings.is_prod,
+    docs_url='/docs' if not settings.is_prod else None,
     lifespan=lifespan,
 )
 
@@ -49,7 +52,7 @@ app.add_middleware(
     custom_engine=engine,
 )
 
-if is_dev:
+if settings.is_dev:
     # 加 DebugToolbarMiddleware 速度會變慢。
     app.add_middleware(
         DebugToolbarMiddleware,
@@ -72,7 +75,7 @@ if __name__ == '__main__':
     uvicorn.run(
         'app.main:app',
         host=settings.server_host,
-        port=settings.server_port,
+        port=int(settings.server_port),
         reload=True,
         proxy_headers=True,
         forwarded_allow_ips='*',

@@ -31,7 +31,7 @@ export default defineConfig({
       imports: ['vue', 'vue-router', '@vueuse/core', '@vueuse/math', 'pinia'],
       vueTemplate: true,
     }),
-    // mkcert(),
+    mkcert(),
   ],
   define: { 'process.env': {} },
   resolve: {

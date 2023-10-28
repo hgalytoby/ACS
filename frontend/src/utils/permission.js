@@ -19,8 +19,6 @@ const authSet = new Set([
   'ResetPassword',
   'Verify',
   'OAuth',
-  'Camera', 
-  'Camera2',
 ])
 
 const whiteSet = new Set([

@@ -56,11 +56,11 @@ class DateGrowthChart:
 
     @classmethod
     def calculate_date_growth(
-            cls,
-            start_date: date,
-            end_date: date,
-            accumulate: bool,
-            items: list[DatedModel],
+        cls,
+        start_date: date,
+        end_date: date,
+        accumulate: bool,
+        items: list[DatedModel],
     ) -> list[BaseGrowthRead]:
         counts = cls.get_default_monthly_counts(
             start_date=start_date,

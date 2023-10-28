@@ -9,110 +9,110 @@ from app.utils.sql_query import BaseQuery, QuerySql, SortSql
 
 class UserQuery(BaseQuery):
     def __init__(
-            self,
-            email: Optional[EmailStr] = Query(
-                default=None,
-                description='信箱',
-            ),
-            username: Optional[str] = Query(
-                default=None,
-                description='排序使用者名字',
-            ),
-            is_active: Optional[bool] = Query(
-                default=None,
-                description='啟用',
-                alias='isActive',
-            ),
-            is_superuser: Optional[bool] = Query(
-                default=None,
-                description='超級使用者',
-                alias='isSuperuser'
-            ),
-            is_verified: Optional[bool] = Query(
-                default=None,
-                description='驗證',
-                alias='isVerified',
-            ),
-            created_at: Optional[tuple[datetime | date, datetime | date]] = Query(
-                default=None,
-                description='創建日期',
-                alias='createdAt',
-            ),
-            updated_at: Optional[tuple[datetime | date, datetime | date]] = Query(
-                default=None,
-                description='結束日期',
-                alias='updateAt',
-            ),
-            email_num: Optional[int] = Query(
-                default=None,
-                description='排序信箱順序',
-                alias='emailNum',
-            ),
-            username_num: Optional[int] = Query(
-                default=None,
-                description='排序使用者名稱順序',
-                alias='usernameNum',
-            ),
-            is_active_num: Optional[int] = Query(
-                default=None,
-                description='排序啟用順序',
-                alias='isActiveNum',
-            ),
-            is_superuser_num: Optional[int] = Query(
-                default=None,
-                description='排序超級使用者順序',
-                alias='isSuperuserNum',
-            ),
-            is_verified_num: Optional[int] = Query(
-                default=None,
-                description='排序驗證順序',
-                alias='isVerifiedNum',
-            ),
-            created_at_num: Optional[int] = Query(
-                default=None,
-                description='排序創建日期順序',
-                alias='createdAtNum',
-            ),
-            updated_at_num: Optional[datetime] = Query(
-                default=None,
-                description='排序更新結束順序',
-                alias='updatedAtNum',
-            ),
-            email_sort: Optional[bool] = Query(
-                default=None,
-                description='排序信箱',
-                alias='emailNum',
-            ),
-            username_sort: Optional[bool] = Query(
-                default=None,
-                description='排序使用者名稱',
-                alias='usernameSort',
-            ),
-            is_active_sort: Optional[bool] = Query(
-                default=None,
-                description='排序啟用',
-                alias='isActiveSort',
-            ),
-            is_superuser_sort: Optional[bool] = Query(
-                default=None,
-                description='排序超級使用者',
-                alias='isSuperuserSort',
-            ),
-            is_verified_sort: Optional[bool] = Query(
-                default=None,
-                description='排序驗證',
-                alias='isVerifiedSort',
-            ),
-            created_at_sort: Optional[bool] = Query(
-                default=None,
-                description='排序創建日期',
-                alias='createdAtSort',
-            ),
-            updated_at_sort: Optional[bool] = Query(
-                default=None,
-                description='排序更新日期',
-                alias='updatedAtSort',
-            ),
+        self,
+        email: Optional[EmailStr] = Query(
+            default=None,
+            description='信箱',
+        ),
+        username: Optional[str] = Query(
+            default=None,
+            description='排序使用者名字',
+        ),
+        is_active: Optional[bool] = Query(
+            default=None,
+            description='啟用',
+            alias='isActive',
+        ),
+        is_superuser: Optional[bool] = Query(
+            default=None,
+            description='超級使用者',
+            alias='isSuperuser'
+        ),
+        is_verified: Optional[bool] = Query(
+            default=None,
+            description='驗證',
+            alias='isVerified',
+        ),
+        created_at: Optional[tuple[datetime | date, datetime | date]] = Query(
+            default=None,
+            description='創建日期',
+            alias='createdAt',
+        ),
+        updated_at: Optional[tuple[datetime | date, datetime | date]] = Query(
+            default=None,
+            description='結束日期',
+            alias='updateAt',
+        ),
+        email_num: Optional[int] = Query(
+            default=None,
+            description='排序信箱順序',
+            alias='emailNum',
+        ),
+        username_num: Optional[int] = Query(
+            default=None,
+            description='排序使用者名稱順序',
+            alias='usernameNum',
+        ),
+        is_active_num: Optional[int] = Query(
+            default=None,
+            description='排序啟用順序',
+            alias='isActiveNum',
+        ),
+        is_superuser_num: Optional[int] = Query(
+            default=None,
+            description='排序超級使用者順序',
+            alias='isSuperuserNum',
+        ),
+        is_verified_num: Optional[int] = Query(
+            default=None,
+            description='排序驗證順序',
+            alias='isVerifiedNum',
+        ),
+        created_at_num: Optional[int] = Query(
+            default=None,
+            description='排序創建日期順序',
+            alias='createdAtNum',
+        ),
+        updated_at_num: Optional[datetime] = Query(
+            default=None,
+            description='排序更新結束順序',
+            alias='updatedAtNum',
+        ),
+        email_sort: Optional[bool] = Query(
+            default=None,
+            description='排序信箱',
+            alias='emailNum',
+        ),
+        username_sort: Optional[bool] = Query(
+            default=None,
+            description='排序使用者名稱',
+            alias='usernameSort',
+        ),
+        is_active_sort: Optional[bool] = Query(
+            default=None,
+            description='排序啟用',
+            alias='isActiveSort',
+        ),
+        is_superuser_sort: Optional[bool] = Query(
+            default=None,
+            description='排序超級使用者',
+            alias='isSuperuserSort',
+        ),
+        is_verified_sort: Optional[bool] = Query(
+            default=None,
+            description='排序驗證',
+            alias='isVerifiedSort',
+        ),
+        created_at_sort: Optional[bool] = Query(
+            default=None,
+            description='排序創建日期',
+            alias='createdAtSort',
+        ),
+        updated_at_sort: Optional[bool] = Query(
+            default=None,
+            description='排序更新日期',
+            alias='updatedAtSort',
+        ),
 
     ):
         super(UserQuery, self).__init__()
@@ -188,8 +188,8 @@ class UserQuery(BaseQuery):
 
 class UserExistQuery(BaseQuery):
     def __init__(
-            self,
-            email: EmailStr = Query(description='信箱'),
+        self,
+        email: EmailStr = Query(description='信箱'),
     ):
         super(UserExistQuery, self).__init__()
         self.query_list.extend([

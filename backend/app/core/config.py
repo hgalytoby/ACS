@@ -6,16 +6,14 @@ from typing import Optional
 from fastapi_mail import ConnectionConfig
 from pydantic import BaseSettings, Field, EmailStr, validator
 
-from app.utils.enums import AppEnv, StorageType
+from app.utils.enums import AppEnv, StorageType, AppEnvPath
 
-env_dev = f'{os.getcwd()}/.env.dev'
-
-env_prod = f'{os.getcwd()}/.env'
+MODE = os.getenv('MODE', AppEnv.DEV)
 
 
 class Base(BaseSettings):
     class Config:
-        env_file = env_prod if os.getenv('MODE') == 'PROD' else env_dev
+        env_file = f'{os.getcwd()}/{AppEnvPath[MODE]}'
 
 
 class MailSettings(Base):
@@ -137,6 +135,14 @@ class Settings(Base):
         if not v:
             return f'http://{values["server_host"]}:{values["server_port"]}'
         return v
+
+    @property
+    def is_dev(self) -> bool:
+        return self.app_env == AppEnv.DEV
+
+    @property
+    def is_prod(self) -> bool:
+        return self.app_env == AppEnv.PROD
 
 
 @lru_cache()

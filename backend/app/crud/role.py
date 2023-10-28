@@ -15,11 +15,11 @@ from app.schemas.role import (
 
 class CRUDRole(CRUDBase[RoleModel, RoleCreate, RoleUpdate, RoleRead]):
     async def update_user_ids(
-            self,
-            *,
-            role: RoleModel,
-            users: list[UserModel],
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        role: RoleModel,
+        users: list[UserModel],
+        db_session: Optional[AsyncSession] = None,
     ) -> RoleUserRead:
         db_session = db_session or self.db.session
         role.user_list = users
@@ -27,11 +27,11 @@ class CRUDRole(CRUDBase[RoleModel, RoleCreate, RoleUpdate, RoleRead]):
         return RoleUserRead.from_orm(instance)
 
     async def update_api_ids(
-            self,
-            *,
-            role: RoleModel,
-            apis: list[ApiModel],
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        role: RoleModel,
+        apis: list[ApiModel],
+        db_session: Optional[AsyncSession] = None,
     ) -> RoleApiRead:
         db_session = db_session or self.db.session
         role.api_list = apis
@@ -39,11 +39,11 @@ class CRUDRole(CRUDBase[RoleModel, RoleCreate, RoleUpdate, RoleRead]):
         return RoleApiRead.from_orm(instance)
 
     async def update_role_to_frontends(
-            self,
-            *,
-            role: RoleModel,
-            frontend_list: list[FrontendModel],
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        role: RoleModel,
+        frontend_list: list[FrontendModel],
+        db_session: Optional[AsyncSession] = None,
     ) -> RoleFrontendListRead:
         db_session = db_session or self.db.session
         role.frontend_list = frontend_list

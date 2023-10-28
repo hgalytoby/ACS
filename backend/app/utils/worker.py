@@ -142,11 +142,11 @@ async def send_try_email(ctx: dict, subject: str, body: str, user: UserModel):
 
 
 async def send_email_with_log(
-        session: AsyncSession,
-        subject: str,
-        email: str,
-        body: str,
-        event: SystemLogEvent,
+    session: AsyncSession,
+    subject: str,
+    email: str,
+    body: str,
+    event: SystemLogEvent,
 ):
     email_data = EmailSendCreate(subject=subject, email=email, body=body)
     raw_data = email_data.dict()

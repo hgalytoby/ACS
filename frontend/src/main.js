@@ -14,8 +14,7 @@ import { progressbarOptions, toastificationOptions } from '@/utils/options'
 import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"
 import '@/utils/permission'
-import VueSweetalert2 from 'vue-sweetalert2'
-import 'sweetalert2/dist/sweetalert2.min.css'
+import 'vue-sweetalert-icons/dist/style.css'
 
 loadFonts()
 
@@ -34,7 +33,5 @@ app.use(pinia)
 app.use(router)
 app.use(VueProgressBar, progressbarOptions)
 app.use(Toast, toastificationOptions)
-app.use(VueSweetalert2)
 
-// Mount vue app
 app.mount('#app')

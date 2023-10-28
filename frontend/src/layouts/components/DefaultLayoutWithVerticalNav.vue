@@ -169,6 +169,13 @@ const isCardDetailsVisible = ref(false)
           }"
         />
       </VerticalNavGroup>
+      <VerticalNavLink
+        :item="{
+          title: 'Camera',
+          icon: 'mdi-camera-marker-outline',
+          to: '/camera',
+        }"
+      />
       <!-- 👉 User Interface -->
       <VerticalNavSectionTitle
         :item="{
@@ -222,7 +229,7 @@ const isCardDetailsVisible = ref(false)
   </VerticalNavLayout>
 </template>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .meta-key {
   border: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
   border-radius: 6px;

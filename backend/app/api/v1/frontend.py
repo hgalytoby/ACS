@@ -60,9 +60,9 @@ class FrontendView:
         tags=['前端']
     )
     async def update(
-            self,
-            frontend_id: UUID,
-            item: FrontendUpdate,
+        self,
+        frontend_id: UUID,
+        item: FrontendUpdate,
     ) -> FrontendRead:
         instance = await crud_frontend.get(item_id=frontend_id)
         if not instance:

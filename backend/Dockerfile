@@ -1,4 +1,5 @@
 FROM python:3.10.12-slim-buster as builder
+
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
     POETRY_VIRTUALENVS_CREATE=1 \
@@ -15,6 +16,7 @@ RUN poetry install --no-dev --no-root && rm -rf $POETRY_CACHE_DIR
 
 
 FROM python:3.10.12-slim-buster AS base
+
 ENV WORKDIR=/usr/src/app \
     PATH="/usr/src/app/.venv/bin:$PATH"
 
@@ -24,4 +26,5 @@ ENV PYTHONPATH=$WORKDIR:$PYTHONPATH
 COPY . .
 CMD alembic upgrade head && \
     python3 ./app/initial_data.py && \
-    gunicorn -c ./app/core/dep_config.py app.main:app --forwarded-allow-ips '*'
+    gunicorn -c ./app/core/dep_config.py app.main:app --forwarded-allow-ips '*' & \
+    arq app.utils.worker.WorkerSettings

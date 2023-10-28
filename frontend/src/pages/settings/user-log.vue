@@ -78,7 +78,7 @@ const openDialog = userinfo => {
             icon="mdi-account-eye"
             variant="text"
             color="secondary"
-            @click="openDialog(item.columns.user)"
+            @click="openDialog(item.user)"
           />
         </template>
         <template #bottom>

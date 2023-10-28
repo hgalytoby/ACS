@@ -61,9 +61,9 @@ class ApiGroupView:
         tags=['Api 群組'],
     )
     async def update(
-            self,
-            api_group_id: UUID,
-            item: ApiGroupUpdate,
+        self,
+        api_group_id: UUID,
+        item: ApiGroupUpdate,
     ) -> ApiGroupRead:
         instance = await crud_api_group.get(item_id=api_group_id)
         if not instance:
@@ -82,9 +82,9 @@ class ApiGroupView:
         tags=['Api 群組'],
     )
     async def update_api_ids(
-            self,
-            api_group_id: UUID,
-            api_ids: set[UUID],
+        self,
+        api_group_id: UUID,
+        api_ids: set[UUID],
     ) -> ApiGroupDetailRead:
         instance = await crud_api_group.get(item_id=api_group_id)
         if not instance:
@@ -130,9 +130,9 @@ class ApiGroupView:
         tags=['Api'],
     )
     async def update(
-            self,
-            api_id: UUID,
-            item: ApiUpdate,
+        self,
+        api_id: UUID,
+        item: ApiUpdate,
     ) -> ApiRead:
         instance = await crud_api.get(item_id=api_id)
         if not instance:

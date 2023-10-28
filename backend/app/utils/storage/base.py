@@ -70,10 +70,10 @@ class BaseStorage(metaclass=ABCMeta):
 
     @abstractmethod
     async def save_image(
-            self,
-            instance: ImageModelType,
-            image: UploadFile = File(None),
-            size: Optional[tuple[int, int]] = None,
+        self,
+        instance: ImageModelType,
+        image: UploadFile = File(None),
+        size: Optional[tuple[int, int]] = None,
     ):
         raise NotImplementedError()
 

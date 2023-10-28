@@ -40,22 +40,10 @@ const submit = async ({ username }) => {
 const resetForm = setFieldValue => {
   setFieldValue('username', userStore.meInfo.username)
 }
-
-
-import Swal from 'sweetalert2'
-import SweetalertIcon from 'vue-sweetalert-icons/src/components/icon.vue'
-
-const test = () => {
-  Swal.fire({
-    icon: 'success',
-    title: 'Signed in successfully',
-  })
-}
 </script>
 
 <template>
   <VRow>
-    <SweetalertIcon icon="success" />
     <VCol cols="12">
       <VCard>
         <Form

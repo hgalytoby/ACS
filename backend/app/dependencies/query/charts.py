@@ -8,13 +8,13 @@ from app.utils.sql_query import BaseQuery
 
 class MemberRecordChartQuery(BaseQuery):
     def __init__(
-            self,
-            request: Request,
-            created_at: Optional[tuple[datetime | date, datetime | date]] = Query(
-                default=None,
-                description='創建日期',
-                alias='createdAt',
-            ),
+        self,
+        request: Request,
+        created_at: Optional[tuple[datetime | date, datetime | date]] = Query(
+            default=None,
+            description='創建日期',
+            alias='createdAt',
+        ),
     ):
         super(MemberRecordChartQuery, self).__init__()
 
@@ -33,13 +33,13 @@ class MemberRecordChartQuery(BaseQuery):
 
 class MemberChartQuery(BaseQuery):
     def __init__(
-            self,
-            request: Request,
-            created_at: Optional[tuple[datetime | date, datetime | date]] = Query(
-                default=None,
-                description='創建日期',
-                alias='createdAt',
-            ),
+        self,
+        request: Request,
+        created_at: Optional[tuple[datetime | date, datetime | date]] = Query(
+            default=None,
+            description='創建日期',
+            alias='createdAt',
+        ),
     ):
         super(MemberChartQuery, self).__init__()
 

@@ -92,6 +92,14 @@ export default [
         },
       },
       {
+        path: 'camera',
+        name: 'Camera',
+        component: () => import('../pages/camera.vue'),
+        meta: {
+          title: 'Camera',
+        },
+      },
+      {
         path: 'typography',
         component: () => import('../pages/typography.vue'),
       },
@@ -195,7 +203,7 @@ export default [
           },
           {
             path: 'camera',
-            name: 'Camera',
+            name: 'AuthCamera',
             component: () => import('../pages/auth/camera.vue'),
             meta: {
               title: 'QRCode',

@@ -2,7 +2,7 @@
 import defaultAvatar from '@images/avatars/default-avatar.png'
 import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
-import ImageLazyProgress from '@/components/ImageLazyProgress.vue'
+import MyVImg from '@/components/MyVImg.vue'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
@@ -11,7 +11,12 @@ async function logout() {
   await authStore.logout()
 }
 
-const avatar = computed(() => userStore.meInfo.avatar || defaultAvatar)
+const avatar = computed(() => {
+  return {
+    src: userStore.meInfo.avatar,
+    lazySrc: userStore.meInfo.avatar,
+  }
+})
 </script>
 
 <template>
@@ -28,15 +33,7 @@ const avatar = computed(() => userStore.meInfo.avatar || defaultAvatar)
       color="primary"
       variant="tonal"
     >
-      <VImg
-        :src="avatar"
-        :lazy-src="avatar"
-      >
-        <template #placeholder>
-          <ImageLazyProgress />
-        </template>
-      </VImg>
-
+      <MyVImg :img-obj="avatar" />
       <VMenu
         activator="parent"
         width="230"
@@ -58,14 +55,7 @@ const avatar = computed(() => userStore.meInfo.avatar || defaultAvatar)
                     color="primary"
                     variant="tonal"
                   >
-                    <VImg
-                      :src="avatar"
-                      :lazy-src="avatar"
-                    >
-                      <template #placeholder>
-                        <ImageLazyProgress />
-                      </template>
-                    </VImg>
+                    <MyVImg :img-obj="avatar" />
                   </VAvatar>
                 </VBadge>
               </VListItemAction>

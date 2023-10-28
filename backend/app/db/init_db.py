@@ -60,8 +60,8 @@ async def create_accept_api(db_session: AsyncSession):
 
 async def create_email_register(db_session: AsyncSession):
     if await crud.crud_email_settings.get_event(
-            event=SystemLogEvent.USER_REGISTER,
-            db_session=db_session,
+        event=SystemLogEvent.USER_REGISTER,
+        db_session=db_session,
     ):
         return
 
@@ -77,8 +77,8 @@ async def create_email_register(db_session: AsyncSession):
 
 async def create_email_forgot_password(db_session: AsyncSession):
     if await crud.crud_email_settings.get_event(
-            event=SystemLogEvent.USER_FORGOT_PASSWORD,
-            db_session=db_session,
+        event=SystemLogEvent.USER_FORGOT_PASSWORD,
+        db_session=db_session,
     ):
         return
 
@@ -94,8 +94,8 @@ async def create_email_forgot_password(db_session: AsyncSession):
 
 async def create_email_reset_password(db_session: AsyncSession):
     if await crud.crud_email_settings.get_event(
-            event=SystemLogEvent.USER_RESET_PASSWORD,
-            db_session=db_session,
+        event=SystemLogEvent.USER_RESET_PASSWORD,
+        db_session=db_session,
     ):
         return
 
@@ -111,8 +111,8 @@ async def create_email_reset_password(db_session: AsyncSession):
 
 async def create_email_verify(db_session: AsyncSession):
     if await crud.crud_email_settings.get_event(
-            event=SystemLogEvent.USER_VERIFY,
-            db_session=db_session,
+        event=SystemLogEvent.USER_VERIFY,
+        db_session=db_session,
     ):
         return
 
@@ -128,8 +128,8 @@ async def create_email_verify(db_session: AsyncSession):
 
 async def create_email_delete(db_session: AsyncSession):
     if await crud.crud_email_settings.get_event(
-            event=SystemLogEvent.USER_DESTROY,
-            db_session=db_session,
+        event=SystemLogEvent.USER_DESTROY,
+        db_session=db_session,
     ):
         return
 
@@ -145,8 +145,8 @@ async def create_email_delete(db_session: AsyncSession):
 
 async def create_email_login_fail(db_session: AsyncSession):
     if await crud.crud_email_settings.get_event(
-            event=SystemLogEvent.USER_LOGIN_FAIL,
-            db_session=db_session,
+        event=SystemLogEvent.USER_LOGIN_FAIL,
+        db_session=db_session,
     ):
         return
 

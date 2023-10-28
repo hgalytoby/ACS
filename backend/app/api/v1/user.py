@@ -81,8 +81,8 @@ class UserView:
         dependencies=[Depends(authorize_api)],
     )
     async def get_multi_user(
-            self,
-            query: QueryList = web_params(UserQuery),
+        self,
+        query: QueryList = web_params(UserQuery),
     ) -> Page[UserRead]:
         users = await crud_user.get_multi(query=query, paginated=True)
         return users
@@ -95,9 +95,9 @@ class UserView:
         tags=['使用者'],
     )
     async def update_info(
-            self,
-            item: UserUpdate,
-            avatar: UploadFile = File(None),
+        self,
+        item: UserUpdate,
+        avatar: UploadFile = File(None),
     ) -> UserRead:
         instance = await crud_user.update_info(
             user=self.user,
@@ -114,8 +114,8 @@ class UserView:
         tags=['使用者'],
     )
     async def update_password(
-            self,
-            item: UserPasswordUpdate,
+        self,
+        item: UserPasswordUpdate,
     ) -> UserRead:
         instance = await crud_user.update_password(user=self.user, password=item)
         return instance
@@ -128,8 +128,8 @@ class UserView:
         tags=['使用者'],
     )
     async def get_multi_log(
-            self,
-            query: QueryList = web_params(UserLogQuery),
+        self,
+        query: QueryList = web_params(UserLogQuery),
     ) -> Page[UserLogRead]:
         items = await crud_user_log.get_multi(query=query, paginated=True)
         return items
@@ -156,9 +156,9 @@ class UserView:
         dependencies=[Depends(authorize_api)],
     )
     async def update_user_to_roles(
-            self,
-            role_ids: list[UUID],
-            user_id: UUID
+        self,
+        role_ids: list[UUID],
+        user_id: UUID
     ) -> UserDetailRead:
         role_list = await crud_role.get_by_ids(list_ids=role_ids)
         user = await crud_user.get(item_id=user_id)
@@ -175,12 +175,12 @@ class UserView:
         tags=['使用者'],
     )
     async def unlink_oauth(
-            self,
-            provider_name: str = Query(
-                description='第三方服務名稱',
-                title='第三方服務名稱',
-                alias='providerName'
-            ),
+        self,
+        provider_name: str = Query(
+            description='第三方服務名稱',
+            title='第三方服務名稱',
+            alias='providerName'
+        ),
     ) -> UserRead:
         return await crud_user.unlink_oauth(
             provider_name=provider_name,

@@ -12,10 +12,10 @@ from app.utils.tools import FileTool
 
 class LocalStorge(BaseStorage):
     async def save_image(
-            self,
-            instance: ImageModelType,
-            image: UploadFile = File(None),
-            size: Optional[tuple[int, int]] = None,
+        self,
+        instance: ImageModelType,
+        image: UploadFile = File(None),
+        size: Optional[tuple[int, int]] = None,
     ):
         if not image:
             return
@@ -40,7 +40,6 @@ class LocalStorge(BaseStorage):
             'id': str(instance.id),
             'project': settings.project,
         }
-
         image = qrcode.make(base64.b64encode(orjson.dumps(data)))
         image.save(f'.{path}', kind='png', dark='#000000', light=None)
 

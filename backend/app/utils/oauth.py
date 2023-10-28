@@ -35,13 +35,13 @@ redirect_url_query = Query(
 
 class OAuth2AuthorizeCallback(_OAuth2AuthorizeCallback):
     async def __call__(
-            self,
-            request: Request,
-            code: Optional[str] = None,
-            code_verifier: Optional[str] = None,
-            state: Optional[str] = None,
-            error: Optional[str] = None,
-            redirect_url: Optional[str] = redirect_url_query
+        self,
+        request: Request,
+        code: Optional[str] = None,
+        code_verifier: Optional[str] = None,
+        state: Optional[str] = None,
+        error: Optional[str] = None,
+        redirect_url: Optional[str] = redirect_url_query
     ) -> tuple[OAuth2Token, Optional[str]]:
         if code is None or error is not None:
             raise HTTPException(
@@ -59,9 +59,9 @@ class OAuth2AuthorizeCallback(_OAuth2AuthorizeCallback):
 
 
 def get_oauth_router(
-        oauth_client: BaseOAuth2,
-        associate_by_email: bool = False,
-        is_verified_by_default: bool = False,
+    oauth_client: BaseOAuth2,
+    associate_by_email: bool = False,
+    is_verified_by_default: bool = False,
 ) -> APIRouter:
     """Generate a router with the OAuth routes."""
     router = APIRouter()
@@ -77,9 +77,9 @@ def get_oauth_router(
         response_model=OAuth2AuthorizeResponse,
     )
     async def authorize(
-            request: Request,
-            scopes: list[str] = Query(None),
-            redirect_url: Optional[str] = redirect_url_query,
+        request: Request,
+        scopes: list[str] = Query(None),
+        redirect_url: Optional[str] = redirect_url_query,
     ) -> OAuth2AuthorizeResponse:
         if redirect_url is not None:
             authorize_redirect_url = redirect_url
@@ -121,12 +121,12 @@ def get_oauth_router(
         },
     )
     async def callback(
-            request: Request,
-            access_token_state: tuple[OAuth2Token, str] = Depends(
-                oauth2_authorize_callback,
-            ),
-            user_manager: UserManager = Depends(get_user_manager),
-            strategy: Strategy = Depends(auth_backend.get_strategy),
+        request: Request,
+        access_token_state: tuple[OAuth2Token, str] = Depends(
+            oauth2_authorize_callback,
+        ),
+        user_manager: UserManager = Depends(get_user_manager),
+        strategy: Strategy = Depends(auth_backend.get_strategy),
     ):
         token, state = access_token_state
         account_id, account_email = await oauth_client.get_id_email(
@@ -176,8 +176,8 @@ def get_oauth_router(
 
 
 def get_oauth_associate_router(
-        oauth_client: BaseOAuth2,
-        requires_verification: bool = False,
+    oauth_client: BaseOAuth2,
+    requires_verification: bool = False,
 ) -> APIRouter:
     """
     Generate a router with the OAuth routes to associate an authenticated user.
@@ -200,10 +200,10 @@ def get_oauth_associate_router(
         response_model=OAuth2AuthorizeResponse,
     )
     async def authorize(
-            request: Request,
-            scopes: list[str] = Query(None),
-            user: UserModel = Depends(is_oauth_linked(oauth_client.name)),
-            redirect_url: Optional[str] = redirect_url_query,
+        request: Request,
+        scopes: list[str] = Query(None),
+        user: UserModel = Depends(is_oauth_linked(oauth_client.name)),
+        redirect_url: Optional[str] = redirect_url_query,
     ) -> OAuth2AuthorizeResponse:
         if redirect_url is not None:
             authorize_redirect_url = redirect_url
@@ -242,12 +242,12 @@ def get_oauth_associate_router(
         },
     )
     async def callback(
-            request: Request,
-            user: UserModel = Depends(get_current_active_user),
-            access_token_state: tuple[OAuth2Token, str] = Depends(
-                oauth2_authorize_callback
-            ),
-            user_manager: UserManager = Depends(get_user_manager),
+        request: Request,
+        user: UserModel = Depends(get_current_active_user),
+        access_token_state: tuple[OAuth2Token, str] = Depends(
+            oauth2_authorize_callback
+        ),
+        user_manager: UserManager = Depends(get_user_manager),
     ):
         token, state = access_token_state
         account_id, account_email = await oauth_client.get_id_email(

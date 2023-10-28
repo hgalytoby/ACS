@@ -39,9 +39,9 @@ class EmailView:
         tags=['信箱設定'],
     )
     async def update(
-            self,
-            event: SystemLogEvent,
-            item: EmailSettingsUpdate,
+        self,
+        event: SystemLogEvent,
+        item: EmailSettingsUpdate,
     ) -> EmailSettingsRead:
         instance = await crud_email_settings.get_event(event=event)
         if not instance:

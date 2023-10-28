@@ -4,10 +4,14 @@ import { useMemberStore } from '@/stores/member'
 import { getMemberRecordListFilterFormItems } from '@/utils/filter-form-items'
 import { getSortNumQuery } from '@/utils/misc'
 import MemberFilterMemberRecordList from '@/views/pages/member/MemberFilterMemberRecordList.vue'
+import MyVImg from '@/components/MyVImg.vue'
 
 const headers = [
   {
     title: '地點名字', key: 'memberLocationName',
+  },
+  {
+    title: '成員照片', key: 'memberImage', sortable: false,
   },
   {
     title: '成員名字', key: 'memberName',
@@ -66,12 +70,21 @@ const {
         v-model:page="currentPage"
         :search="search"
         :headers="headers"
-        :items="memberStore.list.items"
-        :items-length="memberStore.list.total"
+        :items="memberStore.recordList.items"
+        :items-length="memberStore.recordList.total"
         :loading="loading"
         multi-sort
         @update:options="loadData"
       >
+        <template #item.memberImage="{ item }">
+          <MyVImg
+            :img-obj="{
+              width: '100px',
+              src: item.memberImage,
+              lazySrc: item.memberImage,
+            }"
+          />
+        </template>
         <template #bottom>
           <VRow class="text-center px-2 pa-2">
             <VCol

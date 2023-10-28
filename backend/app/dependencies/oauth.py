@@ -5,10 +5,10 @@ from app.models import UserModel
 
 
 def is_oauth_linked(
-        provider_name: str,
+    provider_name: str,
 ):
     def _(
-            user: UserModel = Depends(current_active_verified_user),
+        user: UserModel = Depends(current_active_verified_user),
     ):
         for oauth in user.oauth_accounts:
             if oauth.oauth_name == provider_name:

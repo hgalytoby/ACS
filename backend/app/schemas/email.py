@@ -58,8 +58,8 @@ class EmailTrySendSchema(BaseModel):
     @validator('event', pre=True)
     def _event(cls, v: str, values: dict):
         if (
-                v == SystemLogEvent.USER_REGISTER.value
-                or v == SystemLogEvent.USER_FORGOT_PASSWORD.value
+            v == SystemLogEvent.USER_REGISTER.value
+            or v == SystemLogEvent.USER_FORGOT_PASSWORD.value
         ):
             cls.validate_body_format(values=values, format_string='{url}')
         elif v == SystemLogEvent.USER_LOGIN_FAIL.value:

@@ -4,6 +4,7 @@ import { useMemberStore } from '@/stores/member'
 import MemberFilterMemberList from '@/views/pages/member/MemberFilterMemberList.vue'
 import { getSortNumQuery } from '@/utils/misc'
 import { getMemberListFilterFormItems } from '@/utils/filter-form-items'
+import MyVImg from '@/components/MyVImg.vue'
 
 const headers = [
   {
@@ -80,6 +81,25 @@ const {
         multi-sort
         @update:options="loadData"
       >
+        <template #item.qrcode="{ item }">
+          <MyVImg
+            :img-obj="{
+              width: '100px',
+              src: item.qrcode,
+              lazySrc: item.qrcode,
+            }"
+          />
+        </template>
+        <template #item.image="{ item }">
+          <MyVImg
+            :img-obj="{
+              width: '100px',
+              src: item.image,
+              lazySrc: item.image,
+            }"
+          />
+        </template>
+
         <template #bottom>
           <VRow class="text-center px-2 pa-2">
             <VCol

@@ -31,10 +31,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
         return select(self.model)
 
     async def get_multi(
-            self,
-            query: Optional[QueryList] = None,
-            db_session: Optional[AsyncSession] = None,
-            paginated: bool = False,
+        self,
+        query: Optional[QueryList] = None,
+        db_session: Optional[AsyncSession] = None,
+        paginated: bool = False,
     ) -> list[ReadSchemaType | ModelType] | Page[ReadSchemaType | ModelType]:
         query = query or QueryList()
         db_session = db_session or self.db.session
@@ -45,10 +45,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
         return response.scalars().all()
 
     async def get(
-            self,
-            *,
-            item_id: UUID,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        item_id: UUID,
+        db_session: Optional[AsyncSession] = None,
     ) -> Optional[ModelType]:
         db_session = db_session or self.db.session
         query = self.get_select().where(self.model.id == item_id)
@@ -56,10 +56,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
         return response.scalar_one_or_none()
 
     async def get_by_ids(
-            self,
-            *,
-            list_ids: list[UUID],
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        list_ids: list[UUID],
+        db_session: Optional[AsyncSession] = None,
     ) -> Optional[list[ModelType]]:
         db_session = db_session or self.db.session
         response = await db_session.execute(
@@ -68,10 +68,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
         return response.scalars().all()
 
     async def get_first(
-            self,
-            *,
-            db_session: Optional[AsyncSession] = None,
-            query: Optional[QueryList] = None,
+        self,
+        *,
+        db_session: Optional[AsyncSession] = None,
+        query: Optional[QueryList] = None,
     ) -> ModelType | ReadSchemaType:
         db_session = db_session or self.db.session
         query = query or QueryList()
@@ -79,8 +79,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
         return response.scalars().first()
 
     async def get_count(
-            self,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        db_session: Optional[AsyncSession] = None,
     ) -> int:
         db_session = db_session or self.db.session
         response = await db_session.execute(
@@ -89,11 +89,11 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
         return response.scalar_one()
 
     async def create(
-            self,
-            *,
-            create_item: CreateSchemaType | ModelType,
-            db_session: Optional[AsyncSession] = None,
-            commit: bool = True,
+        self,
+        *,
+        create_item: CreateSchemaType | ModelType,
+        db_session: Optional[AsyncSession] = None,
+        commit: bool = True,
     ) -> ModelType:
         db_session = db_session or self.db.session
         db_obj = self.model.from_orm(create_item)
@@ -105,11 +105,11 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
         return instance
 
     async def update(
-            self,
-            *,
-            current_item: ModelType,
-            update_item: UpdateSchemaType | dict[str, Any] | ModelType,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        current_item: ModelType,
+        update_item: UpdateSchemaType | dict[str, Any] | ModelType,
+        db_session: Optional[AsyncSession] = None,
     ) -> ModelType:
         db_session = db_session or self.db.session
         if isinstance(update_item, dict):
@@ -123,10 +123,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
         return instance
 
     async def destroy(
-            self,
-            *,
-            item_id: UUID | str,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        item_id: UUID | str,
+        db_session: Optional[AsyncSession] = None,
     ) -> ModelType:
         db_session = db_session or self.db.session
         response = await db_session.execute(
@@ -138,11 +138,11 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
         return obj
 
     async def save(
-            self,
-            instance: ModelType,
-            db_session: Optional[AsyncSession] = None,
-            refresh: bool = False,
-            commit: bool = True,
+        self,
+        instance: ModelType,
+        db_session: Optional[AsyncSession] = None,
+        refresh: bool = False,
+        commit: bool = True,
     ) -> ModelType:
         db_session = db_session or self.db.session
         try:

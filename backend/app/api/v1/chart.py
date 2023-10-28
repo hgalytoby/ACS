@@ -49,8 +49,8 @@ class ChartView:
         tags=['數據圖'],
     )
     async def member_growth(
-            self,
-            query: DateRelatedQueryList = web_date_renge_params(MemberChartQuery),
+        self,
+        query: DateRelatedQueryList = web_date_renge_params(MemberChartQuery),
     ) -> list[BaseGrowthRead]:
         items = await ChartData.member_growth(query=query)
         return items
@@ -63,8 +63,8 @@ class ChartView:
         tags=['數據圖'],
     )
     async def new_member_growth(
-            self,
-            query: DateRelatedQueryList = web_date_renge_params(MemberChartQuery),
+        self,
+        query: DateRelatedQueryList = web_date_renge_params(MemberChartQuery),
     ) -> list[BaseGrowthRead]:
         items = await ChartData.new_member_growth(query=query)
         return items
@@ -77,8 +77,8 @@ class ChartView:
         tags=['數據圖'],
     )
     async def member_record_growth(
-            self,
-            query: DateRelatedQueryList = web_date_renge_params(MemberRecordChartQuery),
+        self,
+        query: DateRelatedQueryList = web_date_renge_params(MemberRecordChartQuery),
     ) -> list[BaseGrowthRead]:
         items = await ChartData.member_record_growth(query=query)
         return items
@@ -91,8 +91,8 @@ class ChartView:
         tags=['數據圖'],
     )
     async def member_record_hourly_count(
-            self,
-            query: DateRelatedQueryList = web_date_renge_params(MemberRecordChartQuery),
+        self,
+        query: DateRelatedQueryList = web_date_renge_params(MemberRecordChartQuery),
     ) -> MemberRecordHourlyCountRead:
         items = await ChartData.member_record_hourly_count(query=query)
         return items
@@ -105,8 +105,8 @@ class ChartView:
         tags=['數據圖'],
     )
     async def all_chart(
-            self,
-            request: Request,
+        self,
+        request: Request,
     ) -> AllChartRead:
         items = await ChartData.all_chart(request=request)
         return items

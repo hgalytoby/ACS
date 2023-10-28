@@ -1,7 +1,7 @@
 FROM node:18.16.1-alpine AS frontend
 WORKDIR /usr/src/app
 COPY frontend .
-RUN npm i
+RUN npm cache clean --force && npm install
 RUN npm run build
 
 FROM nginx:1.25.2-alpine

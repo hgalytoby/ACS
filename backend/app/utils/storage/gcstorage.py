@@ -46,10 +46,10 @@ class GCStorge(BaseStorage):
         return filename.replace(f'{self.__host}/{self.__bucket_name}/', '')
 
     async def save_image(
-            self,
-            instance: ImageModelType,
-            image: UploadFile = File(None),
-            size: Optional[tuple[int, int]] = None,
+        self,
+        instance: ImageModelType,
+        image: UploadFile = File(None),
+        size: Optional[tuple[int, int]] = None,
     ):
         if not image:
             return

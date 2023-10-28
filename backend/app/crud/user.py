@@ -55,9 +55,9 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
     verification_token_secret = SECRET
 
     def __init__(
-            self,
-            user_db: MySQLModelUserDatabaseAsync,
-            request: Request,
+        self,
+        user_db: MySQLModelUserDatabaseAsync,
+        request: Request,
     ):
         super(UserManager, self).__init__(user_db)
         self.request = request
@@ -72,9 +72,9 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         return await self.user_db.get(id=user_id)
 
     async def delete(
-            self,
-            user: UserModel,
-            request: Optional[Request] = None,
+        self,
+        user: UserModel,
+        request: Optional[Request] = None,
     ) -> None:
         await super().delete(user=user, request=self.request)
 
@@ -99,17 +99,17 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         return user
 
     async def oauth_callback(
-            self,
-            oauth_name: str,
-            access_token: str,
-            account_id: str,
-            account_email: str,
-            expires_at: Optional[int] = None,
-            refresh_token: Optional[str] = None,
-            request: Optional[Request] = None,
-            *,
-            associate_by_email: bool = False,
-            is_verified_by_default: bool = False,
+        self,
+        oauth_name: str,
+        access_token: str,
+        account_id: str,
+        account_email: str,
+        expires_at: Optional[int] = None,
+        refresh_token: Optional[str] = None,
+        request: Optional[Request] = None,
+        *,
+        associate_by_email: bool = False,
+        is_verified_by_default: bool = False,
     ) -> UserModel:
         oauth_account_dict = {
             'oauth_name': oauth_name,
@@ -143,8 +143,8 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
             user = await crud_user.get(item_id=user.id)
             for existing_oauth_account in user.oauth_accounts:
                 if (
-                        existing_oauth_account.account_id == account_id
-                        and existing_oauth_account.oauth_name == oauth_name
+                    existing_oauth_account.account_id == account_id
+                    and existing_oauth_account.oauth_name == oauth_name
                 ):
                     user = await self.user_db.update_oauth_account(
                         user,
@@ -170,28 +170,28 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         ...
 
     async def on_after_forgot_password(
-            self,
-            user: UserModel,
-            token: str,
-            request: Optional[Request] = None,
+        self,
+        user: UserModel,
+        token: str,
+        request: Optional[Request] = None,
     ):
         print(f'User {user.id} has forgot their password. Reset token: {token}')
         await request.state.arq.enqueue_job('send_forgot_password_email', user.email, token)
 
     async def on_after_request_verify(
-            self,
-            user: UserModel,
-            token: str,
-            request: Optional[Request] = None,
+        self,
+        user: UserModel,
+        token: str,
+        request: Optional[Request] = None,
     ):
         print(f'Verification requested for user {user.id}. Verification token: {token}')
         await request.state.arq.enqueue_job('send_register_email', user.email, token)
 
     async def on_after_update(
-            self,
-            user: UserModel,
-            update_dict: dict[str, Any],
-            request: Optional[Request] = None,
+        self,
+        user: UserModel,
+        update_dict: dict[str, Any],
+        request: Optional[Request] = None,
     ):
         if update_dict.get('password'):
             update_dict['password'] = '*' * len(update_dict['password'])
@@ -205,10 +205,10 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         await crud_user_log.create(create_item=user_log)
 
     async def on_after_login(
-            self,
-            user: UserModel,
-            request: Optional[Request] = None,
-            response: Optional[Response] = None,
+        self,
+        user: UserModel,
+        request: Optional[Request] = None,
+        response: Optional[Response] = None,
     ):
         user_log = UserLogCreate(
             user_id=user.id,
@@ -262,8 +262,8 @@ async def get_user_db():
 
 
 async def get_user_manager(
-        request: Request,
-        user_db: MySQLModelUserDatabaseAsync = Depends(get_user_db),
+    request: Request,
+    user_db: MySQLModelUserDatabaseAsync = Depends(get_user_db),
 ):
     yield UserManager(
         user_db=user_db,
@@ -291,10 +291,10 @@ current_active_verified_user = fastapi_users.current_user(active=True, verified=
 
 class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
     async def update_user_to_roles(
-            self,
-            user: UserModel,
-            role_list: list[RoleModel],
-            db_session: Optional[AsyncSession] = None,
+        self,
+        user: UserModel,
+        role_list: list[RoleModel],
+        db_session: Optional[AsyncSession] = None,
     ) -> UserDetailRead:
         db_session = db_session or self.db.session
         user.role_list = role_list
@@ -302,10 +302,10 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
         return UserDetailRead.from_orm(instance)
 
     async def update_password(
-            self,
-            user: UserModel,
-            password: UserPasswordUpdate,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        user: UserModel,
+        password: UserPasswordUpdate,
+        db_session: Optional[AsyncSession] = None,
     ) -> UserRead:
         db_session = db_session or self.db.session
         password_helper = PasswordHelper()
@@ -336,11 +336,11 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
         return UserRead.from_orm(user)
 
     async def update_info(
-            self,
-            user: UserModel,
-            update_item: UserUpdate,
-            avatar: UploadFile = File(None),
-            db_session: Optional[AsyncSession] = None,
+        self,
+        user: UserModel,
+        update_item: UserUpdate,
+        avatar: UploadFile = File(None),
+        db_session: Optional[AsyncSession] = None,
     ) -> UserRead:
         db_session = db_session or self.db.session
         await Storage.save_image(instance=user, image=avatar)
@@ -352,9 +352,9 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
         return UserRead.from_orm(user)
 
     async def get_first_created_at_user(
-            self,
-            *,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        *,
+        db_session: Optional[AsyncSession] = None,
     ) -> UserModel:
         db_session = db_session or self.db.session
         expression = self.get_select().order_by(self.model.created_at.asc())
@@ -362,10 +362,10 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
         return response.scalars().first()
 
     async def unlink_oauth(
-            self,
-            provider_name: str,
-            user: UserModel,
-            db_session: Optional[AsyncSession] = None,
+        self,
+        provider_name: str,
+        user: UserModel,
+        db_session: Optional[AsyncSession] = None,
     ) -> UserRead:
         for oauth in user.oauth_accounts:
             if oauth.oauth_name == provider_name:

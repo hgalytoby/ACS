@@ -25,8 +25,8 @@ class LogView:
         tags=['日誌'],
     )
     async def get_multi_users(
-            self,
-            query: QueryList = web_params(SuperUserLogQuery),
+        self,
+        query: QueryList = web_params(SuperUserLogQuery),
     ) -> Page[AllUserLogRead]:
         items = await crud_user_log.get_multi(query=query, paginated=True)
         return items
@@ -39,8 +39,8 @@ class LogView:
         tags=['日誌'],
     )
     async def get_multi_systems(
-            self,
-            query: QueryList = web_params(SystemLogQuery),
+        self,
+        query: QueryList = web_params(SystemLogQuery),
     ) -> list[SystemLogRead]:
         items = await crud_user_log.get_multi(query=query)
         return items
