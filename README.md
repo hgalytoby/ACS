@@ -1,8 +1,13 @@
-# 有空就開發，每周更新一次。
+# 有空就開發。
+- https://acs.duduru.website/
+- 還沒接完全部 API。
 
 # Access Control System
-
 - 進出入管理系統
+- account: root@exmaple.com
+- password: 00000000
+
+
 
 # backend
 
@@ -12,7 +17,6 @@
 # frontend
 
 - 套用 https://github.com/themeselection/materio-vuetify-vuejs-admin-template-free
-- 還沒開始寫。
 
 # docker
 

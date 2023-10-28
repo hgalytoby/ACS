@@ -24,7 +24,9 @@ COPY --from=builder $WORKDIR $WORKDIR
 WORKDIR $WORKDIR
 ENV PYTHONPATH=$WORKDIR:$PYTHONPATH
 COPY . .
-CMD alembic upgrade head && \
+CMD chmod +x ./wait-for-it.sh && \
+    ./wait-for-it.sh redis:6379 && \
+    ./wait-for-it.sh postgres:5432 && \
+    alembic upgrade head && \
     python3 ./app/initial_data.py && \
-    gunicorn -c ./app/core/dep_config.py app.main:app --forwarded-allow-ips '*' & \
-    arq app.utils.worker.WorkerSettings
+    gunicorn -c ./app/core/dep_config.py app.main:app --forwarded-allow-ips '*'

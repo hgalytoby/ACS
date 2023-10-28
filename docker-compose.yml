@@ -4,6 +4,7 @@ services:
   redis:
     image: redis:alpine
     container_name: acs_redis
+    restart: always
 
   nginx:
     build: .
@@ -12,6 +13,8 @@ services:
     ports:
       - "80:80"
     depends_on:
+      - redis
+      - postgres
       - backend
     volumes:
       - ./backend/static:/usr/src/app/static
@@ -33,6 +36,9 @@ services:
     build: ./backend
     container_name: acs_backend
     restart: always
+    depends_on:
+      - redis
+      - postgres
     volumes:
       - ./backend/static:/usr/src/app/static
     ports:
