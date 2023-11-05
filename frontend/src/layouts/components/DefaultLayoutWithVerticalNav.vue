@@ -136,7 +136,7 @@ const isCardDetailsVisible = ref(false)
       />
       <VerticalNavLink
         :item="{
-          title: 'Locations Overview',
+          title: 'LocationsOverview',
           icon: 'mdi-map-marker-radius-outline',
           to: '/locations-overview',
         }"

@@ -1,6 +1,6 @@
 <script setup>
 import VueApexCharts from 'vue3-apexcharts'
-import {useTheme} from 'vuetify'
+import { useTheme } from 'vuetify'
 
 const vuetifyTheme = useTheme()
 const currentTheme = controlledComputed(() => vuetifyTheme.name.value, () => vuetifyTheme.current.value.colors)
@@ -24,7 +24,7 @@ const chartOptions = controlledComputed(() => vuetifyTheme.name.value, () => {
       type: 'bar',
       stacked: false,
       parentHeightOffset: 0,
-      toolbar: {show: false},
+      toolbar: { show: false },
     },
     grid: {
       show: false,
@@ -62,15 +62,15 @@ const chartOptions = controlledComputed(() => vuetifyTheme.name.value, () => {
         },
       },
     },
-    legend: {show: false},
-    dataLabels: {enabled: false},
+    legend: { show: false },
+    dataLabels: { enabled: false },
     xaxis: {
-      labels: {show: false},
-      axisBorder: {show: false},
-      axisTicks: {show: false},
+      labels: { show: false },
+      axisBorder: { show: false },
+      axisTicks: { show: false },
     },
-    yaxis: {show: false},
-    tooltip: {enabled: false},
+    yaxis: { show: false },
+    tooltip: { enabled: false },
   }
 })
 </script>

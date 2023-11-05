@@ -3,12 +3,14 @@ import defaultAvatar from '@images/avatars/default-avatar.png'
 import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
 import MyVImg from '@/components/MyVImg.vue'
+import { closeSocketMessage } from '@/utils/websocket'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
 
 async function logout() {
   await authStore.logout()
+  closeSocketMessage()
 }
 
 const avatar = computed(() => {
@@ -66,7 +68,7 @@ const avatar = computed(() => {
             </VListItemTitle>
             <VListItemSubtitle>Admin</VListItemSubtitle>
           </VListItem>
-          <VDivider class="my-2" />
+          <VDivider />
 
           <VListItem :to="{name: 'AccountSettings'}">
             <template #prepend>
@@ -79,10 +81,12 @@ const avatar = computed(() => {
 
             <VListItemTitle>Profile</VListItemTitle>
           </VListItem>
+          <VDivider />
 
-          <VDivider class="my-2" />
-
-          <VListItem @click="logout">
+          <VListItem
+            class="mb-n2"
+            @click="logout"
+          >
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -90,7 +94,6 @@ const avatar = computed(() => {
                 size="22"
               />
             </template>
-
             <VListItemTitle>Logout</VListItemTitle>
           </VListItem>
         </VList>

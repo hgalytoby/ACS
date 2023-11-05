@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Optional, Any
 from uuid import UUID
 import orjson
@@ -40,6 +39,7 @@ from app.utils.enums import UserLogEvent
 from app.utils.storage import Storage
 
 SECRET = 'SECRET'
+TOKEN_AUDIENCE = ['fastapi-users:auth']
 
 
 class MySQLModelUserDatabaseAsync(SQLModelUserDatabaseAsync[UserModel, UUID]):
@@ -68,7 +68,12 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         :return:
         """
         token = self.request.headers['authorization'].split()[1]
-        user_id = decode_jwt(token, SECRET, ['fastapi-users:auth'], ['HS256'])['sub']
+        user_id = decode_jwt(
+            encoded_jwt=token,
+            secret=SECRET,
+            audience=TOKEN_AUDIENCE,
+            algorithms=['HS256'],
+        )['sub']
         return await self.user_db.get(id=user_id)
 
     async def delete(
@@ -86,7 +91,8 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
             return None
 
         verified, updated_password_hash = self.password_helper.verify_and_update(
-            credentials.password, user.hashed_password
+            plain_password=credentials.password,
+            hashed_password=user.hashed_password,
         )
 
         if not verified:
@@ -94,7 +100,10 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
             return None
 
         if updated_password_hash is not None:
-            await self.user_db.update(user, {'hashed_password': updated_password_hash})
+            await self.user_db.update(
+                user=user,
+                update_dict={'hashed_password': updated_password_hash},
+            )
 
         return user
 
@@ -275,7 +284,11 @@ bearer_transport = BearerTransport(tokenUrl='api/v1/auth/jwt/login')
 
 
 def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=SECRET, lifetime_seconds=60 * 60 * 24)
+    return JWTStrategy(
+        secret=SECRET,
+        lifetime_seconds=60 * 60 * 24,
+        token_audience=TOKEN_AUDIENCE,
+    )
 
 
 auth_backend = AuthenticationBackend(

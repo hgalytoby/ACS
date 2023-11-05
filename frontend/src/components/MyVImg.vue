@@ -9,8 +9,8 @@ const props = defineProps({
 const imgObj = computed(() => {
   const data = JSON.parse(JSON.stringify(props.imgObj))
 
-  data.src = data.src || defaultAvatar
-  data.lazySrc = data.lazySrc || defaultAvatar
+  data.src = data.src || props.imgObj.defaultImg || defaultAvatar
+  data.lazySrc = data.lazySrc || props.imgObj.defaultImg || defaultAvatar
 
   return data
 })

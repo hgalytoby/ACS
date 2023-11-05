@@ -102,8 +102,7 @@ class ChartData:
             member_record_growth,
             member_record_hourly_count,
         ) = await asyncio.gather(*tasks)
-        for i in r:
-            continue
+
         result = AllChartRead(
             hard_disk_volume=hard_disk_volume,
             email_log_classification=email_log_classification,

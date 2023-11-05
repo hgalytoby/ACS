@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/user'
 import { authProviderItems } from '@/utils/oauth'
 import { useHealthStore } from '@/stores/health'
 import { useToast } from 'vue-toastification'
+import { closeSocketMessage } from '@/utils/websocket'
 
 const toast = useToast()
 
@@ -97,6 +98,7 @@ router.beforeEach(async (to, from, next) => {
         } catch (error) {
           // 用戶訊息取得失敗，重置 token 並跳轉到登入頁面
           toast.warning('登入逾時，請重新登入')
+          closeSocketMessage()
           await userStore.resetToken()
           redirectToLogin(to, next)
         }

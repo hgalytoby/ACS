@@ -2,8 +2,11 @@
 import DefaultLayoutWithVerticalNav from './components/DefaultLayoutWithVerticalNav.vue'
 import { useRoute } from 'vue-router'
 import 'vue-datepicker-next/index.css'
+import { connectWebSocket } from '@/utils/websocket'
 
 const route = useRoute()
+
+connectWebSocket()
 </script>
 
 <template>

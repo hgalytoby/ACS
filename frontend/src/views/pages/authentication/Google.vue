@@ -1,5 +1,5 @@
 <template>
-  <VIcon>
+  <VIcon size="x-small">
     <svg
       viewBox="0 0 256 262"
       version="1.1"

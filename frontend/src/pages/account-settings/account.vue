@@ -133,7 +133,11 @@ const resetForm = setFieldValue => {
                   type="reset"
                   @click.prevent="resetForm(setFieldValue)"
                 >
-                  Reset
+                  <VIcon
+                    icon="mdi-refresh"
+                  />
+                  <span class="d-none d-sm-block">Reset</span>
+
                 </VBtn>
               </VCol>
             </VRow>

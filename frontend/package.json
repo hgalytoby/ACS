@@ -27,6 +27,7 @@
     "pinia": "^2.0.36",
     "prismjs": "^1.29.0",
     "qs": "^6.11.2",
+    "reconnecting-websocket": "^4.4.0",
     "roboto-fontface": "^0.10.0",
     "sass": "^1.59.3",
     "sweetalert2": "^11.7.32",

@@ -17,6 +17,7 @@ async function login(providerName) {
     v-for="link in authProviders"
     :key="link.icon"
     :icon="link.icon"
+    size="large"
     variant="text"
     :color="global.name.value === 'dark' ? link.colorInDark : link.color"
     @click="login(link.name)"

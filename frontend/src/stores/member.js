@@ -66,11 +66,6 @@ export const useMemberStore = defineStore({
           this.$patch({ recordList: data })
         }).catch(err => {})
     },
-    async memberRecordCreate(payload) {
-      await reqMemberRecordCreate(payload)
-        .then(() => {})
-        .catch(err => {})
-    },
     async memberLocationList() {
       await reqMembersLocationList()
         .then(({ data }) => {
@@ -86,7 +81,9 @@ export const useMemberStore = defineStore({
     async memberLocationDestroy(locationId) {
       await reqMembersLocationDestroy(locationId)
         .then(() => {})
-        .catch(err => {})
+        .catch(err => {
+          throw err
+        })
     },
   },
 })

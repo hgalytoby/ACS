@@ -5,7 +5,7 @@ const { global } = useTheme()
 </script>
 
 <template>
-  <VIcon>
+  <VIcon size="x-small">
     <svg
       viewBox="0 0 256 250"
       version="1.1"

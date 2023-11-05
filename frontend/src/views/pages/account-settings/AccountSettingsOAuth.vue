@@ -47,7 +47,7 @@ const unlinkEvent = providerName => {
       v-for="oauth in currentOAuthAccounts"
       :key="oauth.icon"
       cols="12"
-      sm="3"
+      sm="auto"
     >
       <VBtn
         block
