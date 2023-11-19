@@ -121,8 +121,4 @@ export default {
     color: 'primary',
     hideDetails: 'auto',
   },
-  VDataTable: {
-    color: 'primary',
-
-  },
 }

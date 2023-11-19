@@ -76,6 +76,22 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         )['sub']
         return await self.user_db.get(id=user_id)
 
+    async def update(
+        self,
+        user_update: dict,
+        user: UserModel,
+        safe: bool = False,
+        request: Optional[Request] = None,
+    ) -> UserModel:
+        user_update = UserUpdate(**user_update)
+        if safe:
+            updated_user_data = user_update.create_update_dict()
+        else:
+            updated_user_data = user_update.create_update_dict_superuser()
+        updated_user = await self._update(user, updated_user_data)
+        await self.on_after_update(updated_user, updated_user_data, request)
+        return updated_user
+
     async def delete(
         self,
         user: UserModel,

@@ -5,11 +5,17 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { debounce } from 'lodash'
 
-const { errors, handleSubmit, defineInputBinds } = useForm({
+
+const emailErrorMsg = {
+  format: '信箱格式錯誤!',
+  exist: '信箱已存在!',
+}
+
+const { errors, handleSubmit, defineComponentBinds } = useForm({
   validationSchema: yup.object({
-    email: yup.string().email().required().test({
+    email: yup.string().required().email(emailErrorMsg.format).test({
       name: 'exists-email',
-      message: 'email already exists!',
+      message: emailErrorMsg.exist,
       test: async value => {
         await checkEmail(value)
 
@@ -34,23 +40,23 @@ const authStore = useAuthStore()
 const cache = reactive({})
 const emailSchema = yup.string().email()
 
-const email = defineInputBinds('email', {
+const email = defineComponentBinds('email', {
   validateOnInput: true,
 })
 
-const username = defineInputBinds('username', {
+const username = defineComponentBinds('username', {
   validateOnInput: true,
 })
 
-const password = defineInputBinds('password', {
+const password = defineComponentBinds('password', {
   validateOnInput: true,
 })
 
-const confirmPassword = defineInputBinds('confirmPassword', {
+const confirmPassword = defineComponentBinds('confirmPassword', {
   validateOnInput: true,
 })
 
-const privacyPolicy = defineInputBinds('privacyPolicy', {
+const privacyPolicy = defineComponentBinds('privacyPolicy', {
   validateOnInput: true,
 })
 
@@ -69,22 +75,33 @@ const checkEmail = debounce(async value => {
   try {
     await emailSchema.validate(value)
     if (cache[value] === undefined) {
-      cache[value] = await authStore.emailExists(value)
+      try {
+        await authStore.emailExists(value)
+        cache[value] = true
+      } catch (e) {
+        if (e.response.status === 422) {
+          showEmailFailMsg.value = emailErrorMsg.format
+        } else {
+          cache[value] = false
+        }
+      }
     }
   } catch (e){
+    console.log('e', e)
   }
-}, 2000)
+}, 1000)
 
 watch(errors, (nV, _) => {
-  if (cache[email.value.value] === false){
-    showEmailFailMsg.value = 'email already exists!'
+  if (cache[email.value.modelValue] === false){
+    showEmailFailMsg.value = emailErrorMsg.exist
   } else {
     showEmailFailMsg.value = nV.email
   }
 })
 watch(cache, (nV, _) => {
-  if (!nV[email.value.value]) {
-    showEmailFailMsg.value = 'email already exists!'
+  console.log(333, nV[email.value.modelValue])
+  if (!nV[email.value.modelValue]) {
+    showEmailFailMsg.value = emailErrorMsg.exist
   } else {
     showEmailFailMsg.value = ''
   }

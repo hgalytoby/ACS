@@ -2,8 +2,7 @@ from typing import Optional
 from uuid import UUID
 from fastapi_pagination import add_pagination
 from fastapi_restful.cbv import cbv
-from fastapi import status, File, UploadFile, HTTPException, Depends, Request, APIRouter
-from redis.exceptions import LockError
+from fastapi import status, File, UploadFile, HTTPException, Depends, APIRouter
 
 from app.dependencies.deps import authorize_api
 from app.core.config import settings
@@ -23,9 +22,7 @@ from app.schemas.member import (
     MemberLocationRead,
     MemberLocationCreate,
     MemberLocationUpdate,
-    MemberStatusCreate,
     MemberStatusRead,
-    MemberStatusCreatedRead,
 )
 from app.schemas.websocket import WebSocketEventSchema
 from app.utils.enums import WebSocketEvent, APIAccess
@@ -213,6 +210,7 @@ class MemberLocationView:
             update_item=item,
             image=image,
         )
+        await self.publish_member_status_event()
         return instance
 
     @router.delete(

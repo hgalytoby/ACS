@@ -4,7 +4,7 @@
 
 # Access Control System
 - 進出入管理系統
-- account: root@exmaple.com
+- account: root@example.com
 - password: 00000000
 
 
@@ -17,6 +17,8 @@
 # frontend
 
 - 套用 https://github.com/themeselection/materio-vuetify-vuejs-admin-template-free
+- 慢慢規劃與刻板。
+
 
 # docker
 

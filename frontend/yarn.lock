@@ -5074,10 +5074,10 @@ type-fest@^2.19.0:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-2.19.0.tgz"
   integrity sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==
 
-type-fest@^3.12.0:
-  version "3.12.0"
-  resolved "https://registry.npmjs.org/type-fest/-/type-fest-3.12.0.tgz"
-  integrity sha512-qj9wWsnFvVEMUDbESiilKeXeHL7FwwiFcogfhfyjmvT968RXSvnl23f1JOClTHYItsi7o501C/7qVllscUP3oA==
+type-fest@^4.3.1:
+  version "4.7.0"
+  resolved "https://registry.npmjs.org/type-fest/-/type-fest-4.7.0.tgz"
+  integrity sha512-OYI0GNgutT8XtqvoSYUWzBkwoTXgkDVJSSyzzjtGp+HNyrGOJypM2UHtbnbEmNk2/OI7YmKpjjI/gfFSrfEQwQ==
 
 typed-array-length@^1.0.4:
   version "1.0.4"
@@ -5228,13 +5228,13 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-vee-validate@^4.10.5:
-  version "4.10.5"
-  resolved "https://registry.npmjs.org/vee-validate/-/vee-validate-4.10.5.tgz"
-  integrity sha512-5pbMWniCjfuWdeAAhe+rHm2OQ34KLuoEu+Q2jDxG2qbEl1EnqadL/RaYJviS/qnvWi9oULwX/rv09jwd4DuuKQ==
+vee-validate@^4.11.8:
+  version "4.11.8"
+  resolved "https://registry.npmjs.org/vee-validate/-/vee-validate-4.11.8.tgz"
+  integrity sha512-ZuVpw0axWYBM3aVTD/bm94hcWHumqeUgNjptOqfBT0gyqyHaGYCrm0tSD/0bygEbWUDwEPJOQaEKaUGM82j8TQ==
   dependencies:
     "@vue/devtools-api" "^6.5.0"
-    type-fest "^3.12.0"
+    type-fest "^4.3.1"
 
 vite-plugin-mkcert@^1.16.0:
   version "1.16.0"
@@ -5383,7 +5383,7 @@ vue-toastification@^2.0.0-rc.5:
   resolved "https://registry.npmjs.org/vue-toastification/-/vue-toastification-2.0.0-rc.5.tgz"
   integrity sha512-q73e5jy6gucEO/U+P48hqX+/qyXDozAGmaGgLFm5tXX4wJBcVsnGp4e/iJqlm9xzHETYOilUuwOUje2Qg1JdwA==
 
-"vue@^2.6.12 || ^3.2.4", "vue@^2.6.14 || ^3.2.0", "vue@^2.7.0 || ^3.2.25", vue@^3.0.0, "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.0-0 || ^2.7.0", vue@^3.0.11, vue@^3.0.2, vue@^3.2.0, vue@^3.2.25, vue@^3.3.2, vue@^3.3.4, "vue@> 3.0.0", "vue@>= 3.0", vue@>=3, vue@>=3.0.0, "vue@2 || 3", vue@3.3.4:
+"vue@^2.6.12 || ^3.2.4", "vue@^2.6.14 || ^3.2.0", "vue@^2.7.0 || ^3.2.25", vue@^3.0.0, "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.0-0 || ^2.7.0", vue@^3.0.11, vue@^3.0.2, vue@^3.2.0, vue@^3.2.25, vue@^3.3.0, vue@^3.3.2, vue@^3.3.4, "vue@> 3.0.0", "vue@>= 3.0", vue@>=3, vue@>=3.0.0, "vue@2 || 3", vue@3.3.4:
   version "3.3.4"
   resolved "https://registry.npmjs.org/vue/-/vue-3.3.4.tgz"
   integrity sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==
@@ -5408,10 +5408,10 @@ vue3-perfect-scrollbar@^1.6.0:
     perfect-scrollbar "^1.5.5"
     postcss-import "^12.0.0"
 
-vuetify@^3.0.0-beta.4, vuetify@^3.3.23:
-  version "3.3.23"
-  resolved "https://registry.npmjs.org/vuetify/-/vuetify-3.3.23.tgz"
-  integrity sha512-EVEFvDyKr/HK2+hQJyhQSjIDULDaBi9vfgAAB0ekm+2Tvc8AkaDwb7VK44R2eilGFGpju6iN52FV7Uasj8SmIg==
+vuetify@^3.0.0-beta.4, vuetify@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.npmjs.org/vuetify/-/vuetify-3.4.0.tgz"
+  integrity sha512-aW3bJGCUN3fhl62yvsb+Hv6TtMWDqiadN0PTbEB8jd9z46/X1ddzQ/fhMjkqBX69sMFtZvENl3YFGU5c88/8qw==
 
 webfontloader@^1.6.28:
   version "1.6.28"

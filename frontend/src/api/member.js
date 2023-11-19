@@ -4,8 +4,8 @@ import urls from '@/api/urls'
 export const reqMemberList = params => jwtRequest.get(urls.member.members, { params })
 
 export const reqMemberCreateOrUpdate = payload => {
-  if (payload?.id) {
-    return jwtRequest.patch(urls.member.member(payload.id), payload)
+  if (payload.get('id')) {
+    return jwtRequest.patch(urls.member.member(payload.get('id')), payload)
   }
 
   return jwtRequest.post(urls.member.members, payload)
@@ -22,8 +22,9 @@ export const reqMemberRecordCreate = payload => jwtRequest.post(urls.member.memb
 export const reqMembersLocationList = () => jwtRequest.get(urls.member.membersLocation)
 
 export const reqMembersLocationCreateOrUpdate = payload => {
-  if (payload?.id) {
-    return jwtRequest.patch(urls.member.memberLocation(payload.id), payload)
+  console.log(payload.get('id'))
+  if (payload.get('id')) {
+    return jwtRequest.patch(urls.member.memberLocation(payload.get('id')), payload)
   }
 
   return jwtRequest.post(urls.member.membersLocation, payload)
