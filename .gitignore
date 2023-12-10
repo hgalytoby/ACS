@@ -12,6 +12,7 @@ backend/static/*
 .env.local
 .env.*.local
 .env.dev
+.env.test
 
 # Log files
 npm-debug.log*
@@ -30,5 +31,5 @@ pnpm-debug.log*
 .github
 
 # test file
-test*.py
+test.py
 gcstorage_cert.json

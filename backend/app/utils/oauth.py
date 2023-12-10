@@ -68,7 +68,7 @@ def get_oauth_router(
     callback_route_name = f'oauth:{oauth_client.name}.{auth_backend.name}.callback'
     oauth2_authorize_callback = OAuth2AuthorizeCallback(
         client=oauth_client,
-        route_name=f'http://localhost:8000/api/auth/{oauth_client.name}/callback',
+        route_name=callback_route_name,
     )
 
     @router.get(

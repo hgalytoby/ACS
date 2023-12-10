@@ -74,7 +74,7 @@ const isCardDetailsVisible = ref(false)
     <template #vertical-nav-content>
       <VerticalNavLink
         :item="{
-          title: 'Account Settings',
+          title: 'AccountSettings',
           icon: 'mdi-account-cog-outline',
           to: '/account-settings',
         }"
@@ -129,9 +129,16 @@ const isCardDetailsVisible = ref(false)
       />
       <VerticalNavLink
         :item="{
+          title: 'DefaultDashboard',
+          icon: 'mdi-view-dashboard-outline',
+          to: '/default-dashboard',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
           title: 'Dashboard',
           icon: 'mdi-view-dashboard-outline',
-          to: '/dashboard',
+          to: '/my-dashboard',
         }"
       />
       <VerticalNavLink

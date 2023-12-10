@@ -53,7 +53,7 @@ app.add_middleware(
 )
 
 if settings.is_dev:
-    # 加 DebugToolbarMiddleware 速度會變慢。
+    # 測試的時候才加 DebugToolbarMiddleware，因為變成同步的了速度會變慢，。
     app.add_middleware(
         DebugToolbarMiddleware,
         panels=['app.db.session.SQLAlchemyPanel'],

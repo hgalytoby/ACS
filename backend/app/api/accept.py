@@ -39,6 +39,8 @@ class AcceptLocationView:
     )
     async def get_api(self) -> AcceptApiRead:
         instance = await crud_accept_api.get_first()
+        if not instance:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         return instance
 
     @router.post(

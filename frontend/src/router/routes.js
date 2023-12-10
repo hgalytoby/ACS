@@ -5,8 +5,15 @@ export default [
     component: () => import('../layouts/default.vue'),
     children: [
       {
-        path: 'dashboard',
-        component: () => import('../pages/dashboard.vue'),
+        path: 'default-dashboard',
+        component: () => import('../pages/default-dashboard.vue'),
+        meta: {
+          title: '預設儀錶板',
+        },
+      },
+      {
+        path: 'my-dashboard',
+        component: () => import('../pages/dashboard/my-dashboard.vue'),
         meta: {
           title: '儀錶板',
         },

@@ -102,13 +102,6 @@ export const useAuthStore = defineStore({
     },
     async emailExists(payload){
       await reqEmailExists(payload)
-
-      // try {
-      //
-      //   return true
-      // } catch {
-      //   return false
-      // }
     },
   },
 })

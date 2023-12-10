@@ -26,14 +26,12 @@ class Client:
         self.accept = False
 
     async def login(self, msg):
-        print(msg)
         jwt = decode_jwt(
             encoded_jwt=msg.data,
             secret=SECRET,
             audience=TOKEN_AUDIENCE,
             algorithms=['HS256'],
         )['sub']
-        print(jwt)
         if not self.accept:
             self.accept = True
             data = WebSocketEventSchema(

@@ -1,8 +1,14 @@
-from datetime import datetime, date
+from abc import ABCMeta, abstractmethod
+from datetime import datetime, date, timedelta
 from operator import ge, le
 from typing import Any, Optional
 from pydantic import BaseModel, Field
 from sqlalchemy.sql.elements import UnaryExpression, BinaryExpression
+from fastapi import Request, Query
+
+from app.models.base import BaseCreatedAtModel
+
+DateFormat = '%Y-%m-%d %H:%M:%S'
 
 
 class BaseQuery:
@@ -22,7 +28,10 @@ class BaseQuery:
 
         if start_date:
             if isinstance(start_date, datetime):
-                start_date = datetime.strptime(f'{start_date.date()} {start_date.time()}', '%Y-%m-%d %H:%M:%S')
+                start_date = datetime.strptime(
+                    f'{start_date.date()} {start_date.time()}',
+                    DateFormat,
+                )
 
             self.query_list.append(
                 QuerySql(
@@ -34,7 +43,10 @@ class BaseQuery:
 
         if end_date:
             if isinstance(end_date, datetime):
-                end_date = datetime.strptime(f'{end_date.date()} {end_date.time()}', '%Y-%m-%d %H:%M:%S')
+                end_date = datetime.strptime(
+                    f'{end_date.date()} {end_date.time()}',
+                    DateFormat,
+                )
 
             self.query_list.append(
                 QuerySql(
@@ -64,6 +76,36 @@ class BaseQuery:
                     result[item.num] = item.sql_field.asc()
 
         return list(map(lambda x: result[x], sorted(result.keys())))
+
+
+class BaseMemberChartQuery(BaseQuery, metaclass=ABCMeta):
+    def __init__(
+        self,
+        request: Request,
+        created_at: Optional[tuple[datetime | date, datetime | date]] = Query(
+            default=None,
+            description='創建日期',
+            alias='createdAt',
+        ),
+    ):
+        super(BaseMemberChartQuery, self).__init__()
+
+        if created_at is None:
+            created_at = (
+                (request.state.initial_time - timedelta(days=30)).replace(microsecond=0),
+                (datetime.utcnow() + timedelta(days=30)).replace(microsecond=0),
+            )
+
+        self.date_renge = created_at
+        self.convert_datetime_to_query(
+            date_arr=created_at,
+            sql_field=self.model.created_at,
+        )
+
+    @property
+    @abstractmethod
+    def model(self) -> type[BaseCreatedAtModel]:
+        raise NotImplementedError('Require Model.')
 
 
 class QuerySql(BaseModel):
