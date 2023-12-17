@@ -7,7 +7,7 @@ from app.models import FrontendModel
 from app.schemas.frontend import FrontendRead, FrontendCreate, FrontendUpdate
 from app.utils.enums import APIAccess
 
-router = APIRouter()
+router = APIRouter(tags=['前端'])
 
 
 @cbv(router)
@@ -17,7 +17,6 @@ class FrontendView:
         name=APIAccess.PRIVATE,
         summary='全部前端資料',
         status_code=status.HTTP_200_OK,
-        tags=['前端'],
     )
     async def get_multi(self) -> list[FrontendRead]:
         items = await crud_frontend.get_multi()
@@ -28,7 +27,6 @@ class FrontendView:
         name=APIAccess.PRIVATE,
         summary='新增前端資料',
         status_code=status.HTTP_201_CREATED,
-        tags=['前端']
     )
     async def create(self, item: FrontendCreate) -> FrontendRead:
         if item.parent_id:
@@ -44,7 +42,6 @@ class FrontendView:
         name=APIAccess.PRIVATE,
         summary='取得前端資料',
         status_code=status.HTTP_200_OK,
-        tags=['前端']
     )
     async def get(self, frontend_id: UUID) -> FrontendRead:
         instance = await crud_frontend.get(item_id=frontend_id)
@@ -57,7 +54,6 @@ class FrontendView:
         name=APIAccess.PRIVATE,
         summary='更新前端資料',
         status_code=status.HTTP_200_OK,
-        tags=['前端']
     )
     async def update(
         self,
@@ -78,7 +74,6 @@ class FrontendView:
         name=APIAccess.PRIVATE,
         summary='刪除前端資料',
         status_code=status.HTTP_204_NO_CONTENT,
-        tags=['前端'],
     )
     async def destroy(self, frontend_id: UUID):
         await crud_frontend.destroy(item_id=frontend_id)

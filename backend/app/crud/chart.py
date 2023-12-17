@@ -7,30 +7,39 @@ import psutil
 from app.crud import crud_system_log, crud_member, crud_member_record
 from app.models import MemberModel, MemberRecordModel
 from app.schemas.chart import (
-    HardDiskVolumeRead,
-    EmailLogChartRead,
     BaseGrowthRead,
     MemberRecordHourlyCountRead,
     AllChartRead,
+    ChartRead,
+    ChartItem,
 )
+from app.utils.enums import HardDiskVolumeLabel, SystemLogEvent
 from app.utils.sql_query import DateRelatedQueryList
+
+DISK_VAL = 2 ** 30
 
 
 class ChartData:
     @classmethod
-    def hard_disk_volume(cls) -> HardDiskVolumeRead:
+    def hard_disk_volume(cls) -> ChartRead:
         hdd = psutil.disk_usage('/')
-        result = HardDiskVolumeRead(
-            total=hdd.total // (2 ** 30),
-            used=hdd.used // (2 ** 30),
-            free=hdd.free // (2 ** 30),
-        )
-        return result
+        items = [
+            ChartItem(label=HardDiskVolumeLabel.TOTAL, data=hdd.total // DISK_VAL),
+            ChartItem(label=HardDiskVolumeLabel.USED, data=hdd.used // DISK_VAL),
+            ChartItem(label=HardDiskVolumeLabel.FREE, data=hdd.free // DISK_VAL),
+        ]
+        return ChartRead(items=items, labels=HardDiskVolumeLabel.values())
 
     @classmethod
-    async def email_log_classification(cls) -> list[EmailLogChartRead]:
+    async def email_log_classification(cls) -> ChartRead:
         items = await crud_system_log.chart()
-        return items
+        return ChartRead(
+            items=[
+                ChartItem(label=event, data=value)
+                for (event, value) in items
+            ],
+            labels=SystemLogEvent.values(),
+        )
 
     @classmethod
     async def member_growth(
@@ -41,11 +50,11 @@ class ChartData:
         return items
 
     @classmethod
-    async def new_member_growth(
+    async def new_member_chart(
         cls,
         query: DateRelatedQueryList
     ) -> list[BaseGrowthRead]:
-        items = await crud_member.new_member_growth_chart(query=query)
+        items = await crud_member.new_member_chart(query=query)
         return items
 
     @classmethod
@@ -88,7 +97,7 @@ class ChartData:
         tasks = [
             cls.email_log_classification(),
             cls.member_growth(query_member),
-            cls.new_member_growth(query_member),
+            cls.new_member_chart(query_member),
             cls.member_record_growth(query_member_record),
             cls.member_record_hourly_count(query_member_record),
         ]
@@ -98,7 +107,7 @@ class ChartData:
         (
             email_log_classification,
             member_growth,
-            new_member_growth,
+            new_member_chart,
             member_record_growth,
             member_record_hourly_count,
         ) = await asyncio.gather(*tasks)
@@ -107,7 +116,7 @@ class ChartData:
             hard_disk_volume=hard_disk_volume,
             email_log_classification=email_log_classification,
             member_growth=member_growth,
-            new_member_growth=new_member_growth,
+            new_member_chart=new_member_chart,
             member_record_growth=member_record_growth,
             member_record_hourly_count=member_record_hourly_count,
         )

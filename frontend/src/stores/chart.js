@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import {
   reqMemberGrowth,
-  reqNewMemberGrowth,
+  reqNewMemberChart,
   reqMemberRecordGrowth,
   reqMemberRecordHourlyCount,
   reqAllChart,
@@ -10,37 +10,45 @@ import {
 export const useChartStore = defineStore({
   id: 'useChartStore',
   state: () => ({
-    hardDiskVolume: {},
-    emailLogClassification: [],
-    memberGrowth: {},
-    newMemberGrowth: {},
-    memberRecordGrowth: {},
-    memberRecordHourlyCount: {},
+    hardDiskVolumeData: { items: [], labels: [] },
+    emailLogClassificationData: { items: [], labels: [] },
+    memberGrowthData: [],
+    newMemberChartData: {},
+    memberRecordGrowthData: {},
+    memberRecordHourlyCountData: {},
   }),
   actions: {
     async memberGrowth() {
       await reqMemberGrowth().then(({ data }) => {
-        this.$patch({ memberGrowth: data })
+        this.$patch({ memberGrowthData: data })
       })
     },
     async newMemberGrowth() {
-      await reqNewMemberGrowth().then(({ data }) => {
-        this.$patch({ newMemberGrowth: data })
+      await reqNewMemberChart().then(({ data }) => {
+        this.$patch({ newMemberChartData: data })
       })
     },
     async memberRecordGrowth() {
       await reqMemberRecordGrowth().then(({ data }) => {
-        this.$patch({ memberRecordGrowth: data })
+        this.$patch({ memberRecordGrowthData: data })
       })
     },
     async memberRecordHourlyCount() {
       await reqMemberRecordHourlyCount().then(({ data }) => {
-        this.$patch({ memberRecordHourlyCount: data })
+        this.$patch({ memberRecordHourlyCountData: data })
       })
     },
     async allAllChart() {
       await reqAllChart().then(({ data }) => {
-        this.$patch(data)})
+        this.$patch({
+          hardDiskVolumeData: data.hardDiskVolume,
+          emailLogClassificationData: data.emailLogClassification,
+          memberGrowthData: data.memberGrowth,
+          newMemberChartData: data.newMemberChart,
+          memberRecordGrowthData: data.memberRecordGrowth,
+          memberRecordHourlyCountData: data.memberRecordHourlyCount,
+        })
+      })
     },
   },
 })

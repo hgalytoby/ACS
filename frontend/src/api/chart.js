@@ -7,7 +7,7 @@ export const reqEmailLogClassification = params => jwtRequest.get(urls.chart.ema
 
 export const reqMemberGrowth = params => jwtRequest.get(urls.chart.memberGrowth)
 
-export const reqNewMemberGrowth = params => jwtRequest.get(urls.chart.newMemberGrowth)
+export const reqNewMemberChart = params => jwtRequest.get(urls.chart.newMemberChart)
 
 export const reqMemberRecordGrowth = params => jwtRequest.get(urls.chart.memberRecordGrowth)
 

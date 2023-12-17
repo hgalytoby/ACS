@@ -15,11 +15,15 @@ const getColors = alpha => [
   `rgba(255, 206, 86, ${alpha})`,
   `rgba(255, 159, 64, ${alpha})`,
   `rgba(153, 102, 255, ${alpha})`,
+  `rgba(255, 0, 255, ${alpha})`,
 ]
-
+const getLegendPosition = value => window.innerWidth >= 1281 ? 'right' : 'top'
 const chartOptions = ref({
   chart: {
     type: 'donut',
+  },
+  legend: {
+    position: getLegendPosition(window.innerWidth),
   },
   stroke: {
     colors: getColors(1),
@@ -64,29 +68,41 @@ watch(vuetifyTheme.name, (nv, ov) => {
 })
 
 watch(
-  () => chartStore.emailLogClassification,
+  () => chartStore.emailLogClassificationData,
   (nv, ov) => {
-    const data = []
-    const labels = []
+    const data = chartStore.emailLogClassificationData.labels.reduce((obj, label) => {
+      obj[label] = 0
 
-    chartStore.emailLogClassification.forEach(item => {
-      data.push(item.count)
-      labels.push(item.event)
+      return obj
+    }, {})
+
+    chartStore.emailLogClassificationData.items.forEach(item => {
+      data[item.label] = item.data
     })
-    series.value = data
+    series.value = Object.values(data)
     chartOptions.value = {
       ...switchVuetifyTheme(),
-      labels,
+      labels: chartStore.emailLogClassificationData.labels,
     }
-  }, 
+  },
   { deep: true },
 )
+
+onMounted(() => {
+  window.onresize = () => {
+    chartOptions.value = {
+      legend: {
+        position: getLegendPosition(window.innerWidth),
+      },
+    }
+  }
+})
 </script>
 
 <template>
   <VCard>
     <VCardTitle class="align-start">
-      <span class="font-weight-semibold">電子郵件詳細圖</span>
+      <span class="font-weight-semibold">硬碟容量詳細圖</span>
     </VCardTitle>
     <VCardText>
       <VueApexCharts

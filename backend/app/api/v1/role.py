@@ -14,7 +14,7 @@ from app.schemas.role import (
 )
 from app.utils.enums import APIAccess
 
-router = APIRouter()
+router = APIRouter(tags=['角色'])
 
 
 @cbv(router)
@@ -24,7 +24,6 @@ class UserRoleView:
         name=APIAccess.PRIVATE,
         summary='角色列表',
         status_code=status.HTTP_200_OK,
-        tags=['角色'],
     )
     async def get_multi(self) -> list[RoleRead]:
         return await crud_role.get_multi()
@@ -34,7 +33,6 @@ class UserRoleView:
         name=APIAccess.PRIVATE,
         summary='新增角色',
         status_code=status.HTTP_201_CREATED,
-        tags=['角色'],
     )
     async def create(self, item: RoleCreate) -> RoleRead:
         instance = await crud_role.create(create_item=item)
@@ -45,7 +43,6 @@ class UserRoleView:
         name=APIAccess.PRIVATE,
         summary='角色批量更新使用者',
         status_code=status.HTTP_200_OK,
-        tags=['角色'],
     )
     async def update_user_ids(
         self,
@@ -64,7 +61,6 @@ class UserRoleView:
         name=APIAccess.PRIVATE,
         summary='角色批量更新 Api',
         status_code=status.HTTP_200_OK,
-        tags=['角色'],
     )
     async def update_api_ids(
         self,
@@ -83,7 +79,6 @@ class UserRoleView:
         name=APIAccess.PRIVATE,
         summary='角色批量更新 Frontend',
         status_code=status.HTTP_200_OK,
-        tags=['角色'],
     )
     async def update_role_to_frontends(
         self,
@@ -102,7 +97,6 @@ class UserRoleView:
         name=APIAccess.PRIVATE,
         summary='單筆角色資料',
         status_code=status.HTTP_200_OK,
-        tags=['角色'],
     )
     async def get(
         self,
@@ -125,7 +119,6 @@ class UserRoleView:
         name=APIAccess.PRIVATE,
         summary='更新角色資料',
         status_code=status.HTTP_200_OK,
-        tags=['角色'],
     )
     async def update(self, role_id: UUID, item: RoleUpdate) -> RoleRead:
         instance = await crud_role.get(item_id=role_id)
@@ -139,7 +132,6 @@ class UserRoleView:
         name=APIAccess.PRIVATE,
         summary='刪除角色資料',
         status_code=status.HTTP_204_NO_CONTENT,
-        tags=['角色'],
     )
     async def destroy(self, role_id: UUID):
         instance = await crud_role.get(item_id=role_id)

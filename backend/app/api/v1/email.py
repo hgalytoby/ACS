@@ -11,7 +11,7 @@ from app.schemas.email import (
 )
 from app.utils.enums import APIAccess, SystemLogEvent
 
-router = APIRouter()
+router = APIRouter(tags=['信箱設定'])
 
 
 @cbv(router)
@@ -23,7 +23,6 @@ class EmailView:
         name=APIAccess.PRIVATE,
         summary='信箱設定',
         status_code=status.HTTP_200_OK,
-        tags=['信箱設定'],
     )
     async def get(self, event: SystemLogEvent) -> EmailSettingsRead:
         instance = await crud_email_settings.get_event(event=event)
@@ -36,7 +35,6 @@ class EmailView:
         name=APIAccess.PRIVATE,
         summary='信箱設定',
         status_code=status.HTTP_200_OK,
-        tags=['信箱設定'],
     )
     async def update(
         self,
@@ -57,7 +55,6 @@ class EmailView:
         name=APIAccess.PRIVATE,
         summary='測試送信',
         status_code=status.HTTP_202_ACCEPTED,
-        tags=['信箱設定']
     )
     async def post(self, request: Request, email_try_send: EmailTrySendSchema):
         body = email_try_send.get_sample_body(request=request)

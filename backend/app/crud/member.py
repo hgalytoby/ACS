@@ -182,7 +182,7 @@ class CRUDMember(
         )
         return result
 
-    async def new_member_growth_chart(
+    async def new_member_chart(
         self,
         query: DateRelatedQueryList,
     ) -> list[BaseGrowthRead]:

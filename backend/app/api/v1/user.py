@@ -1,7 +1,15 @@
 from uuid import UUID
 from fastapi_pagination import add_pagination
 from fastapi_restful.cbv import cbv
-from fastapi import status, Depends, UploadFile, File, HTTPException, APIRouter, Query
+from fastapi import (
+    status,
+    Depends,
+    UploadFile,
+    File,
+    HTTPException,
+    APIRouter,
+    Query,
+)
 
 from app.crud import crud_role, crud_user_log
 from app.dependencies.base import web_params
@@ -117,7 +125,10 @@ class UserView:
         self,
         item: UserPasswordUpdate,
     ) -> UserRead:
-        instance = await crud_user.update_password(user=self.user, password=item)
+        instance = await crud_user.update_password(
+            user=self.user,
+            password=item,
+        )
         return instance
 
     @router.get(
@@ -164,7 +175,10 @@ class UserView:
         user = await crud_user.get(item_id=user_id)
         if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-        user = await crud_user.update_user_to_roles(user=user, role_list=role_list)
+        user = await crud_user.update_user_to_roles(
+            user=user,
+            role_list=role_list,
+        )
         return user
 
     @router.delete(

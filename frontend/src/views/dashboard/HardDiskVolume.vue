@@ -15,8 +15,7 @@ const getColors = alpha  => [
 
 const chartOptions = ref({
   chart: {
-    type: 'pie',
-    height: '100px',
+    type: 'donut',
     stacked: false,
     toolbar: { show: false },
   },
@@ -66,14 +65,14 @@ watch(vuetifyTheme.name, (nv, ov) => {
   chartOptions.value = switchVuetifyTheme()
 })
 watch(
-  () => chartStore.hardDiskVolume,
+  () => chartStore.hardDiskVolumeData,
   (nv, ov) => {
     const data = []
     const labels = []
 
-    Object.entries(chartStore.hardDiskVolume).forEach(([key, value]) => {
-      data.push(value)
-      labels.push(`${key.replace(/^./, key[0].toUpperCase())}(GB)`)
+    chartStore.hardDiskVolumeData.items.forEach(item => {
+      data.push(item.data)
+      labels.push(item.label)
     })
 
     series.value = data

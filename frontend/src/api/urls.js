@@ -54,7 +54,7 @@ const chart = {
   hardDiskVolume: '/api/v1/charts/hard-disk-volume',
   emailLogClassification: '/api/v1/charts/email-log-classification',
   memberGrowth: '/api/v1/charts/member-growth',
-  newMemberGrowth: '/api/v1/charts/new-member-growth',
+  newMemberChart: '/api/v1/charts/new-member-chart',
   memberRecordGrowth: '/api/v1/charts/member-record-growth',
   memberRecordHourlyCount: '/api/v1/charts/member-record-hourly-count',
   allChart: '/api/v1/charts/all-chart',

@@ -1,10 +1,9 @@
 from sqlmodel import select, func
 from sqlmodel.sql.expression import Select, SelectOfScalar
-from sqlalchemy.orm import joinedload, outerjoin
+from sqlalchemy.orm import joinedload
 
 from app.crud.base import CRUDBase
-from app.models import UserLogModel, SystemLogModel, UserModel
-from app.schemas.chart import EmailLogChartRead
+from app.models import UserLogModel, SystemLogModel
 from app.schemas.log import (
     UserLogRead,
     UserLogUpdate,
@@ -14,6 +13,7 @@ from app.schemas.log import (
     SystemLogCreate,
     AllUserLogRead,
 )
+from app.utils.enums import SystemLogEvent
 
 
 class CRUDUserLog(
@@ -40,7 +40,7 @@ class CRUDSystemLog(
         SystemLogRead,
     ]
 ):
-    async def chart(self) -> list[EmailLogChartRead]:
+    async def chart(self) -> list[tuple[SystemLogEvent, int]]:
         response = await self.db.session.execute(
             select(
                 self.model.event,
@@ -48,11 +48,7 @@ class CRUDSystemLog(
             )
             .group_by(self.model.event)
         )
-        result = [
-            EmailLogChartRead(event=event, count=count)
-            for event, count in response.all()
-        ]
-        return result
+        return response.all()
 
 
 crud_user_log = CRUDUserLog(model=UserLogModel)

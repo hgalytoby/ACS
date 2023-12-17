@@ -12,7 +12,7 @@ from app.utils.enums import APIAccess
 from app.utils.pagination import Page
 from app.utils.sql_query import QueryList
 
-router = APIRouter()
+router = APIRouter(tags=['日誌'])
 
 
 @cbv(router)
@@ -22,7 +22,6 @@ class LogView:
         name=APIAccess.PRIVATE,
         summary='使用者日誌列表',
         status_code=status.HTTP_200_OK,
-        tags=['日誌'],
     )
     async def get_multi_users(
         self,
@@ -36,7 +35,6 @@ class LogView:
         name=APIAccess.PRIVATE,
         summary='系統日誌列表',
         status_code=status.HTTP_200_OK,
-        tags=['日誌'],
     )
     async def get_multi_systems(
         self,
@@ -50,7 +48,7 @@ class LogView:
         name=APIAccess.PRIVATE,
         summary='系統日誌',
         status_code=status.HTTP_200_OK,
-        tags=['日誌'],
+
     )
     async def get_system(self, log_id: UUID) -> UserLogRead:
         instance = await crud_system_log.get(item_id=log_id)

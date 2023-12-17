@@ -2,7 +2,14 @@ from enum import Enum
 from functools import cache
 
 
-class AppEnvPath(str, Enum):
+class MyEnum(Enum):
+    @classmethod
+    @cache
+    def values(cls) -> list[str]:
+        return [member.value for member in cls]
+
+
+class AppEnvPath(str, MyEnum):
     """
     PROD = 正式環境
     DEV = 開發環境
@@ -13,7 +20,7 @@ class AppEnvPath(str, Enum):
     TEST = '.env.test'
 
 
-class AppEnv(str, Enum):
+class AppEnv(str, MyEnum):
     """
     PROD = 正式環境
     DEV = 開發環境
@@ -24,7 +31,7 @@ class AppEnv(str, Enum):
     TEST = 'TEST'
 
 
-class AllowedImageExtensions(str, Enum):
+class AllowedImageExtensions(str, MyEnum):
     JPEG = 'jpeg'
     JPG = 'jpg'
     PNG = 'png'
@@ -42,26 +49,26 @@ class AllowedImageExtensions(str, Enum):
         return type_ in cls.rule()
 
 
-class ImageFailDetail(str, Enum):
+class ImageFailDetail(str, MyEnum):
     """
     INVALID_IMAGE_FORMAT = 無效圖片格式
     """
     INVALID_IMAGE_FORMAT = 'INVALID_IMAGE_FORMAT'
 
 
-class UserFailDetail(str, Enum):
+class UserFailDetail(str, MyEnum):
     """
     USER_EMAIL_EXIST = 使用者信箱已存在
     """
     USER_EMAIL_EXIST = 'USER_EMAIL_EXIST'
 
 
-class SteinsGate(str, Enum):
+class SteinsGate(str, MyEnum):
     PLAN = 'Operation Skuld, El Psy Congroo.'
     DIVERGENCE = '1.048596'
 
 
-class WebSocketEvent(str, Enum):
+class WebSocketEvent(str, MyEnum):
     """
     MEMBER_STATUS = 成員狀態
     MEMBER_STATUS_LIST = 成原列表
@@ -74,7 +81,7 @@ class WebSocketEvent(str, Enum):
     CHANNEL = 'ACS'
 
 
-class UserLogEvent(str, Enum):
+class UserLogEvent(str, MyEnum):
     """
     CREATE_MEMBER = 新增成員
     UPDATE_MEMBER = 更新成員
@@ -100,7 +107,7 @@ class UserLogEvent(str, Enum):
 
 
 # 無法繼承拓展。
-class SystemLogEvent(str, Enum):
+class SystemLogEvent(str, MyEnum):
     """
     USER_REGISTER = 使用者註冊
     USER_LOGIN_FAIL = 使用者登入失敗
@@ -119,7 +126,7 @@ class SystemLogEvent(str, Enum):
     TRY_SEND_EMAIL = 'TrySendEmail'
 
 
-class EmailEventDefaultValue(str, Enum):
+class EmailEventDefaultValue(str, MyEnum):
     REGISTER_SUBJECT = '{project} 啟用帳號信'
     REGISTER_BODY = '{project} 啟用帳號信 網址: {url}'
     FORGOT_PASSWORD_SUBJECT = '{project} 忘記密碼信'
@@ -134,21 +141,21 @@ class EmailEventDefaultValue(str, Enum):
     LOGIN_FAIL_BODY = '您的帳號從 IP: {ip} 於 10 分鐘內多次登入失敗!'
 
 
-class ApiMethod(str, Enum):
+class ApiMethod(str, MyEnum):
     GET = 'GET'
     POST = 'POST'
     PATCH = 'PATCH'
     DELETE = 'DELETE'
 
 
-class BloodType(str, Enum):
+class BloodType(str, MyEnum):
     A = 'A'
     B = 'B'
     AB = 'AB'
     O = 'O'
 
 
-class StorageType(str, Enum):
+class StorageType(str, MyEnum):
     """
     LOCAL = 本地端
     GCP = Google Cloud Storage
@@ -157,10 +164,16 @@ class StorageType(str, Enum):
     GCP = 'GCP'
 
 
-class APIAccess(str, Enum):
+class APIAccess(str, MyEnum):
     """
     PUBLIC = 公
     PRIVATE = 私
     """
     PUBLIC = 'PUBLIC'
     PRIVATE = 'PRIVATE'
+
+
+class HardDiskVolumeLabel(str, MyEnum):
+    TOTAL = 'Total(GB)'
+    USED = 'Used(GB)'
+    FREE = 'Free(GB)'
