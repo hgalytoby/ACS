@@ -16,7 +16,7 @@ from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin, exceptions
 from fastapi_users.authentication import (
     AuthenticationBackend,
     BearerTransport,
-    JWTStrategy,
+    RedisStrategy,
 )
 from fastapi_users.jwt import decode_jwt, generate_jwt
 from fastapi_users.password import PasswordHelper
@@ -24,6 +24,7 @@ from fastapi_users_db_sqlmodel import SQLModelUserDatabaseAsync
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
+from app.core.config import settings
 from app.crud.base import CRUDBase
 from app.crud.log import crud_user_log
 from app.models import UserModel, RoleModel, OAuthAccountModel
@@ -36,6 +37,7 @@ from app.schemas.user import (
     UserDetailRead,
 )
 from app.utils.enums import UserLogEvent
+from app.utils.redis import init_redis_pool
 from app.utils.storage import Storage
 
 SECRET = 'SECRET'
@@ -88,6 +90,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
             updated_user_data = user_update.create_update_dict()
         else:
             updated_user_data = user_update.create_update_dict_superuser()
+
         updated_user = await self._update(user, updated_user_data)
         await self.on_after_update(updated_user, updated_user_data, request)
         return updated_user
@@ -296,21 +299,21 @@ async def get_user_manager(
     )
 
 
-bearer_transport = BearerTransport(tokenUrl='api/v1/auth/jwt/login')
+bearer_transport = BearerTransport(tokenUrl='api/v1/auth/login')
 
 
-def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(
-        secret=SECRET,
-        lifetime_seconds=60 * 60 * 24,
-        token_audience=TOKEN_AUDIENCE,
+def get_redis_strategy() -> RedisStrategy:
+    return RedisStrategy(
+        redis=init_redis_pool(),
+        lifetime_seconds=3600,
+        key_prefix=settings.token_key_prefix,
     )
 
 
 auth_backend = AuthenticationBackend(
     name='jwt',
     transport=bearer_transport,
-    get_strategy=get_jwt_strategy,
+    get_strategy=get_redis_strategy,
 )
 
 fastapi_users = FastAPIUsers[UserModel, UUID](get_user_manager, [auth_backend])

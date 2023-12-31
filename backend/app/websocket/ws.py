@@ -3,14 +3,12 @@ import orjson
 import time
 from broadcaster import Broadcast
 from fastapi import APIRouter
-from fastapi_users.jwt import decode_jwt
-from starlette.websockets import WebSocket
 from starlette.concurrency import run_until_first_complete
 from fastapi_async_sqlalchemy import db
+from starlette.websockets import WebSocket
 
 from app.core.config import settings
 from app.crud import crud_member_status
-from app.crud.user import SECRET, TOKEN_AUDIENCE
 from app.schemas.member import MemberStatusCreatedRead
 from app.schemas.websocket import WebSocketEventSchema
 from app.utils.enums import WebSocketEvent
@@ -26,19 +24,21 @@ class Client:
         self.accept = False
 
     async def login(self, msg):
-        jwt = decode_jwt(
-            encoded_jwt=msg.data,
-            secret=SECRET,
-            audience=TOKEN_AUDIENCE,
-            algorithms=['HS256'],
-        )['sub']
-        if not self.accept:
-            self.accept = True
-            data = WebSocketEventSchema(
-                event=WebSocketEvent.LOGIN,
-                data={'success': True},
-            ).json()
-            await self.websocket.send_text(data=data)
+        key = f'{settings.token_key_prefix}{msg.data}'
+        if self.accept:
+            return
+
+        token = await self.websocket.state.redis.get(key)
+        if not token:
+            await self.disconnect()
+            return
+
+        self.accept = True
+        data = WebSocketEventSchema(
+            event=WebSocketEvent.LOGIN,
+            data={'success': True},
+        ).json()
+        await self.websocket.send_text(data=data)
 
     async def member_come_list(self):
         items = await crud_member_status.get_multi()
@@ -58,28 +58,35 @@ class Client:
     async def handler_message(self, message: str):
         try:
             msg = WebSocketEventSchema(**orjson.loads(message))
-            match msg.event:
-                case WebSocketEvent.LOGIN:
-                    await self.login(msg=msg)
-                case WebSocketEvent.MEMBER_STATUS_LIST:
-                    await self.member_come_list()
-                case WebSocketEvent.MEMBER_STATUS:
-                    await self.member_come(msg=msg)
-                case _:
-                    await self.websocket.send_text('{"data":"EventError"}')
+            if not self.accept:
+                if msg.event != WebSocketEvent.LOGIN:
                     await self.disconnect()
+                else:
+                    await self.login(msg=msg)
+            else:
+                match msg.event:
+                    case WebSocketEvent.MEMBER_STATUS_LIST:
+                        await self.member_come_list()
+                    case WebSocketEvent.MEMBER_STATUS:
+                        await self.member_come(msg=msg)
+                    case _:
+                        await self.websocket.send_text('{"data":"EventError"}')
+                        await self.disconnect()
 
         except orjson.JSONDecodeError:
             await self.websocket.send_text('{"data":"JSONDecodeError"}')
             await self.disconnect()
 
     async def disconnect(self):
-        ...
+        await self.websocket.close()
 
     async def receiver(self):
-        async for message in self.websocket.iter_text():
-            print(f'receiver: {message}')
-            await self.handler_message(message=message)
+        try:
+            async for message in self.websocket.iter_text():
+                await self.handler_message(message=message)
+        except RuntimeError as e:
+            print(e)
+            return
 
     async def sender(self):
         start_time = time.time()

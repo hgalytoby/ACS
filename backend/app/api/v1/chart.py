@@ -3,7 +3,7 @@ from fastapi_restful.cbv import cbv
 
 from app.crud.chart import ChartData
 from app.dependencies.base import web_date_renge_params
-from app.dependencies.query.charts import (
+from app.dependencies.query import (
     MemberRecordChartQuery,
     MemberChartQuery,
 )

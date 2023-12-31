@@ -5,8 +5,7 @@ from fastapi_restful.cbv import cbv
 
 from app.crud import crud_user_log, crud_system_log
 from app.dependencies.base import web_params
-from app.dependencies.query.log import SuperUserLogQuery
-from app.dependencies.query.system import SystemLogQuery
+from app.dependencies.query import SuperUserLogQuery, SystemLogQuery
 from app.schemas.log import UserLogRead, SystemLogRead, AllUserLogRead
 from app.utils.enums import APIAccess
 from app.utils.pagination import Page

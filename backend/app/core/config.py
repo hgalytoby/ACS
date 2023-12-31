@@ -129,6 +129,7 @@ class Settings(Base):
     logger: LogConfig = Field(default_factory=LogConfig)
     app_env: AppEnv = Field(env='APP_ENV')
     storage: StorageType = Field(env='STORAGE')
+    token_key_prefix: str = Field(env='TOKEN_KEY_PREFIX', default='acs_token:')
 
     @validator('domain')
     def _domain(cls, v, values) -> str:

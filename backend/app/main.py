@@ -31,7 +31,7 @@ async def lifespan(app: FastAPI):
     items = {
         'initial_time': first_user.created_at,
         'arq': await create_pool(RedisSettings(host=settings.redis.host)),
-        'redis': await init_redis_pool(),
+        'redis': init_redis_pool(),
         'db': db,
     }
 

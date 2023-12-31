@@ -1,19 +1,8 @@
+from typing import Any
 from pydantic import Field
 from datetime import date as _date
 
 from app.schemas.base import BaseModel
-from app.utils.enums import SystemLogEvent
-
-
-class HardDiskVolumeRead(BaseModel):
-    total: int = Field(description='總容量', title='總容量')
-    used: int = Field(description='使用量', title='使用量')
-    free: int = Field(description='剩餘量', title='剩餘量')
-
-
-class EmailLogChartRead(BaseModel):
-    event: SystemLogEvent = Field(description='系統事件', title='系統事件')
-    count: int = Field(default=0, description='總數', title='總數')
 
 
 class BaseGrowthRead(BaseModel):
@@ -36,10 +25,20 @@ class MemberRecordHourlyCountRead(BaseModel):
     end_date: _date = Field(description='日期')
 
 
+class ChartItem(BaseModel):
+    label: str
+    data: Any
+
+
+class ChartRead(BaseModel):
+    items: list[ChartItem]
+    labels: list[str]
+
+
 class AllChartRead(BaseModel):
-    hard_disk_volume: HardDiskVolumeRead
-    email_log_classification: list[EmailLogChartRead]
+    hard_disk_volume: ChartRead
+    email_log_classification: ChartRead
     member_growth: list[BaseGrowthRead]
-    new_member_growth: list[BaseGrowthRead]
+    new_member_chart: list[BaseGrowthRead]
     member_record_growth: list[BaseGrowthRead]
     member_record_hourly_count: MemberRecordHourlyCountRead

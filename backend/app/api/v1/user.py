@@ -14,8 +14,7 @@ from fastapi import (
 from app.crud import crud_role, crud_user_log
 from app.dependencies.base import web_params
 from app.dependencies.deps import authorize_api
-from app.dependencies.query import UserExistQuery, UserQuery
-from app.dependencies.query.log import UserLogQuery
+from app.dependencies.query import UserExistQuery, UserQuery, UserLogQuery
 from app.models import UserModel
 from app.schemas.log import UserLogRead
 from app.schemas.user import (
@@ -39,7 +38,7 @@ router = APIRouter()
 
 router.include_router(
     fastapi_users.get_auth_router(auth_backend),
-    prefix='/auth/jwt',
+    prefix='/auth',
     tags=['授權'],
 )
 router.include_router(
