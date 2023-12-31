@@ -22,7 +22,7 @@ class TestAcceptLocationView:
     async def test_dependencies_valid_accept_token_fail_valid(
         self,
         test_client: AsyncClient,
-        url: str
+        url: str,
     ):
         res = await test_client.get(
             url=url,
