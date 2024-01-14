@@ -23,7 +23,3 @@ const imgObj = computed(() => {
     </template>
   </VImg>
 </template>
-
-<style scoped lang='scss'>
-
-</style>

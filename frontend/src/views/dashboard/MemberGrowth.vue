@@ -2,39 +2,22 @@
 import VueApexCharts from 'vue3-apexcharts'
 import { useChartStore } from '@/stores/chart'
 import { getLineChartRandomColor } from '@/utils/misc'
+import { useTheme } from 'vuetify'
 
+const vuetifyTheme = useTheme()
 const chartStore = useChartStore()
 const series = ref([])
 const subtitle = ref()
-
-const color = [
-  {
-    borderColor: 'rgba(54, 162, 235, 1)',
-    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-  },
-  {
-    borderColor: 'rgba(255, 99, 132,1)',
-    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-  },
-  {
-    borderColor: 'rgba(75, 192, 192, 1)',
-    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-  },
-  {
-    borderColor: 'rgba(255, 206, 86, 1)',
-    backgroundColor: 'rgba(255, 206, 86, 0.2)',
-  },
-  {
-    borderColor: 'rgba(255, 159, 64, 1)',
-    backgroundColor: 'rgba(255, 159, 64, 0.2)',
-  },
-  {
-    borderColor: 'rgba(153, 102, 255, 1)',
-    backgroundColor: 'rgba(153, 102, 255, 0.2)',
-  },
-]
-
 const colors = getLineChartRandomColor()
+
+const switchVuetifyTheme = () => {
+  return {
+    ...chartOptions.value,
+    tooltip: {
+      theme: vuetifyTheme.global.name.value,
+    },
+  }
+}
 
 const chartOptions = ref({
   chart: {
@@ -60,8 +43,14 @@ const chartOptions = ref({
       size: 6,
     },
   },
+  tooltip: {
+    theme: vuetifyTheme.global.name.value,
+  },
 })
 
+watch(vuetifyTheme.name, (nv, ov) => {
+  chartOptions.value = switchVuetifyTheme()
+})
 watch(
   () => chartStore.memberGrowthData,
   (nv, ov) => {
@@ -75,6 +64,7 @@ watch(
     series.value = [{ name: '成員成長圖', data }]
     subtitle.value = `${labels.at(0)} ~ ${labels.at(-1)}`
     chartOptions.value = {
+      ...switchVuetifyTheme(),
       labels,
     }
   },

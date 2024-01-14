@@ -26,10 +26,16 @@ chartStore.allAllChart()
     >
       <EmailLogClassification />
     </VCol>
-    <VCol cols="12">
+    <VCol
+      cols="12"
+      sm="6"
+    >
       <MemberGrowth />
     </VCol>
-    <VCol cols="12">
+    <VCol
+      cols="12"
+      sm="6"
+    >
       <NewMemberGrowth />
     </VCol>
     <VCol cols="12">

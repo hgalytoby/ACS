@@ -5,6 +5,7 @@ import MemberFilterMemberList from '@/views/pages/member/MemberFilterMemberList.
 import { getSortNumQuery } from '@/utils/misc'
 import { getMemberListFilterFormItems } from '@/utils/filter-form-items'
 import MyVImg from '@/components/MyVImg.vue'
+import { it } from 'vuetify/locale'
 
 const headers = [
   {
@@ -34,6 +35,9 @@ const headers = [
   {
     title: '創建日期', key: 'createdAt',
   },
+  {
+    title: '動作', key: 'actions', sortable: false,
+  },
 ]
 
 const fieldMappings = {
@@ -47,6 +51,7 @@ const fieldMappings = {
   event: { num: 'eventNum', sort: 'eventSort' },
 }
 
+const router = useRouter()
 const memberStore = useMemberStore()
 const search = ref(JSON.stringify(getMemberListFilterFormItems()))
 const sortBy = ref(getSortNumQuery(fieldMappings))
@@ -59,6 +64,25 @@ const {
   totalVisible,
   searchEmit,
 } = usePagination(memberStore.memberList, search, sortBy)
+
+const update = item => {
+  router.push({
+    name: 'MemberEdit',
+    params: {
+      id: item.id, 
+    },
+  })
+}
+
+const destroy = async item => {
+  await memberStore.memberDestroy(item.id)
+  await loadData({
+    page: currentPage.value,
+    itemsPerPage: currentSize.value,
+    sortBy: sortBy.value,
+    search: search.value,
+  })
+}
 </script>
 
 <template>
@@ -99,7 +123,21 @@ const {
             }"
           />
         </template>
-
+        <template #item.actions="{ item }">
+          <v-icon
+            size="small"
+            class="me-2"
+            @click="update(item)"
+          >
+            mdi-pencil
+          </v-icon>
+          <v-icon
+            size="small"
+            @click="destroy(item)"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
         <template #bottom>
           <VRow class="text-center px-2 pa-2">
             <VCol

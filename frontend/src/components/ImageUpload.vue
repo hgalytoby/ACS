@@ -2,7 +2,7 @@
 import defaultAvatar from '@images/avatars/default-avatar.png'
 import { Field, ErrorMessage } from 'vee-validate'
 import useInputImg from '@/hooks/useInputImg'
-import ImageLazyProgress from '@/components/ImageLazyProgress.vue'
+import MyVImg from '@/components/MyVImg.vue'
 
 const props = defineProps({
   resetCallback: {
@@ -23,6 +23,9 @@ const {
   resetImgModel,
 } = useInputImg(props.resetCallback)
 
+imgModel.value = props.defaultImg
+
+
 defineExpose({
   refInputEl,
   resetImgModel,
@@ -30,17 +33,15 @@ defineExpose({
 </script>
 
 <template>
-  <VImg
-    class="me-6 custom-image"
-    width="100"
-    max-width="120"
-    :src="imgModel || props.defaultImg"
-    :lazy-src="imgModel || props.defaultImg"
-  >
-    <template #placeholder>
-      <ImageLazyProgress />
-    </template>
-  </VImg>
+  <MyVImg
+    :img-obj="{
+      src: imgModel,
+      lazySrc: imgModel,
+      class: 'me-6 custom-image',
+      width: '100',
+      maxWidth: '120',
+    }"
+  />
   <div class="d-flex flex-column justify-center gap-5">
     <div class="d-flex flex-wrap gap-2">
       <VBtn

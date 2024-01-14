@@ -6,6 +6,16 @@ import { bloodTypeSelectItem } from '@/utils/filter-select-item'
 import DatePicker from 'vue-datepicker-next'
 import ImageUpload from '@/components/ImageUpload.vue'
 
+const props = defineProps({
+  memberInfo: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+})
+
+const { memberInfo } = toRefs(props)
+
 const formSchema = yup.object({
   image: yup.string().required(),
   name: yup.string().required().max(32),
@@ -22,12 +32,31 @@ const formSchema = yup.object({
 
 const memberStore = useMemberStore()
 const submitBtnLoading = ref(false)
-const birthday = ref()
+const memberForm = reactive({})
 const myForm = ref(null)
 const imageUploadRef = ref()
 
-const resetFormImg = () => {
-  myForm.value.setFieldValue('image', null)
+onMounted(() => {
+  if (memberInfo.value?.id) {
+    Object.assign(memberForm, memberInfo.value)
+    myForm.value.setFieldValue('image', memberInfo.value.image)
+    myForm.value.setFieldValue('name', memberInfo.value.name)
+    myForm.value.setFieldValue('birthday', memberInfo.value.birthday)
+    myForm.value.setFieldValue('bloodType', memberInfo.value.bloodType)
+    myForm.value.setFieldValue('phone', memberInfo.value.phone)
+    myForm.value.setFieldValue('company', memberInfo.value.company)
+    myForm.value.setFieldValue('jobTitle', memberInfo.value.jobTitle)
+  }
+})
+
+const resetFormImg = (refInputEl, imgModel) => {
+  if (memberInfo.value?.id){
+    myForm.value.setFieldValue('image', memberInfo.value.image)
+  } else {
+    myForm.value.setFieldValue('image', null)
+  }
+  console.log('resetFormImg')
+  imgModel.value = memberInfo.value.image
 }
 
 const submit = async ({ image, ...payload }) => {
@@ -35,7 +64,14 @@ const submit = async ({ image, ...payload }) => {
 
   const data = new FormData()
 
-  data.append('image', imageUploadRef.value.refInputEl.files[0])
+  if (imageUploadRef.value.refInputEl.files[0]) {
+    data.append('image', imageUploadRef.value.refInputEl.files[0])
+  }
+
+  if (memberInfo.value?.id){
+    data.append('id', memberInfo.value.id)
+  }
+
   data.append('item', JSON.stringify(payload))
   await memberStore.memberCreateOrUpdate(data)
   submitBtnLoading.value = false
@@ -53,6 +89,7 @@ const submit = async ({ image, ...payload }) => {
         <ImageUpload
           ref="imageUploadRef"
           :reset-callback="resetFormImg"
+          :default-img="memberInfo?.image"
         />
       </VCardText>
       <VCardText>
@@ -68,6 +105,7 @@ const submit = async ({ image, ...payload }) => {
             >
               <VTextField
                 v-bind="field"
+                v-model="memberForm.name"
                 label="Name"
                 type="text"
                 density="compact"
@@ -90,6 +128,7 @@ const submit = async ({ image, ...payload }) => {
             >
               <VSelect
                 v-bind="field"
+                v-model="memberForm.bloodType"
                 label="BloodType"
                 :items="bloodTypeSelectItem"
                 item-title="name"
@@ -115,7 +154,7 @@ const submit = async ({ image, ...payload }) => {
               type="text"
             >
               <DatePicker
-                v-model:value="birthday"
+                v-model:value="memberForm.birthday"
                 class="w-100"
                 v-bind="field"
                 type="date"
@@ -123,7 +162,7 @@ const submit = async ({ image, ...payload }) => {
               >
                 <template #input>
                   <VTextField
-                    v-model="birthday"
+                    v-model="memberForm.birthday"
                     label="Birthday"
                     hide-details
                     density="compact"
@@ -151,6 +190,7 @@ const submit = async ({ image, ...payload }) => {
             >
               <VTextField
                 v-bind="field"
+                v-model="memberForm.phone"
                 label="Phone"
                 type="text"
                 density="compact"
@@ -173,6 +213,7 @@ const submit = async ({ image, ...payload }) => {
             >
               <VTextField
                 v-bind="field"
+                v-model="memberForm.company"
                 label="Company"
                 type="text"
                 density="compact"
@@ -195,6 +236,7 @@ const submit = async ({ image, ...payload }) => {
             >
               <VTextField
                 v-bind="field"
+                v-model="memberForm.jobTitle"
                 label="JobTitle"
                 type="text"
                 density="compact"

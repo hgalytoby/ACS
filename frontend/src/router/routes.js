@@ -91,6 +91,14 @@ export default [
         },
       },
       {
+        path: 'member-edit/:id',
+        name: 'MemberEdit',
+        component: () => import('../pages/member/edit.vue'),
+        meta: {
+          title: '修改成員',
+        },
+      },
+      {
         path: 'member-record-list',
         name: 'MemberRecordList',
         component: () => import('../pages/member/record-list.vue'),

@@ -17,7 +17,9 @@ const getColors = alpha => [
   `rgba(153, 102, 255, ${alpha})`,
   `rgba(255, 0, 255, ${alpha})`,
 ]
+
 const getLegendPosition = value => window.innerWidth >= 1281 ? 'right' : 'top'
+
 const chartOptions = ref({
   chart: {
     type: 'donut',

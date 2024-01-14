@@ -28,20 +28,17 @@ function connect() {
 function message(event) {
   const data = JSON.parse(event.data)
 
-  console.log(data)
-
-  // if (data.event === 'login' && data.success) {
-  //   sendWebSocketMessage({
-  //     action: 'member_come_list',
-  //   })
-  // } else if (data.action === 'member_come_list') {
-  //   console.log('member_come_list', data.items)
-  //   store.commit('member/SET_MEMBER_COME_LIST', data.items)
-  // } else if (data.action === 'member_come') {
-  //   console.log('member_come', data.items)
-  //   store.commit('member/SET_MEMBER_COME_INFO_LIST', data.items)
-  //
-  // }
+  if (data.event === 'login' && data.success) {
+    sendWebSocketMessage({
+      action: 'member_come_list',
+    })
+  } else if (data.action === 'member_come_list') {
+    console.log('member_come_list', data.items)
+    store.commit('member/SET_MEMBER_COME_LIST', data.items)
+  } else if (data.action === 'member_come') {
+    console.log('member_come', data.items)
+    store.commit('member/SET_MEMBER_COME_INFO_LIST', data.items)
+  }
 }
 
 function close(event) {

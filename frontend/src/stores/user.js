@@ -58,11 +58,8 @@ export const useUserStore = defineStore({
       toast.success('修改基本資料成功!')
     },
     resetToken() {
-      return new Promise(resolve => {
-        removeToken()
-        this.$patch({ token: '' })
-        resolve()
-      })
+      removeToken()
+      this.$patch({ token: '' })
     },
     async updateMePassword(payload) {
       await reqUpdateMePassword(payload)

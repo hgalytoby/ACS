@@ -46,7 +46,6 @@ const openDialog = location => {
       locationName.value = undefined
       imgModel.value = undefined
     }
-    // prevImage.value = imgModel.value
   })
 }
 

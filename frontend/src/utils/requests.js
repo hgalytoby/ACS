@@ -3,6 +3,7 @@ import urls from '@/api/urls'
 import { app as vue } from '@/main'
 import { useUserStore } from '@/stores/user'
 import qs from 'qs'
+import router from '@/router'
 
 const formDataList = [
   urls.auth.login,
@@ -58,7 +59,7 @@ export const jwtRequest = axios.create(
           filteredParams[key] = params[key]
         }
       }
-      
+
       return qs.stringify(filteredParams, { arrayFormat: 'repeat' })
     },
   },
@@ -93,10 +94,14 @@ jwtRequest.interceptors.response.use(response => {
   return response
 }, error => {
   vue.config.globalProperties.$Progress.fail()
-
   if (error.response) {
     switch (error.response.status) {
     case 401:
+      const userStore = useUserStore()
+
+      userStore.resetToken()
+      router.push(`/auth/login?redirect=${router.currentRoute.value.path}`)
+      
       return Promise.reject(error)
     case 400:
       return Promise.reject(error)

@@ -13,9 +13,9 @@ export const useChartStore = defineStore({
     hardDiskVolumeData: { items: [], labels: [] },
     emailLogClassificationData: { items: [], labels: [] },
     memberGrowthData: [],
-    newMemberChartData: {},
-    memberRecordGrowthData: {},
-    memberRecordHourlyCountData: {},
+    newMemberChartData: [],
+    memberRecordGrowthData: [],
+    memberRecordHourlyCountData: [],
   }),
   actions: {
     async memberGrowth() {

@@ -19,7 +19,7 @@ export default function(resetCallback) {
     refInputEl.value.value = null
     imgModel.value = undefined
     if (resetCallback) {
-      resetCallback()
+      resetCallback(refInputEl, imgModel)
     }
   }
 
