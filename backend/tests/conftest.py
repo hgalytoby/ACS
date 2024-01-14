@@ -58,13 +58,9 @@ async def get_superuser(
 ):
     item = create_user_payload(
         model=UserModel,
-        custom_fields={
-            'is_superuser': True,
-            'is_verified': True,
-        },
-        extra_fields={
-            'hashed_password': pytest_password,
-        },
+        is_superuser=True,
+        is_verified=True,
+        hashed_password=pytest_password,
     )
     instance = await crud_user.create(db_session=get_async_session, create_item=item)
     return instance
@@ -216,16 +212,10 @@ async def get_superuser_bearer_token_header(
 def create_member_location_payload() -> Callable[..., MemberLocationBase]:
     def func(
         model: type[MemberLocationBase],
-        custom_fields: Optional[dict] = None,
-        extra_fields: Optional[dict] = None,
+        **kwargs: dict[Any, Any],
     ) -> MemberLocationBase:
-        custom_fields = custom_fields or {}
-        extra_fields = extra_fields or {}
-
-        payload = model(
-            name=custom_fields.get('name', uuid4().hex),
-            **extra_fields,
-        )
+        data = {'name': uuid4().hex} | kwargs
+        payload = model(**data)
         return payload
 
     return func
@@ -237,7 +227,7 @@ async def member_location(
 ) -> MemberLocationModel:
     item = create_member_location_payload(
         model=MemberLocationModel,
-        extra_fields={'image': ''}
+        image='',
     )
     async with db():
         instance = await crud_member_location.create(
@@ -251,16 +241,10 @@ async def member_location(
 def create_accept_api_payload() -> Callable[..., AcceptApiBase]:
     def func(
         model: type[AcceptApiBase],
-        custom_fields: Optional[dict] = None,
-        extra_fields: Optional[dict] = None,
+        **kwargs: dict[Any, Any]
     ) -> AcceptApiBase:
-        custom_fields = custom_fields or {}
-        extra_fields = extra_fields or {}
-
-        payload = model(
-            api=custom_fields.get('api', '/api/test'),
-            **extra_fields,
-        )
+        data = {'api': '/api/test'} | kwargs
+        payload = model(**data)
         return payload
 
     return func
@@ -280,20 +264,17 @@ async def accept_api(
 def create_user_payload() -> Callable[..., UserBase]:
     def func(
         model: type[UserBase],
-        custom_fields: Optional[dict] = None,
-        extra_fields: Optional[dict] = None,
+        **kwargs: dict[Any: Any],
     ) -> UserBase:
-        custom_fields = custom_fields or {}
-        extra_fields = extra_fields or {}
-
-        payload = model(
-            email=custom_fields.get('email', 'pytest@gmail.com'),
-            is_active=custom_fields.get('is_active', True),
-            is_superuser=custom_fields.get('is_superuser', False),
-            is_verified=custom_fields.get('is_verified', False),
-            username=custom_fields.get('username', uuid4().hex),
-            **extra_fields,
-        )
+        default = {
+            'email': 'pytest@gmail.com',
+            'is_active': True,
+            'is_superuser': False,
+            'is_verified': False,
+            'username': uuid4().hex,
+        }
+        data = default | kwargs
+        payload = model(**data)
         return payload
 
     return func
@@ -305,9 +286,7 @@ async def user(
 ) -> UserModel:
     item = create_user_payload(
         model=UserModel,
-        extra_fields={
-            'hashed_password': pytest_password,
-        },
+        hashed_password=pytest_password,
     )
     async with db():
         instance = await crud_user.create(item=item)

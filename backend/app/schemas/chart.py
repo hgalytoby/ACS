@@ -11,7 +11,7 @@ class BaseGrowthRead(BaseModel):
 
 
 class MemberRecordHourlyCountDataRead(BaseModel):
-    hour: int = Field(description='小時', title='小時')
+    hour: str = Field(description='小時', title='小時')
     count: int = Field(default=0, description='數量', title='數量')
 
 

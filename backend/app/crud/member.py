@@ -165,7 +165,7 @@ class CRUDMember(
             )
 
         instance = await super().destroy(item_id=item_id, db_session=db_session)
-        await Storage.remove_qr_code(instance=instance)
+        await Storage.remove_qrcode(instance=instance)
         await Storage.remove_image(instance=instance)
         return instance
 
@@ -221,7 +221,7 @@ class CRUDMemberRecord(
         query: DateRelatedQueryList,
     ) -> MemberRecordHourlyCountRead:
         items = await self.get_multi(query=query)
-        result = [MemberRecordHourlyCountDataRead(hour=i) for i in range(25)]
+        result = [MemberRecordHourlyCountDataRead(hour=f'{str(i).zfill(2)}:00') for i in range(24)]
 
         for item in items:  # type: MemberRecordModel
             result[item.created_at.hour].count += 1
