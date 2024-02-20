@@ -39,6 +39,7 @@ pytest-asyncio = "0.21.1"
 pytest-mock = "^3.12.0"
 pytest-env = "^1.1.3"
 asgi-lifespan = "^2.1.0"
+ruff = "^0.2.2"
 
 [build-system]
 requires = ["poetry-core"]
@@ -46,3 +47,38 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 start = "app.main:start"
+
+[tool.ruff.lint.isort]
+order-by-type = true
+case-sensitive = true
+combine-as-imports = true
+force-wrap-aliases = true
+from-first = true
+
+[tool.ruff.lint]
+select = [
+    "I",
+    "PT",
+    "RET505",
+    "RET506",
+    "RET507",
+    "RET508",
+    "SIM",
+    "PLR5501",
+    "PLR1714",
+    "PLR1701",
+]
+
+ignore = [
+    "PT004",
+]
+
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+parametrize-names-type = "csv"
+parametrize-values-row-type = "tuple"
+parametrize-values-type = "list"
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"

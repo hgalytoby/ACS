@@ -65,7 +65,7 @@ app.include_router(ws_router)
 
 
 @app.get('/')
-async def docs():
+async def docs() -> RedirectResponse:
     return RedirectResponse(app.docs_url)
 
 
