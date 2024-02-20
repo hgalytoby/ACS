@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends
 
-from app.dependencies.deps import authorize_api
 from app.api.v1.api import router as api_router
 from app.api.v1.chart import router as chart_router
 from app.api.v1.email import router as email_router
 from app.api.v1.frontend import router as frontend_router
-from app.api.v1.user import router as user_router
-from app.api.v1.role import router as role_router
 from app.api.v1.log import router as log_router
 from app.api.v1.member import router as member_router
+from app.api.v1.role import router as role_router
+from app.api.v1.user import router as user_router
+from app.dependencies.deps import authorize_api
 
 router = APIRouter(prefix='/v1')
 

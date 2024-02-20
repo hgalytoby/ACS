@@ -1,9 +1,10 @@
+from typing import Optional
 import base64
 import time
-from typing import Optional
+
+from fastapi import File, UploadFile
 import orjson
 import qrcode
-from fastapi import UploadFile, File
 
 from app.core.config import settings
 from app.utils.storage.base import BaseStorage, ImageModelType, QrCodeModelType

@@ -1,12 +1,17 @@
 from datetime import datetime
-
-import orjson
-from pydantic import EmailStr
-from sqlmodel import Field
 from typing import TYPE_CHECKING
 
-from app.schemas.base import BaseCreatedAtRead, BaseUUIDRead, BaseModel, BaseUpdatedAtRead
+from pydantic import EmailStr
+from sqlmodel import Field
+import orjson
+
 from app.models import UserBase
+from app.schemas.base import (
+    BaseCreatedAtRead,
+    BaseModel,
+    BaseUUIDRead,
+    BaseUpdatedAtRead,
+)
 from app.utils.partial import optional
 
 if TYPE_CHECKING:

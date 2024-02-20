@@ -1,14 +1,15 @@
 from typing import Optional
+
 from pydantic import UUID4
 from sqlalchemy import String
 from sqlalchemy_utils import ChoiceType
-from sqlmodel import Field, Relationship, Column
+from sqlmodel import Column, Field, Relationship
 
 from app.models.base import (
-    SQLModel,
     BaseCreatedAtModel,
     BaseUUIDModel,
     BaseUpdatedAtModel,
+    SQLModel,
 )
 from app.models.link import ApiLinkModel
 from app.utils.enums import ApiMethod

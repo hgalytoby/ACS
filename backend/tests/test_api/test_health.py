@@ -1,13 +1,13 @@
-import pytest
-from httpx import AsyncClient
 from fastapi import status
+from httpx import AsyncClient
+import pytest
 
 from app.core.config import settings
 from app.schemas.health import HealthRead
 
 
-@pytest.mark.HealthView
-@pytest.mark.View
+@pytest.mark.HealthView()
+@pytest.mark.View()
 class TestHealthView:
     async def test_health(self, test_client: AsyncClient):
         res = await test_client.get(url='/health')

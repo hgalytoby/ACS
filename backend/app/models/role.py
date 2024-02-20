@@ -1,12 +1,12 @@
 from sqlmodel import Field, Relationship
 
 from app.models.base import (
-    SQLModel,
     BaseCreatedAtModel,
     BaseUUIDModel,
     BaseUpdatedAtModel,
+    SQLModel,
 )
-from app.models.link import ApiLinkModel, RoleLinkModel, FrontendLinkModel
+from app.models.link import ApiLinkModel, FrontendLinkModel, RoleLinkModel
 
 
 class RoleBase(SQLModel):

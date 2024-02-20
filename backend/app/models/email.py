@@ -1,12 +1,12 @@
 from sqlalchemy import String
 from sqlalchemy_utils import ChoiceType
-from sqlmodel import Field, Column
+from sqlmodel import Column, Field
 
 from app.models.base import (
-    SQLModel,
-    BaseUUIDModel,
     BaseCreatedAtModel,
+    BaseUUIDModel,
     BaseUpdatedAtModel,
+    SQLModel,
 )
 from app.utils.enums import SystemLogEvent
 

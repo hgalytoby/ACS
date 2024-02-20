@@ -1,13 +1,13 @@
-from pydantic import validator
 from fastapi import Request
+from pydantic import validator
 
 from app.core.config import settings
 from app.models import EmailSettingsBase
 from app.schemas.base import (
     BaseCreatedAtRead,
+    BaseModel,
     BaseUUIDRead,
     BaseUpdatedAtRead,
-    BaseModel,
 )
 from app.utils.enums import SystemLogEvent
 from app.utils.partial import optional

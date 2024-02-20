@@ -1,16 +1,17 @@
 from uuid import UUID
-from fastapi import status, HTTPException, Query, APIRouter
+
+from fastapi import APIRouter, HTTPException, Query, status
 from fastapi_restful.cbv import cbv
 
-from app.crud import crud_role, crud_user, crud_api, crud_frontend
+from app.crud import crud_api, crud_frontend, crud_role, crud_user
 from app.schemas.role import (
-    RoleRead,
-    RoleCreate,
-    RoleUpdate,
     RoleApiRead,
-    RoleUserRead,
+    RoleCreate,
     RoleDetailRead,
     RoleFrontendListRead,
+    RoleRead,
+    RoleUpdate,
+    RoleUserRead,
 )
 from app.utils.enums import APIAccess
 

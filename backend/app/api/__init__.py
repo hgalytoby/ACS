@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 
-from app.api.v1 import router as v1_router
 from app.api.accept import router as accept_router
-from app.api.oauth import router as oauth_router
 from app.api.health import router as health_router
+from app.api.oauth import router as oauth_router
+from app.api.v1 import router as v1_router
 
 router = APIRouter()
 

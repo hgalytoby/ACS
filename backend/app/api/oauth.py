@@ -1,10 +1,10 @@
 from fastapi import APIRouter
-from httpx_oauth.clients.microsoft import MicrosoftGraphOAuth2
 from httpx_oauth.clients.github import GitHubOAuth2
 from httpx_oauth.clients.google import GoogleOAuth2
+from httpx_oauth.clients.microsoft import MicrosoftGraphOAuth2
 
 from app.core.config import settings
-from app.utils.oauth import get_oauth_router, get_oauth_associate_router
+from app.utils.oauth import get_oauth_associate_router, get_oauth_router
 
 router = APIRouter(tags=['OAuth'])
 

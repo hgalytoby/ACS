@@ -5,13 +5,13 @@ Revises:
 Create Date: 2023-08-26 14:50:53.172014
 
 """
+from sqlalchemy.dialects import postgresql
+import sqlalchemy as sa
 import sqlalchemy_utils
 import sqlmodel
-from alembic import op
-import sqlalchemy as sa
-from app.utils.enums import SystemLogEvent, UserLogEvent, ApiMethod
 
-from sqlalchemy.dialects import postgresql
+from alembic import op
+from app.utils.enums import ApiMethod, SystemLogEvent, UserLogEvent
 
 # revision identifiers, used by Alembic.
 revision = '6cd9ebb933a6'

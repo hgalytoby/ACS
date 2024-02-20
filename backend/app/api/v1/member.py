@@ -1,31 +1,32 @@
 from typing import Optional
 from uuid import UUID
+
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from fastapi_pagination import add_pagination
 from fastapi_restful.cbv import cbv
-from fastapi import status, File, UploadFile, HTTPException, Depends, APIRouter
 
-from app.dependencies.deps import authorize_api
 from app.core.config import settings
 from app.crud import (
+    crud_member,
     crud_member_location,
     crud_member_record,
-    crud_member,
     crud_member_status,
 )
 from app.dependencies.base import web_params
+from app.dependencies.deps import authorize_api
 from app.dependencies.query import MemberQuery, MemberRecordQuery
 from app.schemas.member import (
-    MemberRead,
     MemberCreate,
-    MemberUpdate,
-    MemberRecordRead,
-    MemberLocationRead,
     MemberLocationCreate,
+    MemberLocationRead,
     MemberLocationUpdate,
+    MemberRead,
+    MemberRecordRead,
     MemberStatusRead,
+    MemberUpdate,
 )
 from app.schemas.websocket import WebSocketEventSchema
-from app.utils.enums import WebSocketEvent, APIAccess
+from app.utils.enums import APIAccess, WebSocketEvent
 from app.utils.pagination import Page
 from app.websocket import broadcast
 

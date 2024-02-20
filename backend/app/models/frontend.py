@@ -1,14 +1,15 @@
 from typing import Optional
 from uuid import UUID
+
 from sqlmodel import Field, Relationship
 
-from app.models import FrontendLinkModel
 from app.models.base import (
     BaseCreatedAtModel,
     BaseUUIDModel,
-    SQLModel,
     BaseUpdatedAtModel,
+    SQLModel,
 )
+from app.models.link import FrontendLinkModel
 
 
 class FrontendBase(SQLModel):

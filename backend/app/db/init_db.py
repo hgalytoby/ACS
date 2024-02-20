@@ -1,22 +1,24 @@
 from collections import defaultdict
 from uuid import uuid4
+
 from fastapi.routing import APIRoute
 from fastapi_users.password import PasswordHelper
 from sqlmodel.ext.asyncio.session import AsyncSession
+
 from app import crud
 from app.core.config import settings
 from app.crud.user import MySQLModelUserDatabaseAsync
 from app.main import app
 from app.models import (
-    UserModel,
-    OAuthAccountModel,
-    EmailSettingsModel,
-    ApiModel,
     ApiGroupModel,
+    ApiModel,
+    EmailSettingsModel,
+    OAuthAccountModel,
     RoleModel,
+    UserModel,
 )
 from app.schemas.accept import AcceptApiCreate
-from app.utils.enums import SystemLogEvent, APIAccess, ApiMethod
+from app.utils.enums import APIAccess, ApiMethod, SystemLogEvent
 from app.utils.sql_query import QueryList
 
 

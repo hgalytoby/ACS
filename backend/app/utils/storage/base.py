@@ -1,10 +1,11 @@
-import io
 from abc import ABCMeta, abstractmethod
-from typing import Protocol, Optional
+from typing import Optional, Protocol
 from uuid import UUID
-from PIL.ImageFile import ImageFile
-from fastapi import UploadFile, File, HTTPException, status
+import io
+
 from PIL import Image, UnidentifiedImageError
+from PIL.ImageFile import ImageFile
+from fastapi import File, HTTPException, UploadFile, status
 
 from app.core.config import logger
 from app.utils.enums import AllowedImageExtensions, ImageFailDetail

@@ -1,14 +1,15 @@
 from datetime import date
+from typing import Optional
 from uuid import UUID
+
 from humps import kebabize
 from sqlmodel import Field, Relationship
-from typing import Optional
 
 from app.models.base import (
-    SQLModel,
     BaseCreatedAtModel,
     BaseUUIDModel,
     BaseUpdatedAtModel,
+    SQLModel,
 )
 from app.utils.enums import BloodType
 

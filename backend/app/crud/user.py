@@ -1,14 +1,14 @@
-from typing import Optional, Any
+from typing import Any, Optional
 from uuid import UUID
-import orjson
+
 from fastapi import (
     Depends,
-    Request,
-    HTTPException,
-    status,
-    UploadFile,
     File,
+    HTTPException,
+    Request,
     Response,
+    UploadFile,
+    status,
 )
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_async_sqlalchemy import db
@@ -23,18 +23,19 @@ from fastapi_users.password import PasswordHelper
 from fastapi_users_db_sqlmodel import SQLModelUserDatabaseAsync
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
+import orjson
 
 from app.core.config import settings
 from app.crud.base import CRUDBase
 from app.crud.log import crud_user_log
-from app.models import UserModel, RoleModel, OAuthAccountModel
+from app.models import OAuthAccountModel, RoleModel, UserModel
 from app.schemas.log import UserLogCreate
 from app.schemas.user import (
     UserCreate,
-    UserUpdate,
-    UserRead,
-    UserPasswordUpdate,
     UserDetailRead,
+    UserPasswordUpdate,
+    UserRead,
+    UserUpdate,
 )
 from app.utils.enums import UserLogEvent
 from app.utils.redis import init_redis_pool

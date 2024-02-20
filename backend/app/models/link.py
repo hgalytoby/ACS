@@ -1,6 +1,8 @@
 from uuid import UUID
-from app.models.base import SQLModel, BaseUUIDModel, BaseCreatedAtModel
+
 from sqlmodel import Field, Relationship
+
+from app.models.base import BaseCreatedAtModel, BaseUUIDModel, SQLModel
 
 
 class ApiLinkBase(BaseUUIDModel, SQLModel):

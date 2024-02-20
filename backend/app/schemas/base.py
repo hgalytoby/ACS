@@ -1,7 +1,11 @@
 from datetime import datetime
 from uuid import UUID
-from pydantic import BaseModel as _BaseModel, Field
+
 from humps import camelize
+from pydantic import (
+    BaseModel as _BaseModel,
+    Field,
+)
 
 from app.utils.json import Json
 

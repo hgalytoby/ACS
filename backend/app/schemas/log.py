@@ -1,6 +1,6 @@
 from pydantic import Field
 
-from app.models import LogBase, UserLogBase, SystemLogBase, UserBase
+from app.models import LogBase, SystemLogBase, UserBase, UserLogBase
 from app.schemas.base import BaseCreatedAtRead, BaseUUIDRead
 from app.utils.enums import UserLogEvent
 from app.utils.partial import optional

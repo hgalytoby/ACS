@@ -1,12 +1,13 @@
+from dataclasses import dataclass
+from typing import Optional
 import base64
 import io
 import time
-from dataclasses import dataclass
-from typing import Optional
+
+from fastapi import File, UploadFile
+from gcloud.aio.storage import Storage
 import orjson
 import qrcode
-from fastapi import UploadFile, File
-from gcloud.aio.storage import Storage
 
 from app.core.config import settings
 from app.utils.storage.base import BaseStorage, ImageModelType, QrCodeModelType

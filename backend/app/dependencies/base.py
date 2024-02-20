@@ -1,7 +1,8 @@
 from typing import TypeVar
+
 from fastapi import Depends
 
-from app.utils.sql_query import BaseQuery, QueryList, DateRelatedQueryList
+from app.utils.sql_query import BaseQuery, DateRelatedQueryList, QueryList
 
 QueryType = TypeVar('QueryType', bound=type[BaseQuery])
 

@@ -1,12 +1,13 @@
-import os
-import logging
-from logging.config import dictConfig
 from functools import lru_cache
+from logging.config import dictConfig
 from typing import Optional
-from fastapi_mail import ConnectionConfig
-from pydantic import BaseSettings, Field, EmailStr, validator
+import logging
+import os
 
-from app.utils.enums import AppEnv, StorageType, AppEnvPath
+from fastapi_mail import ConnectionConfig
+from pydantic import BaseSettings, EmailStr, Field, validator
+
+from app.utils.enums import AppEnv, AppEnvPath, StorageType
 
 MODE = os.getenv('MODE', AppEnv.DEV)
 

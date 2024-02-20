@@ -1,8 +1,12 @@
-from humps import camelize
-from sqlmodel import SQLModel as _SQLModel, Field
-from uuid import UUID, uuid4
-from sqlalchemy.orm import declared_attr
 from datetime import datetime
+from uuid import UUID, uuid4
+
+from humps import camelize
+from sqlalchemy.orm import declared_attr
+from sqlmodel import (
+    Field,
+    SQLModel as _SQLModel,
+)
 
 from app.utils.json import Json
 

@@ -1,15 +1,16 @@
 from typing import Optional
+
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.crud.base import CRUDBase
-from app.models import RoleModel, UserModel, ApiModel, FrontendModel
+from app.models import ApiModel, FrontendModel, RoleModel, UserModel
 from app.schemas.role import (
-    RoleCreate,
-    RoleUpdate,
-    RoleRead,
-    RoleUserRead,
     RoleApiRead,
+    RoleCreate,
     RoleFrontendListRead,
+    RoleRead,
+    RoleUpdate,
+    RoleUserRead,
 )
 
 

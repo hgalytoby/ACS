@@ -1,36 +1,37 @@
 from uuid import UUID
-from fastapi_pagination import add_pagination
-from fastapi_restful.cbv import cbv
+
 from fastapi import (
-    status,
+    APIRouter,
     Depends,
-    UploadFile,
     File,
     HTTPException,
-    APIRouter,
     Query,
+    UploadFile,
+    status,
 )
+from fastapi_pagination import add_pagination
+from fastapi_restful.cbv import cbv
 
 from app.crud import crud_role, crud_user_log
+from app.crud.user import (
+    auth_backend,
+    crud_user,
+    current_active_verified_user,
+    fastapi_users,
+)
 from app.dependencies.base import web_params
 from app.dependencies.deps import authorize_api
-from app.dependencies.query import UserExistQuery, UserQuery, UserLogQuery
+from app.dependencies.query import UserExistQuery, UserLogQuery, UserQuery
 from app.models import UserModel
 from app.schemas.log import UserLogRead
 from app.schemas.user import (
-    UserRead,
     UserCreate,
-    UserUpdate,
-    UserPasswordUpdate,
     UserDetailRead,
+    UserPasswordUpdate,
+    UserRead,
+    UserUpdate,
 )
-from app.crud.user import (
-    auth_backend,
-    fastapi_users,
-    crud_user,
-    current_active_verified_user,
-)
-from app.utils.enums import UserFailDetail, APIAccess
+from app.utils.enums import APIAccess, UserFailDetail
 from app.utils.pagination import Page
 from app.utils.sql_query import QueryList
 

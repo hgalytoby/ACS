@@ -1,11 +1,12 @@
+from uuid import UUID
+
 from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy_utils import ChoiceType
-from sqlmodel import Field, Relationship, Column
-from app.models.base import SQLModel, BaseCreatedAtModel, BaseUUIDModel
-from uuid import UUID
+from sqlmodel import Column, Field, Relationship
 
-from app.utils.enums import UserLogEvent, SystemLogEvent
+from app.models.base import BaseCreatedAtModel, BaseUUIDModel, SQLModel
+from app.utils.enums import SystemLogEvent, UserLogEvent
 
 
 class LogBase(BaseCreatedAtModel, BaseUUIDModel, SQLModel):

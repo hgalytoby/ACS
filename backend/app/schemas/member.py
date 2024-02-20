@@ -1,20 +1,21 @@
-import orjson
-from uuid import UUID
-from pydantic import Field, validator
 from typing import Optional
+from uuid import UUID
+
+from pydantic import Field, validator
+import orjson
 
 from app.core.config import settings
 from app.models import (
     MemberBase,
-    MemberStatusBase,
     MemberLocationBase,
     MemberRecordBase,
+    MemberStatusBase,
 )
 from app.schemas.base import (
     BaseCreatedAtRead,
+    BaseModel,
     BaseUUIDRead,
     BaseUpdatedAtRead,
-    BaseModel,
 )
 from app.utils.partial import optional
 

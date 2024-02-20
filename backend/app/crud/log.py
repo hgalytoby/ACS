@@ -1,17 +1,17 @@
-from sqlmodel import select, func
-from sqlmodel.sql.expression import Select, SelectOfScalar
 from sqlalchemy.orm import joinedload
+from sqlmodel import func, select
+from sqlmodel.sql.expression import Select, SelectOfScalar
 
 from app.crud.base import CRUDBase
-from app.models import UserLogModel, SystemLogModel
+from app.models import SystemLogModel, UserLogModel
 from app.schemas.log import (
-    UserLogRead,
-    UserLogUpdate,
-    UserLogCreate,
+    AllUserLogRead,
+    SystemLogCreate,
     SystemLogRead,
     SystemLogUpdate,
-    SystemLogCreate,
-    AllUserLogRead,
+    UserLogCreate,
+    UserLogRead,
+    UserLogUpdate,
 )
 from app.utils.enums import SystemLogEvent
 

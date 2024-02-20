@@ -1,12 +1,13 @@
 from uuid import UUID
-from fastapi import status, HTTPException, APIRouter
+
+from fastapi import APIRouter, HTTPException, status
 from fastapi_pagination import add_pagination
 from fastapi_restful.cbv import cbv
 
-from app.crud import crud_user_log, crud_system_log
+from app.crud import crud_system_log, crud_user_log
 from app.dependencies.base import web_params
 from app.dependencies.query import SuperUserLogQuery, SystemLogQuery
-from app.schemas.log import UserLogRead, SystemLogRead, AllUserLogRead
+from app.schemas.log import AllUserLogRead, SystemLogRead, UserLogRead
 from app.utils.enums import APIAccess
 from app.utils.pagination import Page
 from app.utils.sql_query import QueryList

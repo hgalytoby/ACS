@@ -1,26 +1,27 @@
 from typing import Optional
-import jwt
+
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi_users.authentication import Strategy
 from fastapi_users.exceptions import UserAlreadyExists
 from fastapi_users.jwt import decode_jwt
-from fastapi_users.router.common import ErrorModel, ErrorCode
+from fastapi_users.router.common import ErrorCode, ErrorModel
 from fastapi_users.router.oauth import (
+    STATE_TOKEN_AUDIENCE,
     OAuth2AuthorizeResponse,
     generate_state_token,
-    STATE_TOKEN_AUDIENCE,
 )
 from httpx_oauth.integrations.fastapi import (
     OAuth2AuthorizeCallback as _OAuth2AuthorizeCallback,
 )
-from httpx_oauth.oauth2 import OAuth2Token, BaseOAuth2
-from fastapi import Request, HTTPException, status, Query, APIRouter, Depends
+from httpx_oauth.oauth2 import BaseOAuth2, OAuth2Token
+import jwt
 
 from app.crud.user import (
-    UserManager,
-    get_user_manager,
-    auth_backend,
     SECRET,
+    UserManager,
+    auth_backend,
     fastapi_users,
+    get_user_manager,
 )
 from app.dependencies.oauth import is_oauth_linked
 from app.models import UserModel

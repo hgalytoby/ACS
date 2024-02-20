@@ -1,13 +1,13 @@
-import pytest
-from httpx import AsyncClient
 from fastapi import status
+from httpx import AsyncClient
+import pytest
 
-from app.models import MemberLocationModel, AcceptApiModel
+from app.models import AcceptApiModel, MemberLocationModel
 from app.utils.enums import SteinsGate
 
 
-@pytest.mark.AcceptView
-@pytest.mark.View
+@pytest.mark.AcceptView()
+@pytest.mark.View()
 class TestAcceptLocationView:
     @pytest.mark.parametrize('url', ['/accept-location', '/accept-api'])
     async def test_dependencies_valid_accept_token_fail_empty(

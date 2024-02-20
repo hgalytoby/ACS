@@ -1,5 +1,5 @@
 from arq.connections import RedisSettings
-from fastapi_mail import MessageSchema, FastMail, MessageType
+from fastapi_mail import FastMail, MessageSchema, MessageType
 from pydantic import EmailStr
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -9,7 +9,7 @@ from app.db.session import async_session_maker
 from app.models import UserModel
 from app.schemas.email import EmailSendCreate
 from app.schemas.log import SystemLogCreate, UserLogCreate
-from app.utils.enums import UserLogEvent, SystemLogEvent
+from app.utils.enums import SystemLogEvent, UserLogEvent
 
 
 async def send_email(subject: str, body: str, email: str):

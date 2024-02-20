@@ -1,14 +1,15 @@
+from datetime import datetime
+
+from fastapi_users_db_sqlmodel import SQLModelBaseOAuthAccount
 from humps import kebabize
 from pydantic import UUID4
 from sqlmodel import Field, Relationship
-from datetime import datetime
-from fastapi_users_db_sqlmodel import SQLModelBaseOAuthAccount
 
 from app.models.base import (
-    SQLModel,
     BaseCreatedAtModel,
     BaseUUIDModel,
     BaseUpdatedAtModel,
+    SQLModel,
 )
 from app.models.link import RoleLinkModel
 

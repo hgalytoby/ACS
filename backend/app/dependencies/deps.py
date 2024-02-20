@@ -1,4 +1,4 @@
-from fastapi import Header, HTTPException, status, Depends, Request
+from fastapi import Depends, HTTPException, Header, Request, status
 
 from app.crud.user import current_active_verified_user
 from app.models import UserModel

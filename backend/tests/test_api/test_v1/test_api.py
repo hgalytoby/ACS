@@ -1,11 +1,11 @@
 from typing import Awaitable, Callable
 
-import pytest
 from httpx import AsyncClient
+import pytest
 
 
-@pytest.mark.ApiGroupView
-@pytest.mark.View
+@pytest.mark.ApiGroupView()
+@pytest.mark.View()
 class TestApiGroupView:
     async def test_get_multi(
         self,

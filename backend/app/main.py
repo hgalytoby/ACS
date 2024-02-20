@@ -1,5 +1,6 @@
-import os
 from contextlib import asynccontextmanager
+import os
+
 from arq import create_pool
 from arq.connections import RedisSettings
 from debug_toolbar.middleware import DebugToolbarMiddleware
@@ -9,11 +10,14 @@ from fastapi.staticfiles import StaticFiles
 from fastapi_async_sqlalchemy import SQLAlchemyMiddleware, db
 
 from app.api import router
-from app.core.config import settings, logger
+from app.core.config import logger, settings
 from app.crud import crud_user
 from app.db.session import engine
 from app.utils.redis import init_redis_pool
-from app.websocket import broadcast, router as ws_router
+from app.websocket import (
+    broadcast,
+    router as ws_router,
+)
 
 
 @asynccontextmanager

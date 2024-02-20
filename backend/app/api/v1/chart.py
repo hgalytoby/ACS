@@ -1,16 +1,17 @@
-from fastapi import APIRouter, status, Request
+from fastapi import APIRouter, Request, status
 from fastapi_restful.cbv import cbv
 
 from app.crud.chart import ChartData
 from app.dependencies.base import web_date_renge_params
 from app.dependencies.query import (
-    MemberRecordChartQuery,
     MemberChartQuery,
+    MemberRecordChartQuery,
 )
 from app.schemas.chart import (
     AllChartRead,
+    BaseGrowthRead,
+    ChartRead,
     MemberRecordHourlyCountRead,
-    BaseGrowthRead, ChartRead,
 )
 from app.utils.enums import APIAccess
 from app.utils.sql_query import DateRelatedQueryList

@@ -1,5 +1,6 @@
-from datetime import datetime, date
+from datetime import date, datetime
 from typing import Optional
+
 from fastapi import Query
 
 from app.models import SystemLogModel

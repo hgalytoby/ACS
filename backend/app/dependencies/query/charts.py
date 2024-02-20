@@ -1,4 +1,4 @@
-from app.models import MemberRecordModel, MemberModel
+from app.models import MemberModel, MemberRecordModel
 from app.utils.sql_query import BaseMemberChartQuery
 
 

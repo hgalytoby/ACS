@@ -1,10 +1,10 @@
 from pydantic import Field
 
 from app.models.base import (
-    SQLModel,
     BaseCreatedAtModel,
-    BaseUpdatedAtModel,
     BaseUUIDModel,
+    BaseUpdatedAtModel,
+    SQLModel,
 )
 
 

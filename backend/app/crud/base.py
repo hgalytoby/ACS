@@ -1,12 +1,13 @@
-from fastapi import HTTPException
 from typing import Any, Generic, Optional, TypeVar
 from uuid import UUID
+
+from fastapi import HTTPException
 from fastapi_async_sqlalchemy import db
 from fastapi_async_sqlalchemy.middleware import DBSessionMeta
 from fastapi_pagination.ext.sqlalchemy import paginate
 from pydantic import BaseModel
-from sqlmodel import SQLModel, select, func
 from sqlalchemy import exc
+from sqlmodel import SQLModel, func, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel.sql.expression import Select, SelectOfScalar
 

@@ -1,12 +1,13 @@
 from typing import Optional
+
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.crud.base import CRUDBase
 from app.models import EmailSettingsModel
 from app.schemas.email import (
     EmailSettingsCreate,
-    EmailSettingsUpdate,
     EmailSettingsRead,
+    EmailSettingsUpdate,
 )
 from app.utils.enums import SystemLogEvent
 

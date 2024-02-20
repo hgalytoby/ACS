@@ -1,7 +1,8 @@
 from typing import TYPE_CHECKING
+
 from pydantic import Field
 
-from app.models import UserBase, RoleBase, FrontendBase
+from app.models import FrontendBase, RoleBase, UserBase
 from app.schemas.base import BaseCreatedAtRead, BaseUUIDRead, BaseUpdatedAtRead
 from app.utils.partial import optional
 

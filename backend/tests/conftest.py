@@ -1,10 +1,10 @@
-import asyncio
 from contextlib import asynccontextmanager
 from datetime import datetime
 from typing import Any, AsyncGenerator, Awaitable, Callable, Optional
 from unittest.mock import MagicMock, patch
 from uuid import uuid4
-import pytest
+import asyncio
+
 from asgi_lifespan import LifespanManager
 from fastapi import FastAPI
 from fastapi_async_sqlalchemy import db
@@ -14,18 +14,19 @@ from pytest_mock import MockerFixture
 from redis.exceptions import LockError
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
+import pytest
 
 from app.core.config import settings
-from app.crud import crud_user, crud_accept_api, crud_member_location
-from app.db.session import engine, async_session_maker
+from app.crud import crud_accept_api, crud_member_location, crud_user
+from app.db.session import async_session_maker, engine
 from app.main import app
 from app.models import (
-    UserModel,
-    UserBase,
-    AcceptApiModel,
     AcceptApiBase,
-    MemberLocationModel,
+    AcceptApiModel,
     MemberLocationBase,
+    MemberLocationModel,
+    UserBase,
+    UserModel,
 )
 from app.utils.enums import SteinsGate
 

@@ -6,15 +6,15 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel.sql.expression import Select, SelectOfScalar
 
 from app.crud.base import CRUDBase
-from app.models import ApiModel, ApiGroupModel
+from app.models import ApiGroupModel, ApiModel
 from app.schemas.api import (
     ApiCreate,
-    ApiUpdate,
-    ApiRead,
     ApiGroupCreate,
-    ApiGroupUpdate,
-    ApiGroupRead,
     ApiGroupDetailRead,
+    ApiGroupRead,
+    ApiGroupUpdate,
+    ApiRead,
+    ApiUpdate,
 )
 
 

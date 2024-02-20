@@ -1,4 +1,5 @@
-from typing import Optional, Generic, TypeVar
+from typing import Generic, Optional, TypeVar
+
 from pydantic import Field
 
 from app.schemas.base import BaseModel

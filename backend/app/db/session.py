@@ -1,9 +1,10 @@
+from debug_toolbar.panels.sqlalchemy import SQLAlchemyPanel as BasePanel
+from fastapi import Request
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel.ext.asyncio.session import AsyncSession
+
 from app.core.config import settings
-from debug_toolbar.panels.sqlalchemy import SQLAlchemyPanel as BasePanel
-from fastapi import Request
 
 engine = create_async_engine(
     settings.pg.url,

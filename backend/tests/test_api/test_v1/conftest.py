@@ -1,7 +1,8 @@
 from typing import AsyncGenerator
-import pytest
+
 from fastapi import FastAPI
 from httpx import AsyncClient
+import pytest
 
 
 @pytest.fixture

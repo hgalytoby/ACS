@@ -1,13 +1,16 @@
 from __future__ import with_statement
-import asyncio
+
 from logging.config import fileConfig
+import asyncio
+import pathlib
+import sys
+
 from sqlmodel import SQLModel, create_engine
 from sqlmodel.ext.asyncio.session import AsyncEngine
+
 from alembic import context
-import sys
-import pathlib
-from app.models import *  # necessarily to import something from file where your models are stored
 from app.core.config import settings
+from app.models import *  # necessarily to import something from file where your models are stored
 
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[1]))
 

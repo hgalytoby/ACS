@@ -1,10 +1,11 @@
 from abc import ABCMeta, abstractmethod
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
 from operator import ge, le
 from typing import Any, Optional
+
+from fastapi import Query, Request
 from pydantic import BaseModel, Field
-from sqlalchemy.sql.elements import UnaryExpression, BinaryExpression
-from fastapi import Request, Query
+from sqlalchemy.sql.elements import BinaryExpression, UnaryExpression
 
 from app.models.base import BaseCreatedAtModel
 

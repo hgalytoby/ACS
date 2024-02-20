@@ -1,15 +1,16 @@
 from uuid import UUID
-from fastapi_restful.cbv import cbv
-from fastapi import status, HTTPException, APIRouter
 
-from app.crud import crud_api_group, crud_api
+from fastapi import APIRouter, HTTPException, status
+from fastapi_restful.cbv import cbv
+
+from app.crud import crud_api, crud_api_group
 from app.schemas.api import (
-    ApiGroupRead,
     ApiGroupCreate,
-    ApiGroupUpdate,
-    ApiUpdate,
-    ApiRead,
     ApiGroupDetailRead,
+    ApiGroupRead,
+    ApiGroupUpdate,
+    ApiRead,
+    ApiUpdate,
 )
 from app.utils.enums import APIAccess
 

@@ -1,4 +1,4 @@
-from fastapi import status, HTTPException, APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi_restful.cbv import cbv
 
 from app.crud import crud_email_settings
