@@ -25,7 +25,11 @@ class GCStorge(BaseStorage):
         self.__bucket_name = bucket_name
         self.__host = 'https://storage.googleapis.com'
 
-    async def upload_file(self, file_data: bytes, filename: str) -> BlobMetadata:
+    async def upload_file(
+        self,
+        file_data: bytes,
+        filename: str,
+    ) -> BlobMetadata:
         metadata = await self.__storage_client.upload(
             bucket=self.__bucket_name,
             object_name=filename,

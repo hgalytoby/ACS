@@ -56,7 +56,7 @@ async def create_accept_api(db_session: AsyncSession):
     create_item = AcceptApiCreate(api='/api/v1/member-come')
     await crud.crud_accept_api.create(
         create_item=create_item,
-        db_session=db_session
+        db_session=db_session,
     )
 
 
@@ -73,7 +73,7 @@ async def create_email_register(db_session: AsyncSession):
             subject=f'{settings.project} 啟用帳號信',
             body=settings.project + ' 啟用帳號信 網址: {url}',
         ),
-        db_session=db_session
+        db_session=db_session,
     )
 
 
@@ -90,7 +90,7 @@ async def create_email_forgot_password(db_session: AsyncSession):
             subject=f'{settings.project} 忘記密碼信',
             body=settings.project + ' 忘記密碼信 網址: {url}',
         ),
-        db_session=db_session
+        db_session=db_session,
     )
 
 
@@ -107,7 +107,7 @@ async def create_email_reset_password(db_session: AsyncSession):
             subject=f'{settings.project} 已更改密碼',
             body='已更改密碼',
         ),
-        db_session=db_session
+        db_session=db_session,
     )
 
 
@@ -124,7 +124,7 @@ async def create_email_verify(db_session: AsyncSession):
             subject=f'歡迎使用 {settings.project}',
             body=f'歡迎使用 {settings.project}!',
         ),
-        db_session=db_session
+        db_session=db_session,
     )
 
 
@@ -141,7 +141,7 @@ async def create_email_delete(db_session: AsyncSession):
             subject=f'{settings.project} 刪除使用者',
             body='您的帳號已被刪除!',
         ),
-        db_session=db_session
+        db_session=db_session,
     )
 
 
@@ -158,7 +158,7 @@ async def create_email_login_fail(db_session: AsyncSession):
             subject=f'{settings.project} 登入失敗',
             body='您的帳號從 IP: {ip} 多次登入失敗!',
         ),
-        db_session=db_session
+        db_session=db_session,
     )
 
 
@@ -192,7 +192,10 @@ async def create_api(db_session: AsyncSession):
             ]
         )
 
-        if not await crud.crud_api.get_first(db_session=db_session, query=query):
+        if not await crud.crud_api.get_first(
+            db_session=db_session,
+            query=query,
+        ):
             api_model = ApiModel(
                 uri=str(route.path),
                 method=ApiMethod[list(route.methods)[0]],
@@ -215,7 +218,10 @@ async def create_api_group(db_session: AsyncSession):
         ]
     )
 
-    items = await crud.crud_api_group.get_multi(query=query, db_session=db_session)
+    items = await crud.crud_api_group.get_multi(
+        query=query,
+        db_session=db_session,
+    )
     for item in items:
         tags.pop(item.name)
 
@@ -232,7 +238,10 @@ async def add_api_to_api_group(db_session: AsyncSession):
                 crud.crud_api.model.method == list(route.methods)[0],
             ]
         )
-        api_item = await crud.crud_api.get_first(db_session=db_session, query=query)
+        api_item = await crud.crud_api.get_first(
+            db_session=db_session,
+            query=query,
+        )
         group[route.tags[0]].append(api_item)
 
     for group_name, api_list in group.items():
@@ -241,7 +250,10 @@ async def add_api_to_api_group(db_session: AsyncSession):
                 crud.crud_api_group.model.name == group_name,
             ]
         )
-        group_item = await crud.crud_api_group.get_first(query=query, db_session=db_session)
+        group_item = await crud.crud_api_group.get_first(
+            query=query,
+            db_session=db_session,
+        )
 
         for api in api_list:
             if not api.group:
@@ -258,9 +270,7 @@ async def create_role(db_session: AsyncSession):
     }
     roles = await crud.crud_role.get_multi(
         query=QueryList(
-            query=[
-                crud.crud_role.model.name.in_(role_init_items.keys())
-            ]
+            query=[crud.crud_role.model.name.in_(role_init_items.keys())],
         ),
         db_session=db_session,
     )

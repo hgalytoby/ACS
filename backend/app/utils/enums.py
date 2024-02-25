@@ -15,6 +15,7 @@ class AppEnvPath(str, MyEnum):
     DEV = 開發環境
     TEST = 測試環境
     """
+
     PROD = '.env'
     DEV = '.env.dev'
     TEST = '.env.test'
@@ -26,6 +27,7 @@ class AppEnv(str, MyEnum):
     DEV = 開發環境
     TEST = 測試環境
     """
+
     PROD = 'PROD'
     DEV = 'DEV'
     TEST = 'TEST'
@@ -53,6 +55,7 @@ class ImageFailDetail(str, MyEnum):
     """
     INVALID_IMAGE_FORMAT = 無效圖片格式
     """
+
     INVALID_IMAGE_FORMAT = 'INVALID_IMAGE_FORMAT'
 
 
@@ -60,6 +63,7 @@ class UserFailDetail(str, MyEnum):
     """
     USER_EMAIL_EXIST = 使用者信箱已存在
     """
+
     USER_EMAIL_EXIST = 'USER_EMAIL_EXIST'
 
 
@@ -75,6 +79,7 @@ class WebSocketEvent(str, MyEnum):
     LOGIN = 登入
     CHANNEL = 頻道
     """
+
     MEMBER_STATUS = 'MEMBER_STATUS'
     MEMBER_STATUS_LIST = 'MEMBER_STATUS_LIST'
     LOGIN = 'LOGIN'
@@ -94,6 +99,7 @@ class UserLogEvent(str, MyEnum):
     UPDATE_USER = 更新使用者
     DESTROY_USER = 刪除使用者
     """
+
     CREATE_MEMBER = 'CreateMember'
     UPDATE_MEMBER = 'UpdateMember'
     DESTROY_MEMBER = 'DestroyMember'
@@ -117,6 +123,7 @@ class SystemLogEvent(str, MyEnum):
     USER_DESTROY = 刪除使用者
     TRY_SEND_EMAIL = 測試送信
     """
+
     USER_REGISTER = 'UserRegister'
     USER_LOGIN_FAIL = 'UserLoginFail'
     USER_FORGOT_PASSWORD = 'UserForgotPassword'
@@ -160,6 +167,7 @@ class StorageType(str, MyEnum):
     LOCAL = 本地端
     GCP = Google Cloud Storage
     """
+
     LOCAL = 'LOCAL'
     GCP = 'GCP'
 
@@ -169,6 +177,7 @@ class APIAccess(str, MyEnum):
     PUBLIC = 公
     PRIVATE = 私
     """
+
     PUBLIC = 'PUBLIC'
     PRIVATE = 'PRIVATE'
 

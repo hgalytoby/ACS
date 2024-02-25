@@ -25,9 +25,18 @@ class ChartData:
     def hard_disk_volume(cls) -> ChartRead:
         hdd = psutil.disk_usage('/')
         items = [
-            ChartItem(label=HardDiskVolumeLabel.TOTAL, data=hdd.total // DISK_VAL),
-            ChartItem(label=HardDiskVolumeLabel.USED, data=hdd.used // DISK_VAL),
-            ChartItem(label=HardDiskVolumeLabel.FREE, data=hdd.free // DISK_VAL),
+            ChartItem(
+                label=HardDiskVolumeLabel.TOTAL,
+                data=hdd.total // DISK_VAL,
+            ),
+            ChartItem(
+                label=HardDiskVolumeLabel.USED,
+                data=hdd.used // DISK_VAL,
+            ),
+            ChartItem(
+                label=HardDiskVolumeLabel.FREE,
+                data=hdd.free // DISK_VAL,
+            ),
         ]
         return ChartRead(items=items, labels=HardDiskVolumeLabel.values())
 
@@ -36,8 +45,7 @@ class ChartData:
         items = await crud_system_log.chart()
         return ChartRead(
             items=[
-                ChartItem(label=event, data=value)
-                for (event, value) in items
+                ChartItem(label=event, data=value) for (event, value) in items
             ],
             labels=SystemLogEvent.values(),
         )
@@ -45,7 +53,7 @@ class ChartData:
     @classmethod
     async def member_growth(
         cls,
-        query: DateRelatedQueryList
+        query: DateRelatedQueryList,
     ) -> list[BaseGrowthRead]:
         items = await crud_member.growth_chart(query=query)
         return items
@@ -53,7 +61,7 @@ class ChartData:
     @classmethod
     async def new_member_chart(
         cls,
-        query: DateRelatedQueryList
+        query: DateRelatedQueryList,
     ) -> list[BaseGrowthRead]:
         items = await crud_member.new_member_chart(query=query)
         return items
@@ -61,7 +69,7 @@ class ChartData:
     @classmethod
     async def member_record_growth(
         cls,
-        query: DateRelatedQueryList
+        query: DateRelatedQueryList,
     ) -> list[BaseGrowthRead]:
         items = await crud_member_record.member_record_growth_chart(query=query)
         return items
@@ -69,7 +77,7 @@ class ChartData:
     @classmethod
     async def member_record_hourly_count(
         cls,
-        query: DateRelatedQueryList
+        query: DateRelatedQueryList,
     ) -> MemberRecordHourlyCountRead:
         items = await crud_member_record.member_record_hourly_count_chart(
             query=query,
@@ -89,7 +97,8 @@ class ChartData:
             DateRelatedQueryList(
                 query=[
                     ge(model.created_at, date_range[0]),
-                    le(model.created_at, date_range[1])],
+                    le(model.created_at, date_range[1]),
+                ],
                 date_range=date_range,
             )
             for model in [MemberModel, MemberRecordModel]

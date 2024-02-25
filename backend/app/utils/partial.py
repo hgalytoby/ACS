@@ -11,7 +11,11 @@ def optional(*fields):
                 _cls.__fields__[field].default = None
         return _cls
 
-    if fields and inspect.isclass(fields[0]) and issubclass(fields[0], BaseModel):
+    if (
+        fields
+        and inspect.isclass(fields[0])
+        and issubclass(fields[0], BaseModel)
+    ):
         cls = fields[0]
         fields = cls.__fields__
         return dec(cls)

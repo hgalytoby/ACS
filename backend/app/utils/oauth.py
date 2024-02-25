@@ -42,7 +42,7 @@ class OAuth2AuthorizeCallback(_OAuth2AuthorizeCallback):
         code_verifier: Optional[str] = None,
         state: Optional[str] = None,
         error: Optional[str] = None,
-        redirect_url: Optional[str] = redirect_url_query
+        redirect_url: Optional[str] = redirect_url_query,
     ) -> tuple[OAuth2Token, Optional[str]]:
         if code is None or error is not None:
             raise HTTPException(
@@ -66,7 +66,9 @@ def get_oauth_router(
 ) -> APIRouter:
     """Generate a router with the OAuth routes."""
     router = APIRouter()
-    callback_route_name = f'oauth:{oauth_client.name}.{auth_backend.name}.callback'
+    callback_route_name = (
+        f'oauth:{oauth_client.name}.{auth_backend.name}.callback'
+    )
     oauth2_authorize_callback = OAuth2AuthorizeCallback(
         client=oauth_client,
         route_name=callback_route_name,
@@ -113,7 +115,9 @@ def get_oauth_router(
                             },
                             ErrorCode.LOGIN_BAD_CREDENTIALS: {
                                 'summary': 'User is inactive.',
-                                'value': {'detail': ErrorCode.LOGIN_BAD_CREDENTIALS},
+                                'value': {
+                                    'detail': ErrorCode.LOGIN_BAD_CREDENTIALS,
+                                },
                             },
                         }
                     }
@@ -192,7 +196,7 @@ def get_oauth_associate_router(
     )
     get_current_active_user = fastapi_users.authenticator.current_user(
         active=True,
-        verified=requires_verification
+        verified=requires_verification,
     )
 
     @router.get(

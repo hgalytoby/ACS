@@ -2,7 +2,7 @@ from fastapi import status
 from httpx import AsyncClient
 import pytest
 
-from app.models import AcceptApiModel, MemberLocationModel
+from app.models import AcceptApiModel
 from app.utils.enums import SteinsGate
 
 
@@ -13,7 +13,7 @@ class TestAcceptLocationView:
     async def test_dependencies_valid_accept_token_fail_empty(
         self,
         test_client: AsyncClient,
-        url: str
+        url: str,
     ):
         res = await test_client.get(url=url)
         assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
@@ -30,11 +30,11 @@ class TestAcceptLocationView:
         )
         assert res.status_code == status.HTTP_403_FORBIDDEN
 
+    @pytest.mark.usefixtures('member_location')
     async def test_get_location(
         self,
         test_client: AsyncClient,
         get_accept_header: dict[str, SteinsGate],
-        member_location: MemberLocationModel,
     ):
         res = await test_client.get(
             url='/accept-location',
@@ -43,6 +43,7 @@ class TestAcceptLocationView:
         assert res.status_code == status.HTTP_200_OK
         assert res.json()
 
+    @pytest.mark.usefixtures('accept_api')
     async def test_get_api(
         self,
         test_client: AsyncClient,

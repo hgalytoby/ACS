@@ -41,29 +41,33 @@ class UserLogQuery(BaseQuery):
         ),
     ):
         super(UserLogQuery, self).__init__()
-        self.query_list.extend([
-            QuerySql(
-                expression=UserLogModel.event == event,
-                value=event,
-                include_none=False,
-            ),
-        ])
+        self.query_list.extend(
+            [
+                QuerySql(
+                    expression=UserLogModel.event == event,
+                    value=event,
+                    include_none=False,
+                ),
+            ]
+        )
         self.convert_datetime_to_query(
             date_arr=created_at,
             sql_field=UserLogModel.created_at,
         )
-        self.sort_list.extend([
-            SortSql(
-                sql_field=UserLogModel.event,
-                sort=event_sort,
-                num=event_num,
-            ),
-            SortSql(
-                sql_field=UserLogModel.created_at,
-                sort=created_at_sort,
-                num=created_at_num,
-            ),
-        ])
+        self.sort_list.extend(
+            [
+                SortSql(
+                    sql_field=UserLogModel.event,
+                    sort=event_sort,
+                    num=event_num,
+                ),
+                SortSql(
+                    sql_field=UserLogModel.created_at,
+                    sort=created_at_sort,
+                    num=created_at_num,
+                ),
+            ]
+        )
 
 
 class SuperUserLogQuery(BaseQuery):
@@ -118,41 +122,45 @@ class SuperUserLogQuery(BaseQuery):
         ),
     ):
         super(SuperUserLogQuery, self).__init__()
-        self.query_list.extend([
-            QuerySql(
-                expression=UserLogModel.event == event,
-                value=event,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=UserModel.username.ilike(f'%{username}%'),
-                value=username,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=UserModel.email == email,
-                value=email,
-                include_none=False,
-            ),
-        ])
+        self.query_list.extend(
+            [
+                QuerySql(
+                    expression=UserLogModel.event == event,
+                    value=event,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=UserModel.username.ilike(f'%{username}%'),
+                    value=username,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=UserModel.email == email,
+                    value=email,
+                    include_none=False,
+                ),
+            ]
+        )
         self.convert_datetime_to_query(
             date_arr=created_at,
             sql_field=UserLogModel.created_at,
         )
-        self.sort_list.extend([
-            SortSql(
-                sql_field=UserLogModel.event,
-                sort=event_sort,
-                num=event_num,
-            ),
-            SortSql(
-                sql_field=UserModel.username,
-                sort=username_sort,
-                num=username_num,
-            ),
-            SortSql(
-                sql_field=UserLogModel.created_at,
-                sort=created_at_sort,
-                num=created_at_num,
-            ),
-        ])
+        self.sort_list.extend(
+            [
+                SortSql(
+                    sql_field=UserLogModel.event,
+                    sort=event_sort,
+                    num=event_num,
+                ),
+                SortSql(
+                    sql_field=UserModel.username,
+                    sort=username_sort,
+                    num=username_num,
+                ),
+                SortSql(
+                    sql_field=UserLogModel.created_at,
+                    sort=created_at_sort,
+                    num=created_at_num,
+                ),
+            ]
+        )

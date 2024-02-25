@@ -75,7 +75,9 @@ class ChartView:
     )
     async def member_record_growth(
         self,
-        query: DateRelatedQueryList = web_date_renge_params(MemberRecordChartQuery),
+        query: DateRelatedQueryList = web_date_renge_params(
+            MemberRecordChartQuery
+        ),
     ) -> list[BaseGrowthRead]:
         items = await ChartData.member_record_growth(query=query)
         return items
@@ -88,7 +90,9 @@ class ChartView:
     )
     async def member_record_hourly_count(
         self,
-        query: DateRelatedQueryList = web_date_renge_params(MemberRecordChartQuery),
+        query: DateRelatedQueryList = web_date_renge_params(
+            MemberRecordChartQuery
+        ),
     ) -> MemberRecordHourlyCountRead:
         items = await ChartData.member_record_hourly_count(query=query)
         return items

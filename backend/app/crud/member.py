@@ -55,7 +55,10 @@ class CRUDMemberLocation(
         image: UploadFile = File(),
         db_session: Optional[AsyncSession] = None,
     ) -> MemberLocationModel:
-        instance = await super().create(create_item=create_item, db_session=db_session)
+        instance = await super().create(
+            create_item=create_item,
+            db_session=db_session,
+        )
         await Storage.save_image(instance=instance, image=image)
         instance = await self.save(instance=instance, db_session=db_session)
         return instance
@@ -64,7 +67,9 @@ class CRUDMemberLocation(
         self,
         *,
         current_item: MemberLocationModel,
-        update_item: MemberLocationUpdate | dict[str, Any] | MemberLocationModel,
+        update_item: MemberLocationUpdate
+                     | dict[str, Any]
+                     | MemberLocationModel,
         db_session: Optional[AsyncSession] = None,
         image: UploadFile = File(default=None),
     ) -> MemberLocationModel:
@@ -222,7 +227,10 @@ class CRUDMemberRecord(
         query: DateRelatedQueryList,
     ) -> MemberRecordHourlyCountRead:
         items = await self.get_multi(query=query)
-        result = [MemberRecordHourlyCountDataRead(hour=f'{str(i).zfill(2)}:00') for i in range(24)]
+        result = [
+            MemberRecordHourlyCountDataRead(hour=f'{str(i).zfill(2)}:00')
+            for i in range(24)
+        ]
 
         for item in items:  # type: MemberRecordModel
             result[item.created_at.hour].count += 1
@@ -277,11 +285,8 @@ class CRUDMemberStatus(
         for item in items:  # type: MemberStatusModel
             data[item.member_location_id.hex].append(item.member)
 
-        member_location_items = await crud_member_location.get_multi(
-            query=QueryList(
-                sort=[MemberLocationModel.created_at.asc()]
-            ),
-        )
+        query_list = QueryList(sort=[MemberLocationModel.created_at.asc()])
+        member_location_items = await crud_member_location.get_multi(query=query_list)
 
         result = [
             MemberStatusRead(
@@ -322,12 +327,12 @@ class CRUDMemberStatus(
             if create_item.status:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f'已在{instance.member_location.name}地點!'
+                    detail=f'已在{instance.member_location.name}地點!',
                 )
-            elif create_item.member_location_id != instance.member_location_id:
+            if create_item.member_location_id != instance.member_location_id:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f'請從{instance.member_location.name}離開!'
+                    detail=f'請從{instance.member_location.name}離開!',
                 )
 
             await db_session.delete(instance)
@@ -346,6 +351,7 @@ class CRUDMemberStatus(
         self,
         create_item: MemberStatusCreate,
         db_session: Optional[AsyncSession] = None,
+        commit: bool = True,
     ) -> MemberStatusCreatedRead:
         db_session = db_session or self.db.session
         member, member_location = await self.handler_member_status(

@@ -48,7 +48,6 @@ class LogView:
         name=APIAccess.PRIVATE,
         summary='系統日誌',
         status_code=status.HTTP_200_OK,
-
     )
     async def get_system(self, log_id: UUID) -> UserLogRead:
         instance = await crud_system_log.get(item_id=log_id)

@@ -93,7 +93,9 @@ class BaseMemberChartQuery(BaseQuery, metaclass=ABCMeta):
 
         if created_at is None:
             created_at = (
-                (request.state.initial_time - timedelta(days=30)).replace(microsecond=0),
+                (
+                    request.state.initial_time - timedelta(days=30)
+                ).replace(microsecond=0),
                 (datetime.utcnow() + timedelta(days=30)).replace(microsecond=0),
             )
 
@@ -114,7 +116,10 @@ class QuerySql(BaseModel):
         description='SQL 條件的表示式',
     )
     value: Any = Field(default=False, description='要搜尋的值')
-    include_none: Optional[bool] = Field(default=False, description='是否要搜尋 None')
+    include_none: Optional[bool] = Field(
+        default=False,
+        description='是否要搜尋 None',
+    )
 
     class Config:
         arbitrary_types_allowed = True

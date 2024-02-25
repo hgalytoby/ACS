@@ -10,7 +10,13 @@ from .link import (
     RoleLinkBase,
     RoleLinkModel,
 )
-from .log import LogBase, SystemLogBase, SystemLogModel, UserLogBase, UserLogModel
+from .log import (
+    LogBase,
+    SystemLogBase,
+    SystemLogModel,
+    UserLogBase,
+    UserLogModel,
+)
 from .member import (
     MemberBase,
     MemberLocationBase,

@@ -9,7 +9,12 @@ class FrontendCreate(FrontendBase):
     ...
 
 
-class FrontendRead(BaseCreatedAtRead, BaseUpdatedAtRead, FrontendBase, BaseUUIDRead):
+class FrontendRead(
+    BaseCreatedAtRead,
+    BaseUpdatedAtRead,
+    FrontendBase,
+    BaseUUIDRead,
+):
     depth: int = Field(
         title='深度',
         description='深度',

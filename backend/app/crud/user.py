@@ -92,8 +92,8 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         else:
             updated_user_data = user_update.create_update_dict_superuser()
 
-        updated_user = await self._update(user, updated_user_data)
-        await self.on_after_update(updated_user, updated_user_data, request)
+        updated_user = await self._update(user=user, update_dict=updated_user_data)
+        await self.on_after_update(user=updated_user, update_dict=updated_user_data, request=request)
         return updated_user
 
     async def delete(
@@ -103,14 +103,19 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
     ) -> None:
         await super().delete(user=user, request=self.request)
 
-    async def authenticate(self, credentials: OAuth2PasswordRequestForm) -> Optional[UserModel]:
+    async def authenticate(
+        self, credentials: OAuth2PasswordRequestForm
+    ) -> Optional[UserModel]:
         try:
             user = await self.get_by_email(credentials.username)
         except exceptions.UserNotExists:
             self.password_helper.hash(credentials.password)
             return None
 
-        verified, updated_password_hash = self.password_helper.verify_and_update(
+        (
+            verified,
+            updated_password_hash,
+        ) = self.password_helper.verify_and_update(
             plain_password=credentials.password,
             hashed_password=user.hashed_password,
         )
@@ -150,13 +155,15 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         }
 
         try:
-            user = await self.get_by_oauth_account(oauth_name, account_id)
+            user = await self.get_by_oauth_account(oauth=oauth_name, account_id=account_id)
         except exceptions.UserNotExists:
             try:
                 user = await self.get_by_email(account_email)
                 if not associate_by_email:
                     raise exceptions.UserAlreadyExists()
-                user = await self.user_db.add_oauth_account(user, oauth_account_dict)
+                user = await self.user_db.add_oauth_account(
+                    user, oauth_account_dict
+                )
             except exceptions.UserNotExists:
                 password = self.password_helper.generate()
                 user_dict = {
@@ -166,7 +173,10 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
                     'username': account_email.split('@')[0],
                 }
                 user = await self.user_db.create(user_dict)
-                user = await self.user_db.add_oauth_account(user, oauth_account_dict)
+                user = await self.user_db.add_oauth_account(
+                    user=user,
+                    create_dict=oauth_account_dict,
+                )
                 await self.on_after_oauth_register(user=user, request=request)
         else:
             user = await crud_user.get(item_id=user.id)
@@ -176,14 +186,16 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
                     and existing_oauth_account.oauth_name == oauth_name
                 ):
                     user = await self.user_db.update_oauth_account(
-                        user,
-                        existing_oauth_account,
-                        oauth_account_dict,
+                        user=user,
+                        oauth_account=existing_oauth_account,
+                        update_dict=oauth_account_dict,
                     )
 
         return user
 
-    async def on_after_register(self, user: UserModel, request: Optional[Request] = None):
+    async def on_after_register(
+        self, user: UserModel, request: Optional[Request] = None
+    ):
         token = generate_jwt(
             data={
                 'sub': str(user.id),
@@ -193,9 +205,13 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
             secret=self.verification_token_secret,
             lifetime_seconds=self.verification_token_lifetime_seconds,
         )
-        await request.state.arq.enqueue_job('send_register_email', user.email, token)
+        await request.state.arq.enqueue_job(
+            'send_register_email', user.email, token
+        )
 
-    async def on_after_oauth_register(self, user: UserModel, request: Optional[Request] = None):
+    async def on_after_oauth_register(
+        self, user: UserModel, request: Optional[Request] = None
+    ):
         ...
 
     async def on_after_forgot_password(
@@ -205,7 +221,9 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         request: Optional[Request] = None,
     ):
         print(f'User {user.id} has forgot their password. Reset token: {token}')
-        await request.state.arq.enqueue_job('send_forgot_password_email', user.email, token)
+        await request.state.arq.enqueue_job(
+            'send_forgot_password_email', user.email, token
+        )
 
     async def on_after_request_verify(
         self,
@@ -213,8 +231,12 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         token: str,
         request: Optional[Request] = None,
     ):
-        print(f'Verification requested for user {user.id}. Verification token: {token}')
-        await request.state.arq.enqueue_job('send_register_email', user.email, token)
+        print(
+            f'Verification requested for user {user.id}. Verification token: {token}'
+        )
+        await request.state.arq.enqueue_job(
+            'send_register_email', user.email, token
+        )
 
     async def on_after_update(
         self,
@@ -225,7 +247,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         if update_dict.get('password'):
             update_dict['password'] = '*' * len(update_dict['password'])
 
-        print(f"User {user.id} has been updated with {update_dict}.")
+        print(f'User {user.id} has been updated with {update_dict}.')
         user_log = UserLogCreate(
             user_id=user.id,
             event=UserLogEvent.UPDATE_USER,
@@ -269,21 +291,35 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
                 cache['count'] += 1
             await redis.set(user.email, orjson.dumps(cache))
 
-    async def on_after_verify(self, user: UserModel, request: Optional[Request] = None):
-        print(f"User {user.id} has been verified")
-        await request.state.arq.enqueue_job('send_verify_successfully_email', user)
+    async def on_after_verify(
+        self, user: UserModel, request: Optional[Request] = None
+    ):
+        print(f'User {user.id} has been verified')
+        await request.state.arq.enqueue_job(
+            'send_verify_successfully_email', user
+        )
 
-    async def on_after_reset_password(self, user: UserModel, request: Optional[Request] = None):
-        print(f"User {user.id} has reset their password.")
-        await request.state.arq.enqueue_job('send_reset_password_email', user.email)
+    async def on_after_reset_password(
+        self, user: UserModel, request: Optional[Request] = None
+    ):
+        print(f'User {user.id} has reset their password.')
+        await request.state.arq.enqueue_job(
+            'send_reset_password_email', user.email
+        )
 
-    async def on_before_delete(self, user: UserModel, request: Optional[Request] = None):
-        print(f"User {user.id} is going to be deleted")
+    async def on_before_delete(
+        self, user: UserModel, request: Optional[Request] = None
+    ):
+        print(f'User {user.id} is going to be deleted')
 
-    async def on_after_delete(self, user: UserModel, request: Optional[Request] = None):
-        print(f"User {user.id} is successfully deleted")
+    async def on_after_delete(
+        self, user: UserModel, request: Optional[Request] = None
+    ):
+        print(f'User {user.id} is successfully deleted')
         current_user = await self.get_current_user()
-        await request.state.arq.enqueue_job('send_delete_email', user, current_user)
+        await request.state.arq.enqueue_job(
+            'send_delete_email', user, current_user
+        )
 
 
 async def get_user_db():
@@ -319,7 +355,9 @@ auth_backend = AuthenticationBackend(
 
 fastapi_users = FastAPIUsers[UserModel, UUID](get_user_manager, [auth_backend])
 
-current_active_verified_user = fastapi_users.current_user(active=True, verified=True)
+current_active_verified_user = fastapi_users.current_user(
+    active=True, verified=True
+)
 
 
 class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
@@ -404,8 +442,9 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
             if oauth.oauth_name == provider_name:
                 db_session = db_session or self.db.session
                 response = await db_session.execute(
-                    select(OAuthAccountModel)
-                    .where(OAuthAccountModel.id == oauth.id)
+                    select(OAuthAccountModel).where(
+                        OAuthAccountModel.id == oauth.id,
+                    ),
                 )
                 oauth_obj = response.scalar_one()
                 await db_session.delete(oauth_obj)

@@ -59,8 +59,12 @@ class OAuth(Base):
     google_secret: Optional[str] = Field(env='GOOGLE_OAUTH_CLIENT_SECRET')
     github_id: Optional[str] = Field(env='GITHUB_OAUTH_CLIENT_ID')
     github_secret: Optional[str] = Field(env='GITHUB_OAUTH_CLIENT_SECRET')
-    github_associate_id: Optional[str] = Field(env='GITHUB_OAUTH_ASSOCIATE_CLIENT_ID')
-    github_associate_secret: Optional[str] = Field(env='GITHUB_OAUTH_ASSOCIATE_CLIENT_SECRET')
+    github_associate_id: Optional[str] = Field(
+        env='GITHUB_OAUTH_ASSOCIATE_CLIENT_ID',
+    )
+    github_associate_secret: Optional[str] = Field(
+        env='GITHUB_OAUTH_ASSOCIATE_CLIENT_SECRET',
+    )
     microsoft_id: Optional[str] = Field(env='MICROSOFT_OAUTH_CLIENT_ID')
     microsoft_secret: Optional[str] = Field(env='MICROSOFT_OAUTH_CLIENT_SECRET')
 

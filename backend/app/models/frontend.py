@@ -28,7 +28,7 @@ class FrontendBase(SQLModel):
     parent_id: Optional[UUID] = Field(
         foreign_key='Frontend.id',
         default=None,
-        nullable=True
+        nullable=True,
     )
 
 
@@ -52,8 +52,8 @@ class FrontendModel(
     parent: Optional['FrontendModel'] = Relationship(
         back_populates='children',
         sa_relationship_kwargs=dict(
-            remote_side='FrontendModel.id'  # notice the uppercase "N" to refer to this table class
-        )
+            remote_side='FrontendModel.id',
+        ),  # notice the uppercase "N" to refer to this table class
     )
     children: list['FrontendModel'] = Relationship(
         back_populates='parent',

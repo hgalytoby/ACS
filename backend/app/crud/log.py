@@ -45,8 +45,7 @@ class CRUDSystemLog(
             select(
                 self.model.event,
                 func.count(self.model.event),
-            )
-            .group_by(self.model.event)
+            ).group_by(self.model.event),
         )
         return response.all()
 

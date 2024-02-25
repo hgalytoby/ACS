@@ -119,79 +119,89 @@ class MemberRecordQuery(BaseQuery):
         ),
     ):
         super(MemberRecordQuery, self).__init__()
-        self.query_list.extend([
-            QuerySql(
-                expression=MemberRecordModel.member_name.ilike(f'%{member_name}%'),
-                value=member_name,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=MemberRecordModel.member_phone.ilike == member_phone,
-                value=member_phone,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=MemberRecordModel.member_company.ilike == member_company,
-                value=member_company,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=MemberRecordModel.member_job_title.ilike == member_job_title,
-                value=member_job_title,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=MemberRecordModel.status == status,
-                value=status,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=MemberRecordModel.member_location_name.ilike == member_location_name,
-                value=member_location_name,
-                include_none=False,
-            ),
-        ])
+        self.query_list.extend(
+            [
+                QuerySql(
+                    expression=MemberRecordModel.member_name.ilike(
+                        f'%{member_name}%'
+                    ),
+                    value=member_name,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=MemberRecordModel.member_phone.ilike
+                               == member_phone,
+                    value=member_phone,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=MemberRecordModel.member_company.ilike
+                               == member_company,
+                    value=member_company,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=MemberRecordModel.member_job_title.ilike
+                               == member_job_title,
+                    value=member_job_title,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=MemberRecordModel.status == status,
+                    value=status,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=MemberRecordModel.member_location_name.ilike
+                               == member_location_name,
+                    value=member_location_name,
+                    include_none=False,
+                ),
+            ]
+        )
         self.convert_datetime_to_query(
             date_arr=created_at,
             sql_field=MemberRecordModel.created_at,
         )
-        self.sort_list.extend([
-            SortSql(
-                sql_field=MemberRecordModel.member_name,
-                sort=member_name_sort,
-                num=member_name_num,
-            ),
-            SortSql(
-                sql_field=MemberRecordModel.member_phone,
-                sort=member_phone_sort,
-                num=member_phone_num,
-            ),
-            SortSql(
-                sql_field=MemberRecordModel.member_company,
-                sort=member_company_sort,
-                num=member_company_num,
-            ),
-            SortSql(
-                sql_field=MemberRecordModel.member_job_title,
-                sort=member_job_title_sort,
-                num=member_job_title_num,
-            ),
-            SortSql(
-                sql_field=MemberRecordModel.status,
-                sort=status_sort,
-                num=status_num,
-            ),
-            SortSql(
-                sql_field=MemberRecordModel.member_location_name,
-                sort=member_location_name_sort,
-                num=member_location_name_num,
-            ),
-            SortSql(
-                sql_field=MemberRecordModel.created_at,
-                sort=created_at_sort,
-                num=created_at_num,
-            ),
-        ])
+        self.sort_list.extend(
+            [
+                SortSql(
+                    sql_field=MemberRecordModel.member_name,
+                    sort=member_name_sort,
+                    num=member_name_num,
+                ),
+                SortSql(
+                    sql_field=MemberRecordModel.member_phone,
+                    sort=member_phone_sort,
+                    num=member_phone_num,
+                ),
+                SortSql(
+                    sql_field=MemberRecordModel.member_company,
+                    sort=member_company_sort,
+                    num=member_company_num,
+                ),
+                SortSql(
+                    sql_field=MemberRecordModel.member_job_title,
+                    sort=member_job_title_sort,
+                    num=member_job_title_num,
+                ),
+                SortSql(
+                    sql_field=MemberRecordModel.status,
+                    sort=status_sort,
+                    num=status_num,
+                ),
+                SortSql(
+                    sql_field=MemberRecordModel.member_location_name,
+                    sort=member_location_name_sort,
+                    num=member_location_name_num,
+                ),
+                SortSql(
+                    sql_field=MemberRecordModel.created_at,
+                    sort=created_at_sort,
+                    num=created_at_num,
+                ),
+            ]
+        )
 
 
 class MemberQuery(BaseQuery):
@@ -320,33 +330,35 @@ class MemberQuery(BaseQuery):
         ),
     ):
         super(MemberQuery, self).__init__()
-        self.query_list.extend([
-            QuerySql(
-                expression=MemberModel.name.ilike(f'%{name}%'),
-                value=name,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=MemberModel.blood_type == blood_type,
-                value=blood_type,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=MemberModel.phone.ilike(f'%{phone}%'),
-                value=phone,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=MemberModel.company.ilike(f'%{company}%'),
-                value=company,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=MemberModel.job_title.ilike(f'%{job_title}%'),
-                value=job_title,
-                include_none=False,
-            ),
-        ])
+        self.query_list.extend(
+            [
+                QuerySql(
+                    expression=MemberModel.name.ilike(f'%{name}%'),
+                    value=name,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=MemberModel.blood_type == blood_type,
+                    value=blood_type,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=MemberModel.phone.ilike(f'%{phone}%'),
+                    value=phone,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=MemberModel.company.ilike(f'%{company}%'),
+                    value=company,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=MemberModel.job_title.ilike(f'%{job_title}%'),
+                    value=job_title,
+                    include_none=False,
+                ),
+            ]
+        )
         self.convert_datetime_to_query(
             date_arr=birthday,
             sql_field=MemberModel.birthday,
@@ -359,45 +371,47 @@ class MemberQuery(BaseQuery):
             date_arr=updated_at,
             sql_field=MemberModel.updated_at,
         )
-        self.sort_list.extend([
-            SortSql(
-                sql_field=MemberModel.name,
-                sort=name_sort,
-                num=name_num,
-            ),
-            SortSql(
-                sql_field=MemberModel.blood_type,
-                sort=blood_type_sort,
-                num=blood_type_num,
-            ),
-            SortSql(
-                sql_field=MemberModel.birthday,
-                sort=birthday_sort,
-                num=birthday_num,
-            ),
-            SortSql(
-                sql_field=MemberModel.phone,
-                sort=phone_sort,
-                num=phone_num,
-            ),
-            SortSql(
-                sql_field=MemberModel.company,
-                sort=company_sort,
-                num=company_num,
-            ),
-            SortSql(
-                sql_field=MemberModel.job_title,
-                sort=job_title_sort,
-                num=job_title_num,
-            ),
-            SortSql(
-                sql_field=MemberModel.created_at,
-                sort=created_at_sort,
-                num=created_at_num,
-            ),
-            SortSql(
-                sql_field=MemberModel.updated_at,
-                sort=updated_at_sort,
-                num=updated_at_num,
-            ),
-        ])
+        self.sort_list.extend(
+            [
+                SortSql(
+                    sql_field=MemberModel.name,
+                    sort=name_sort,
+                    num=name_num,
+                ),
+                SortSql(
+                    sql_field=MemberModel.blood_type,
+                    sort=blood_type_sort,
+                    num=blood_type_num,
+                ),
+                SortSql(
+                    sql_field=MemberModel.birthday,
+                    sort=birthday_sort,
+                    num=birthday_num,
+                ),
+                SortSql(
+                    sql_field=MemberModel.phone,
+                    sort=phone_sort,
+                    num=phone_num,
+                ),
+                SortSql(
+                    sql_field=MemberModel.company,
+                    sort=company_sort,
+                    num=company_num,
+                ),
+                SortSql(
+                    sql_field=MemberModel.job_title,
+                    sort=job_title_sort,
+                    num=job_title_num,
+                ),
+                SortSql(
+                    sql_field=MemberModel.created_at,
+                    sort=created_at_sort,
+                    num=created_at_num,
+                ),
+                SortSql(
+                    sql_field=MemberModel.updated_at,
+                    sort=updated_at_sort,
+                    num=updated_at_num,
+                ),
+            ]
+        )

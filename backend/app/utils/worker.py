@@ -17,7 +17,7 @@ async def send_email(subject: str, body: str, email: str):
         subject=subject,
         recipients=[EmailStr(email)],
         body=body,
-        subtype=MessageType.html
+        subtype=MessageType.html,
     )
     fm = FastMail(email_config)
     await fm.send_message(message=message)
@@ -94,7 +94,11 @@ async def send_reset_password_email(ctx: dict, email: str):
         )
 
 
-async def send_delete_email(ctx: dict, user: UserModel, current_user: UserModel):
+async def send_delete_email(
+    ctx: dict,
+    user: UserModel,
+    current_user: UserModel,
+):
     async with async_session_maker() as session:
         instance = await crud_email_settings.get_event(
             event=SystemLogEvent.USER_DESTROY,
@@ -135,7 +139,11 @@ async def send_try_email(ctx: dict, subject: str, body: str, user: UserModel):
     async with async_session_maker() as session:
         await send_email(subject=subject, body=body, email=user.email)
         log = SystemLogCreate(
-            raw_data={'user_id': str(user.id), 'body': body, 'subject': subject},
+            raw_data={
+                'user_id': str(user.id),
+                'body': body,
+                'subject': subject,
+            },
             event=SystemLogEvent.TRY_SEND_EMAIL,
         )
         await crud_system_log.create(create_item=log, db_session=session)

@@ -58,16 +58,28 @@ class AcceptLocationView:
     ) -> MemberStatusCreatedRead:
         redis = request.state.redis
         try:
-            async with redis.lock(item.member_id.hex, blocking_timeout=0.1, timeout=0.5):
+            async with redis.lock(
+                item.member_id.hex,
+                blocking_timeout=0.1,
+                timeout=0.5,
+            ):
                 result = await crud_member_status.create(create_item=item)
                 message = WebSocketEventSchema(
                     event=WebSocketEvent.MEMBER_STATUS,
                     data=result,
                 ).json()
-                await broadcast.publish(channel=settings.project, message=message)
+                await broadcast.publish(
+                    channel=settings.project,
+                    message=message,
+                )
         except LockError:
-            raise HTTPException(status_code=status.HTTP_423_LOCKED, detail='too fast.')
+            raise HTTPException(
+                status_code=status.HTTP_423_LOCKED,
+                detail='too fast.',
+            )
         else:
-            message = WebSocketEventSchema(event=WebSocketEvent.MEMBER_STATUS_LIST).json()
+            message = WebSocketEventSchema(
+                event=WebSocketEvent.MEMBER_STATUS_LIST,
+            ).json()
             await broadcast.publish(channel=settings.project, message=message)
             return result

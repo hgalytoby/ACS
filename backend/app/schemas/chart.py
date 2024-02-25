@@ -20,7 +20,7 @@ class MemberRecordHourlyCountRead(BaseModel):
     data: list[MemberRecordHourlyCountDataRead] = Field(
         default_factory=list,
         description='每小時資料',
-        title='每小時資料'
+        title='每小時資料',
     )
     start_date: _date = Field(description='日期')
     end_date: _date = Field(description='日期')

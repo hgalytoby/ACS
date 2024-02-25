@@ -49,7 +49,10 @@ class Client:
         ).json()
         await self.websocket.send_text(data=data)
 
-    async def member_come(self, msg: WebSocketEventSchema[MemberStatusCreatedRead]):
+    async def member_come(
+        self,
+        msg: WebSocketEventSchema[MemberStatusCreatedRead],
+    ):
         data = WebSocketEventSchema(
             event=WebSocketEvent.MEMBER_STATUS,
             data=msg.data,

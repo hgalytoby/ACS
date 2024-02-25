@@ -169,7 +169,7 @@ class UserView:
     async def update_user_to_roles(
         self,
         role_ids: list[UUID],
-        user_id: UUID
+        user_id: UUID,
     ) -> UserDetailRead:
         role_list = await crud_role.get_by_ids(list_ids=role_ids)
         user = await crud_user.get(item_id=user_id)
@@ -193,7 +193,7 @@ class UserView:
         provider_name: str = Query(
             description='第三方服務名稱',
             title='第三方服務名稱',
-            alias='providerName'
+            alias='providerName',
         ),
     ) -> UserRead:
         return await crud_user.unlink_oauth(

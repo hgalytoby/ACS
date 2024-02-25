@@ -48,6 +48,9 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 start = "app.main:start"
 
+[tool.ruff]
+line-length = 80
+
 [tool.ruff.lint.isort]
 order-by-type = true
 case-sensitive = true
@@ -73,6 +76,10 @@ ignore = [
     "PT004",
 ]
 
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 80
+quote-style = "single"
 
 [tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false

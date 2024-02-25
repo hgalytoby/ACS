@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from fastapi_users_db_sqlmodel import SQLModelBaseOAuthAccount
 from humps import kebabize
 from pydantic import UUID4
@@ -103,7 +101,7 @@ class UserModel(
         link_model=RoleLinkModel,
         sa_relationship_kwargs={
             'lazy': 'selectin',
-        }
+        },
     )
 
     def get_file_value(self) -> str:

@@ -90,7 +90,10 @@ class UserRoleView:
         role = await crud_role.get(item_id=role_id)
         if not role:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-        role = await crud_role.update_role_to_frontends(role=role, frontend_list=frontend_list)
+        role = await crud_role.update_role_to_frontends(
+            role=role,
+            frontend_list=frontend_list,
+        )
         return role
 
     @router.get(
@@ -125,7 +128,10 @@ class UserRoleView:
         instance = await crud_role.get(item_id=role_id)
         if not instance:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-        instance = await crud_role.update(current_item=instance, update_item=item)
+        instance = await crud_role.update(
+            current_item=instance,
+            update_item=item,
+        )
         return instance
 
     @router.delete(

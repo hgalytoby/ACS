@@ -1,6 +1,11 @@
 from .api import ApiRead
 from .frontend import FrontendRead
-from .role import RoleApiRead, RoleDetailRead, RoleFrontendListRead, RoleFrontendRead
+from .role import (
+    RoleApiRead,
+    RoleDetailRead,
+    RoleFrontendListRead,
+    RoleFrontendRead,
+)
 from .user import UserDetailRead
 
 UserDetailRead.update_forward_refs(RoleFrontendListRead=RoleFrontendListRead)

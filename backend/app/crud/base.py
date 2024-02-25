@@ -20,7 +20,9 @@ UpdateSchemaType = TypeVar('UpdateSchemaType', bound=BaseModel)
 ReadSchemaType = TypeVar('ReadSchemaType', bound=BaseModel)
 
 
-class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchemaType]):
+class CRUDBase(
+    Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchemaType],
+):
     def __init__(self, *, model: type[ModelType]):
         self.model = model
         self.db = db
@@ -76,7 +78,9 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, ReadSchema
     ) -> ModelType | ReadSchemaType:
         db_session = db_session or self.db.session
         query = query or QueryList()
-        response = await db_session.execute(self.get_select().where(*query.query))
+        response = await db_session.execute(
+            self.get_select().where(*query.query),
+        )
         return response.scalars().first()
 
     async def get_count(

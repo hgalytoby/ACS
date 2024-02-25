@@ -27,7 +27,7 @@ class UserQuery(BaseQuery):
         is_superuser: Optional[bool] = Query(
             default=None,
             description='超級使用者',
-            alias='isSuperuser'
+            alias='isSuperuser',
         ),
         is_verified: Optional[bool] = Query(
             default=None,
@@ -114,32 +114,37 @@ class UserQuery(BaseQuery):
             description='排序更新日期',
             alias='updatedAtSort',
         ),
-
     ):
         super(UserQuery, self).__init__()
-        self.query_list.extend([
-            QuerySql(
-                expression=UserModel.email == email,
-                value=email,
-                include_none=False,
-            ),
-            QuerySql(
-                expression=UserModel.username.ilike(f'%{username}%'),
-                value=username, include_none=False,
-            ),
-            QuerySql(
-                expression=UserModel.is_active == is_active,
-                value=is_active, include_none=False,
-            ),
-            QuerySql(
-                expression=UserModel.is_superuser == is_superuser,
-                value=is_superuser, include_none=False,
-            ),
-            QuerySql(
-                expression=UserModel.is_verified == is_verified,
-                value=is_verified, include_none=False,
-            ),
-        ])
+        self.query_list.extend(
+            [
+                QuerySql(
+                    expression=UserModel.email == email,
+                    value=email,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=UserModel.username.ilike(f'%{username}%'),
+                    value=username,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=UserModel.is_active == is_active,
+                    value=is_active,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=UserModel.is_superuser == is_superuser,
+                    value=is_superuser,
+                    include_none=False,
+                ),
+                QuerySql(
+                    expression=UserModel.is_verified == is_verified,
+                    value=is_verified,
+                    include_none=False,
+                ),
+            ]
+        )
         self.convert_datetime_to_query(
             date_arr=created_at,
             sql_field=UserModel.created_at,
@@ -148,43 +153,45 @@ class UserQuery(BaseQuery):
             date_arr=updated_at,
             sql_field=UserModel.updated_at,
         )
-        self.sort_list.extend([
-            SortSql(
-                sql_field=UserModel.email,
-                sort=email_sort,
-                num=email_num,
-            ),
-            SortSql(
-                sql_field=UserModel.username,
-                sort=username_sort,
-                num=username_num,
-            ),
-            SortSql(
-                sql_field=UserModel.is_active,
-                sort=is_active_sort,
-                num=is_active_num,
-            ),
-            SortSql(
-                sql_field=UserModel.is_superuser,
-                sort=is_superuser_sort,
-                num=is_superuser_num,
-            ),
-            SortSql(
-                sql_field=UserModel.is_verified,
-                sort=is_verified_sort,
-                num=is_verified_num,
-            ),
-            SortSql(
-                sql_field=UserModel.created_at,
-                sort=created_at_sort,
-                num=created_at_num,
-            ),
-            SortSql(
-                sql_field=UserModel.updated_at,
-                sort=updated_at_sort,
-                num=updated_at_num,
-            ),
-        ])
+        self.sort_list.extend(
+            [
+                SortSql(
+                    sql_field=UserModel.email,
+                    sort=email_sort,
+                    num=email_num,
+                ),
+                SortSql(
+                    sql_field=UserModel.username,
+                    sort=username_sort,
+                    num=username_num,
+                ),
+                SortSql(
+                    sql_field=UserModel.is_active,
+                    sort=is_active_sort,
+                    num=is_active_num,
+                ),
+                SortSql(
+                    sql_field=UserModel.is_superuser,
+                    sort=is_superuser_sort,
+                    num=is_superuser_num,
+                ),
+                SortSql(
+                    sql_field=UserModel.is_verified,
+                    sort=is_verified_sort,
+                    num=is_verified_num,
+                ),
+                SortSql(
+                    sql_field=UserModel.created_at,
+                    sort=created_at_sort,
+                    num=created_at_num,
+                ),
+                SortSql(
+                    sql_field=UserModel.updated_at,
+                    sort=updated_at_sort,
+                    num=updated_at_num,
+                ),
+            ]
+        )
 
 
 class UserExistQuery(BaseQuery):
@@ -193,10 +200,12 @@ class UserExistQuery(BaseQuery):
         email: EmailStr = Query(description='信箱'),
     ):
         super(UserExistQuery, self).__init__()
-        self.query_list.extend([
-            QuerySql(
-                expression=UserModel.email == email,
-                value=email,
-                include_none=False,
-            ),
-        ])
+        self.query_list.extend(
+            [
+                QuerySql(
+                    expression=UserModel.email == email,
+                    value=email,
+                    include_none=False,
+                ),
+            ]
+        )

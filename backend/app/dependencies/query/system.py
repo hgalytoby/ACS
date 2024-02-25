@@ -42,26 +42,30 @@ class SystemLogQuery(BaseQuery):
         ),
     ):
         super(SystemLogQuery, self).__init__()
-        self.query_list.extend([
-            QuerySql(
-                expression=SystemLogModel.event == event.value,
-                value=event.value,
-                include_none=False,
-            ),
-        ])
+        self.query_list.extend(
+            [
+                QuerySql(
+                    expression=SystemLogModel.event == event.value,
+                    value=event.value,
+                    include_none=False,
+                ),
+            ]
+        )
         self.convert_datetime_to_query(
             date_arr=created_at,
             sql_field=SystemLogModel.created_at,
         )
-        self.sort_list.extend([
-            SortSql(
-                sql_field=SystemLogModel.event,
-                sort=event_sort,
-                num=event_num,
-            ),
-            SortSql(
-                sql_field=SystemLogModel.created_at,
-                sort=created_at_sort,
-                num=created_at_num,
-            )
-        ])
+        self.sort_list.extend(
+            [
+                SortSql(
+                    sql_field=SystemLogModel.event,
+                    sort=event_sort,
+                    num=event_num,
+                ),
+                SortSql(
+                    sql_field=SystemLogModel.created_at,
+                    sort=created_at_sort,
+                    num=created_at_num,
+                ),
+            ]
+        )

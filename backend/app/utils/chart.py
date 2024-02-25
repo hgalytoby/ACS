@@ -10,22 +10,36 @@ class DatedModel(Protocol):
 
 class DateGrowthChart:
     @classmethod
-    def get_default_monthly_counts(cls, start_date: date, end_date: date) -> dict[str, int]:
-        num_months = 12 * (end_date.year - start_date.year) + end_date.month - start_date.month + 1
+    def get_default_monthly_counts(
+        cls, start_date: date, end_date: date
+    ) -> dict[str, int]:
+        num_months = (
+            12 * (end_date.year - start_date.year)
+            + end_date.month
+            - start_date.month
+            + 1
+        )
         start_date = start_date.replace(day=1)
         counts = {}
 
         for _ in range(num_months):
             counts[f'{start_date.year}-{start_date.month}'] = 0
             if start_date.month == 12:
-                start_date = start_date.replace(year=start_date.year + 1, month=1)
+                start_date = start_date.replace(
+                    year=start_date.year + 1,
+                    month=1,
+                )
             else:
                 start_date = start_date.replace(month=start_date.month + 1)
 
         return counts
 
     @classmethod
-    def update_monthly_counts(cls, counts: dict[str, int], items: list[DatedModel]):
+    def update_monthly_counts(
+        cls,
+        counts: dict[str, int],
+        items: list[DatedModel],
+    ):
         for item in items:
             counts[f'{item.created_at.year}-{item.created_at.month}'] += 1
 

@@ -11,7 +11,10 @@ match settings.storage:
             from app.core.config import GCStorage
 
             gc_storge = GCStorage()
-            Storage = GCStorge(service_file=gc_storge.cert, bucket_name=gc_storge.BUCKET_NAME)
+            Storage = GCStorge(
+                service_file=gc_storge.cert,
+                bucket_name=gc_storge.BUCKET_NAME,
+            )
         except Exception as e:
             raise e
     case _:

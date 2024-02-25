@@ -54,7 +54,7 @@ class MemberView:
         name=APIAccess.PRIVATE,
         summary='新增成員資料',
         status_code=status.HTTP_201_CREATED,
-        tags=['成員']
+        tags=['成員'],
     )
     async def create(
         self,
@@ -69,7 +69,7 @@ class MemberView:
         name=APIAccess.PRIVATE,
         summary='取得成員資料',
         status_code=status.HTTP_200_OK,
-        tags=['成員']
+        tags=['成員'],
     )
     async def get(self, member_id: UUID) -> MemberRead:
         instance = await crud_member.get(item_id=member_id)
@@ -82,7 +82,7 @@ class MemberView:
         name=APIAccess.PRIVATE,
         summary='更新成員資料',
         status_code=status.HTTP_200_OK,
-        tags=['成員']
+        tags=['成員'],
     )
     async def update(
         self,
@@ -144,7 +144,9 @@ class MemberRecordView:
 class MemberLocationView:
     @classmethod
     async def publish_member_status_event(cls):
-        message = WebSocketEventSchema(event=WebSocketEvent.MEMBER_STATUS_LIST).json()
+        message = WebSocketEventSchema(
+            event=WebSocketEvent.MEMBER_STATUS_LIST,
+        ).json()
         await broadcast.publish(channel=settings.project, message=message)
 
     @router.get(

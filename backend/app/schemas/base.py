@@ -14,7 +14,7 @@ class BaseModel(_BaseModel):
     class Config:
         orm_mode = True
         anystr_strip_whitespace = True
-        alias_generator = (lambda string: camelize(string))
+        alias_generator = lambda string: camelize(string)
         allow_population_by_field_name = True
         json_dumps = Json.dumps
         json_loads = Json.loads

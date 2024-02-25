@@ -1,9 +1,10 @@
 from contextlib import asynccontextmanager
 from datetime import datetime
 from typing import Any, AsyncGenerator, Awaitable, Callable, Optional
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 from uuid import uuid4
 import asyncio
+import contextlib
 
 from asgi_lifespan import LifespanManager
 from fastapi import FastAPI
@@ -63,7 +64,10 @@ async def get_superuser(
         is_verified=True,
         hashed_password=pytest_password,
     )
-    instance = await crud_user.create(db_session=get_async_session, create_item=item)
+    instance = await crud_user.create(
+        db_session=get_async_session,
+        create_item=item,
+    )
     return instance
 
 
@@ -112,7 +116,10 @@ class RedisMock:
     async def get(self, key: str) -> Optional[str]:
         try:
             value, expiration = self.store[key]
-            if expiration is not None and expiration < datetime.now().timestamp():
+            if (
+                expiration is not None
+                and expiration < datetime.now().timestamp()
+            ):
                 return None
             return value
         except KeyError:
@@ -125,16 +132,19 @@ class RedisMock:
         self.store[key] = (value, expiration)
 
     async def delete(self, key: str):
-        try:
+        with contextlib.suppress(KeyError):
             del self.store[key]
-        except KeyError:
-            pass
 
     async def close(self):
         pass
 
     @asynccontextmanager
-    async def lock(self, key: str, blocking_timeout: float = 0.1, timeout: float = 0.5):
+    async def lock(
+        self,
+        key: str,
+        blocking_timeout: float = 0.1,
+        timeout: float = 0.5,
+    ):
         start_time = datetime.now().timestamp()
         while True:
             value = await self.get(key)
@@ -242,7 +252,7 @@ async def member_location(
 def create_accept_api_payload() -> Callable[..., AcceptApiBase]:
     def func(
         model: type[AcceptApiBase],
-        **kwargs: dict[Any, Any]
+        **kwargs: dict[Any, Any],
     ) -> AcceptApiBase:
         data = {'api': '/api/test'} | kwargs
         payload = model(**data)
@@ -265,7 +275,7 @@ async def accept_api(
 def create_user_payload() -> Callable[..., UserBase]:
     def func(
         model: type[UserBase],
-        **kwargs: dict[Any: Any],
+        **kwargs: dict[Any, Any],
     ) -> UserBase:
         default = {
             'email': 'pytest@gmail.com',

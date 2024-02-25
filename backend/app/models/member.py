@@ -79,7 +79,7 @@ class MemberBase(SQLModel):
         description='手機號碼',
         nullable=False,
         regex=r'09\d{8}$',
-        unique=True
+        unique=True,
     )
     company: str = Field(
         title='公司',
