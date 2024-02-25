@@ -130,19 +130,19 @@ class MemberRecordQuery(BaseQuery):
                 ),
                 QuerySql(
                     expression=MemberRecordModel.member_phone.ilike
-                               == member_phone,
+                    == member_phone,
                     value=member_phone,
                     include_none=False,
                 ),
                 QuerySql(
                     expression=MemberRecordModel.member_company.ilike
-                               == member_company,
+                    == member_company,
                     value=member_company,
                     include_none=False,
                 ),
                 QuerySql(
                     expression=MemberRecordModel.member_job_title.ilike
-                               == member_job_title,
+                    == member_job_title,
                     value=member_job_title,
                     include_none=False,
                 ),
@@ -153,7 +153,7 @@ class MemberRecordQuery(BaseQuery):
                 ),
                 QuerySql(
                     expression=MemberRecordModel.member_location_name.ilike
-                               == member_location_name,
+                    == member_location_name,
                     value=member_location_name,
                     include_none=False,
                 ),

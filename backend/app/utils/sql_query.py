@@ -93,9 +93,9 @@ class BaseMemberChartQuery(BaseQuery, metaclass=ABCMeta):
 
         if created_at is None:
             created_at = (
-                (
-                    request.state.initial_time - timedelta(days=30)
-                ).replace(microsecond=0),
+                (request.state.initial_time - timedelta(days=30)).replace(
+                    microsecond=0,
+                ),
                 (datetime.utcnow() + timedelta(days=30)).replace(microsecond=0),
             )
 

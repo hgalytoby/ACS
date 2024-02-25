@@ -17,7 +17,7 @@ from app.schemas.chart import (
 from app.utils.enums import HardDiskVolumeLabel, SystemLogEvent
 from app.utils.sql_query import DateRelatedQueryList
 
-DISK_VAL = 2 ** 30
+DISK_VAL = 2**30
 
 
 class ChartData:

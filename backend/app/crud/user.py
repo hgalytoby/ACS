@@ -92,8 +92,15 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         else:
             updated_user_data = user_update.create_update_dict_superuser()
 
-        updated_user = await self._update(user=user, update_dict=updated_user_data)
-        await self.on_after_update(user=updated_user, update_dict=updated_user_data, request=request)
+        updated_user = await self._update(
+            user=user,
+            update_dict=updated_user_data,
+        )
+        await self.on_after_update(
+            user=updated_user,
+            update_dict=updated_user_data,
+            request=request,
+        )
         return updated_user
 
     async def delete(
@@ -155,7 +162,10 @@ class UserManager(UUIDIDMixin, BaseUserManager[UserModel, UUID]):
         }
 
         try:
-            user = await self.get_by_oauth_account(oauth=oauth_name, account_id=account_id)
+            user = await self.get_by_oauth_account(
+                oauth=oauth_name,
+                account_id=account_id,
+            )
         except exceptions.UserNotExists:
             try:
                 user = await self.get_by_email(account_email)

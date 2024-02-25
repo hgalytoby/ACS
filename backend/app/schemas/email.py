@@ -48,11 +48,13 @@ class EmailTrySendSchema(BaseModel):
         match self.event:
             case SystemLogEvent.USER_FORGOT_PASSWORD:
                 return self.body.replace(
-                    '{url}', f'{domain}/auth/verify?token=123',
+                    '{url}',
+                    f'{domain}/auth/verify?token=123',
                 )
             case SystemLogEvent.USER_REGISTER:
                 return self.body.replace(
-                    '{url}', f'{domain}/auth/reset-password?token=123',
+                    '{url}',
+                    f'{domain}/auth/reset-password?token=123',
                 )
             case SystemLogEvent.USER_LOGIN_FAIL:
                 return self.body.replace('{ip}', request.client.host)

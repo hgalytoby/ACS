@@ -68,8 +68,8 @@ class CRUDMemberLocation(
         *,
         current_item: MemberLocationModel,
         update_item: MemberLocationUpdate
-                     | dict[str, Any]
-                     | MemberLocationModel,
+        | dict[str, Any]
+        | MemberLocationModel,
         db_session: Optional[AsyncSession] = None,
         image: UploadFile = File(default=None),
     ) -> MemberLocationModel:
@@ -166,8 +166,8 @@ class CRUDMember(
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f'Deletion not allowed. '
-                       f'The member is located within the {member_status_exist.member_location.name} '
-                       f'and cannot be deleted.',
+                f'The member is located within the {member_status_exist.member_location.name} '
+                f'and cannot be deleted.',
             )
 
         instance = await super().destroy(item_id=item_id, db_session=db_session)
@@ -286,7 +286,9 @@ class CRUDMemberStatus(
             data[item.member_location_id.hex].append(item.member)
 
         query_list = QueryList(sort=[MemberLocationModel.created_at.asc()])
-        member_location_items = await crud_member_location.get_multi(query=query_list)
+        member_location_items = await crud_member_location.get_multi(
+            query=query_list
+        )
 
         result = [
             MemberStatusRead(
