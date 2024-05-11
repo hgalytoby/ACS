@@ -1,0 +1,71 @@
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10"]
+        poetry-version: ["1.7.1"]
+
+    name: Run Python Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: ACS_TEST
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: 12345678
+        ports:
+          - 5432:5432
+        options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Set up Poetry
+      uses: abatilo/actions-poetry@v2.0.0
+      with:
+        poetry-version: ${{ matrix.poetry-version }}
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: Run tests
+      run: poetry run pytest tests
+      env:
+        MODE: TEST
+        REDIS_HOST: localhost
+        REDIS_PORT: 6379
+        POSTGRESQL_USERNAME: root
+        POSTGRESQL_PASSWORD: 12345678
+        POSTGRESQL_HOST: localhost
+        POSTGRESQL_PORT: 5432
+        POSTGRESQL_DB: ACS_TEST
+        MAIL_USERNAME: test@gmail.com
+        MAIL_PASSWORD: test
+        MAIL_FROM_NAME: test
+        APP_ENV: TEST
+        STORAGE: LOCAL
+        SERVER_HOST: localhost
+        SERVER_PORT: 8000
+        DOMAIN: test
+        PROJECT: ACS
