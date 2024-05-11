@@ -52,18 +52,10 @@ class AllowedImageExtensions(str, MyEnum):
 
 
 class ImageFailDetail(str, MyEnum):
-    """
-    INVALID_IMAGE_FORMAT = 無效圖片格式
-    """
-
     INVALID_IMAGE_FORMAT = 'INVALID_IMAGE_FORMAT'
 
 
 class UserFailDetail(str, MyEnum):
-    """
-    USER_EMAIL_EXIST = 使用者信箱已存在
-    """
-
     USER_EMAIL_EXIST = 'USER_EMAIL_EXIST'
 
 

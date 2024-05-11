@@ -4,7 +4,6 @@ import {
   reqAcceptApi,
   reqAcceptMemberStatus,
 } from '@/api/accept'
-import Swal from 'sweetalert2'
 
 export const useAcceptStore = defineStore({
   id: 'useAcceptStore',

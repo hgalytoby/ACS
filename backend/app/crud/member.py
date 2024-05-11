@@ -376,6 +376,7 @@ class CRUDMemberStatus(
         member_record = await crud_member_record.create(
             create_item=member_record,
             db_session=db_session,
+            commit=commit,
         )
 
         member_status = MemberStatusCreatedRead(

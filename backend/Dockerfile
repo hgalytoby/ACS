@@ -1,4 +1,4 @@
-FROM python:3.10.12-slim-buster as builder
+FROM python:3.10.12-slim-buster AS builder
 
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
@@ -12,7 +12,7 @@ RUN python3 -m pip install --upgrade pip && pip install poetry
 RUN poetry config installer.max-workers 10
 RUN poetry config virtualenvs.in-project true
 COPY pyproject.toml poetry.lock ./
-RUN poetry install --no-dev --no-root && rm -rf $POETRY_CACHE_DIR
+RUN poetry install --no-dev --no-root && rm -rf "$POETRY_CACHE_DIR"
 
 
 FROM python:3.10.12-slim-buster AS base

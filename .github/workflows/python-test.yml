@@ -47,9 +47,11 @@ jobs:
         poetry-version: ${{ matrix.poetry-version }}
 
     - name: Install dependencies
+      working-directory: ./backend
       run: poetry install
 
     - name: Run tests
+      working-directory: ./backend
       run: poetry run pytest tests
       env:
         MODE: TEST

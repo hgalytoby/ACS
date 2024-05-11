@@ -1,5 +1,3 @@
-from typing import Awaitable, Callable
-
 from httpx import AsyncClient
 import pytest
 
@@ -12,7 +10,7 @@ class TestApiGroupView:
         test_client: AsyncClient,
         get_superuser_bearer_token_header: dict[str, str],
     ):
-        res = await test_client.get(
+        await test_client.get(
             url='/api-groups',
             headers=get_superuser_bearer_token_header,
         )

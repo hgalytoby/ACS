@@ -52,7 +52,6 @@ class EmailView:
         item: EmailSettingsUpdate,
     ) -> EmailSettingsRead:
         instance = await crud_email_settings.get_event(event=event)
-        print(instance)
         if not instance:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         instance = await crud_email_settings.update(
