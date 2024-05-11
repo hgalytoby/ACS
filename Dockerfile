@@ -1,4 +1,4 @@
-FROM node:18.16.1-alpine AS frontend
+FROM node:18.20.2-alpine AS frontend
 WORKDIR /usr/src/app
 COPY frontend .
 RUN npm cache clean --force && npm install

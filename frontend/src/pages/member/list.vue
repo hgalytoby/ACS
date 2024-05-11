@@ -5,7 +5,6 @@ import MemberFilterMemberList from '@/views/pages/member/MemberFilterMemberList.
 import { getSortNumQuery } from '@/utils/misc'
 import { getMemberListFilterFormItems } from '@/utils/filter-form-items'
 import MyVImg from '@/components/MyVImg.vue'
-import { it } from 'vuetify/locale'
 
 const headers = [
   {

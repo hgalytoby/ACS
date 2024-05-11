@@ -10,6 +10,7 @@ class HealthRead(BaseModel):
         description='專案名稱',
         title='專案名稱',
     )
-
-
-health_read = HealthRead()
+    client_ip: str = Field(
+        description='客戶端IP',
+        title='客戶端IP',
+    )

@@ -1,5 +1,5 @@
 from fastapi import Request
-from pydantic import validator
+from pydantic import Field, validator
 
 from app.core.config import settings
 from app.models import EmailSettingsBase
@@ -21,11 +21,13 @@ class EmailSettingsCreate(EmailSettingsBase):
 
 class EmailSettingsRead(
     BaseCreatedAtRead,
-    BaseUpdatedAtRead,
     EmailSettingsBase,
     BaseUUIDRead,
 ):
-    ...
+    event: SystemLogEvent = Field(
+        title='事件類型',
+        description='事件類型',
+    )
 
 
 @optional
@@ -42,7 +44,10 @@ class EmailSendCreate(BaseModel):
 class EmailTrySendSchema(BaseModel):
     subject: str
     body: str
-    event: SystemLogEvent
+    event: SystemLogEvent = Field(
+        title='事件類型',
+        description='事件類型',
+    )
 
     def get_sample_body(self, request: Request) -> str:
         match self.event:

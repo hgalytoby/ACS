@@ -26,7 +26,7 @@ connectWebSocket()
   </DefaultLayoutWithVerticalNav>
 </template>
 
-<style lang="scss">
+<style lang='scss'>
 // As we are using `layouts` plugin we need its styles to be imported
 @use "@layouts/styles/default-layout";
 @import '@styles/date-picker';

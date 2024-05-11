@@ -41,6 +41,14 @@ export const getMemberListFilterFormItems = () => {
     createdAt: getCreatedAt(route.query.createdAt),
   }
 }
+export const getSystemLogFilterFormItems = () => {
+  const route = useRoute()
+
+  return {
+    event: route.query.event,
+    createdAt: getCreatedAt(route.query.createdAt),
+  }
+}
 
 export const getMemberRecordListFilterFormItems = () => {
   const route = useRoute()
@@ -55,3 +63,4 @@ export const getMemberRecordListFilterFormItems = () => {
     createdAt: getCreatedAt(route.query.createdAt),
   }
 }
+

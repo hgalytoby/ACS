@@ -45,8 +45,8 @@ class SystemLogQuery(BaseQuery):
         self.query_list.extend(
             [
                 QuerySql(
-                    expression=SystemLogModel.event == event.value,
-                    value=event.value,
+                    expression=SystemLogModel.event == event,
+                    value=event,
                     include_none=False,
                 ),
             ]

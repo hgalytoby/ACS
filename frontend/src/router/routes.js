@@ -43,17 +43,17 @@ export default [
         },
       },
       {
-        path: 'email-log',
-        name: 'EmailLog',
-        component: () => import('../pages/settings/email-log.vue'),
+        path: 'system-log',
+        name: 'SystemLog',
+        component: () => import('../pages/settings/system-log.vue'),
         meta: {
-          title: '信箱日誌',
+          title: '系統日誌',
         },
       },
       {
         path: 'email-message',
         name: 'EmailMessage',
-        component: () => import('../pages/settings/email-message.vue'),
+        component: () => import('../pages/settings/email-message/index.vue'),
         meta: {
           title: '信箱訊息',
         },

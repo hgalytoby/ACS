@@ -39,8 +39,8 @@ class LogView:
     async def get_multi_systems(
         self,
         query: QueryList = web_params(SystemLogQuery),
-    ) -> list[SystemLogRead]:
-        items = await crud_user_log.get_multi(query=query)
+    ) -> Page[SystemLogRead]:
+        items = await crud_system_log.get_multi(query=query, paginated=True)
         return items
 
     @router.get(
@@ -49,11 +49,11 @@ class LogView:
         summary='系統日誌',
         status_code=status.HTTP_200_OK,
     )
-    async def get_system(self, log_id: UUID) -> UserLogRead:
+    async def get_system(self, log_id: UUID) -> SystemLogRead:
         instance = await crud_system_log.get(item_id=log_id)
         if not instance:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-        return UserLogRead.from_orm(instance)
+        return SystemLogRead.from_orm(instance)
 
 
 add_pagination(router)

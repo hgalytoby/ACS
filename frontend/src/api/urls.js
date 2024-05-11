@@ -60,6 +60,12 @@ const chart = {
   allChart: '/api/v1/charts/all-chart',
 }
 
+const email = {
+  settings: '/api/v1/email-settings',
+  setting: id => `/api/v1/email-settings/${id}`,
+  trySend: '/api/v1/email-try-send',
+}
+
 export default {
   auth,
   oauth,
@@ -69,4 +75,5 @@ export default {
   accept,
   log,
   chart,
+  email,
 }

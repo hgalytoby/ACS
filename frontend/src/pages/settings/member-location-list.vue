@@ -122,21 +122,33 @@ const openDialog = () => {
     transform: translate(0, -30px);
   }
 }
-@media (max-width: 959px) {
+@media screen and (max-width: 480px) {
   .location-image {
-    height: 228px;
+    height: 248px;
   }
 }
 
-@media (min-width: 960px) and (max-width: 1279px) {
+@media screen and (min-width: 481px) and (max-width: 1024px) {
   .location-image {
-    height: 224px;
+    height: 268px;
   }
 }
 
-@media (min-width: 1280px) {
+
+@media screen and (min-width: 1025px) and (max-width: 1920px) {
   .location-image {
     height: 288px;
+  }
+}
+
+@media screen and (min-width: 1921px) {
+  .location-image {
+    height: 308px;
+  }
+}
+@media screen and (min-width: 2140px) {
+  .location-image {
+    height: 400px;
   }
 }
 </style>

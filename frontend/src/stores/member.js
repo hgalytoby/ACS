@@ -5,13 +5,11 @@ import {
   reqMember,
   reqMemberDestroy,
   reqMemberRecordList,
-  reqMemberRecordCreate,
   reqMembersLocationList,
   reqMembersLocationCreateOrUpdate,
   reqMembersLocationDestroy,
 } from '@/api/member'
 import { useToast } from 'vue-toastification'
-import { it } from 'vuetify/locale'
 
 const toast = useToast()
 

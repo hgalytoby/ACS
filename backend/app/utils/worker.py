@@ -137,7 +137,9 @@ async def send_login_fail_email(ctx: dict, user: UserModel, ip: str):
 
 async def send_try_email(ctx: dict, subject: str, body: str, user: UserModel):
     async with async_session_maker() as session:
-        await send_email(subject=subject, body=body, email=user.email)
+        await send_email(
+            subject=subject, body=body, email='hgalytoby@gmail.com'
+        )
         log = SystemLogCreate(
             raw_data={
                 'user_id': str(user.id),

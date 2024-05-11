@@ -22,7 +22,6 @@ export const reqMemberRecordCreate = payload => jwtRequest.post(urls.member.memb
 export const reqMembersLocationList = () => jwtRequest.get(urls.member.membersLocation)
 
 export const reqMembersLocationCreateOrUpdate = payload => {
-  console.log(payload.get('id'))
   if (payload.get('id')) {
     return jwtRequest.patch(urls.member.memberLocation(payload.get('id')), payload)
   }

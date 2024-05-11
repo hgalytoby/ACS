@@ -26,7 +26,6 @@ class EmailSettingsBase(SQLModel):
 
 class EmailSettingsModel(
     BaseCreatedAtModel,
-    BaseUpdatedAtModel,
     EmailSettingsBase,
     BaseUUIDModel,
     table=True,

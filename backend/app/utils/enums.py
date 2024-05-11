@@ -95,7 +95,7 @@ class UserLogEvent(str, MyEnum):
     UPDATE_MEMBER_LOCATION = 更新地點
     DESTROY_MEMBER_LOCATION = 刪除地點
     LOGIN_USER = 使用者登入
-    VERIFY_USER = 啟用使用者
+    VERIFY_USER = 驗證使用者
     UPDATE_USER = 更新使用者
     DESTROY_USER = 刪除使用者
     """
@@ -119,7 +119,7 @@ class SystemLogEvent(str, MyEnum):
     USER_LOGIN_FAIL = 使用者登入失敗
     USER_FORGOT_PASSWORD = 使用者忘記密碼
     USER_RESET_PASSWORD = 使用者重置密碼
-    USER_VERIFY = 啟用使用者
+    USER_VERIFY = 驗證使用者
     USER_DESTROY = 刪除使用者
     TRY_SEND_EMAIL = 測試送信
     """

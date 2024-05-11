@@ -3,7 +3,6 @@ import {
   reqLogUsers,
   reqLogSystems,
 } from '@/api/log'
-import defaultAvatar from '@images/avatars/default-avatar.png'
 
 export const useLogStore = defineStore({
   id: 'useLogStore',
@@ -25,8 +24,8 @@ export const useLogStore = defineStore({
         this.$patch({ users: data })
       })
     },
-    async logSystems() {
-      await reqLogSystems().then(({ data }) => {
+    async logSystems(params) {
+      await reqLogSystems(params).then(({ data }) => {
         this.$patch({ systems: data })
       })
     },

@@ -366,7 +366,8 @@ auth_backend = AuthenticationBackend(
 fastapi_users = FastAPIUsers[UserModel, UUID](get_user_manager, [auth_backend])
 
 current_active_verified_user = fastapi_users.current_user(
-    active=True, verified=True
+    active=True,
+    verified=True,
 )
 
 

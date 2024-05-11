@@ -99,7 +99,6 @@ watch(errors, (nV, _) => {
   }
 })
 watch(cache, (nV, _) => {
-  console.log(333, nV[email.value.modelValue])
   if (!nV[email.value.modelValue]) {
     showEmailFailMsg.value = emailErrorMsg.exist
   } else {

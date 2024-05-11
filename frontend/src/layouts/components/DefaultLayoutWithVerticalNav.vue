@@ -95,15 +95,15 @@ const isCardDetailsVisible = ref(false)
         <VerticalNavLink
           :item="{
             title: 'UserLog',
-            icon: 'mdi-book-open-variant',
+            icon: 'mdi-account-file-outline',
             to: '/user-log',
           }"
         />
         <VerticalNavLink
           :item="{
-            title: 'EmailLog',
-            icon: 'mdi-email-search-outline',
-            to: '/email-log',
+            title: 'SystemLog',
+            icon: 'mdi-book-open-variant',
+            to: '/system-log',
           }"
         />
         <VerticalNavLink

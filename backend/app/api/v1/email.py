@@ -19,6 +19,16 @@ class EmailView:
     user: UserModel = Depends(current_active_verified_user)
 
     @router.get(
+        '/email-settings',
+        name=APIAccess.PRIVATE,
+        summary='取得信箱設定',
+        status_code=status.HTTP_200_OK,
+        tags=['信箱設定'],
+    )
+    async def get_multi(self) -> list[EmailSettingsRead]:
+        return await crud_email_settings.get_multi()
+
+    @router.get(
         '/email-settings/{event}',
         name=APIAccess.PRIVATE,
         summary='信箱設定',
@@ -42,9 +52,10 @@ class EmailView:
         item: EmailSettingsUpdate,
     ) -> EmailSettingsRead:
         instance = await crud_email_settings.get_event(event=event)
+        print(instance)
         if not instance:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-        instance = crud_email_settings.update(
+        instance = await crud_email_settings.update(
             current_item=instance,
             update_item=item,
         )

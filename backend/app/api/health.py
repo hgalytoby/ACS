@@ -1,10 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
-from app.schemas.health import HealthRead, health_read
+from app.schemas.health import HealthRead
 
 router = APIRouter()
 
 
 @router.get('/health')
-async def health() -> HealthRead:
-    return health_read
+async def health(request: Request) -> HealthRead:
+    return HealthRead(client_ip=request.client.host)

@@ -1,4 +1,3 @@
-import { it } from 'vuetify/locale'
 import Microsoft from '@/views/pages/authentication/Microsoft.vue'
 import Google from '@/views/pages/authentication/Google.vue'
 import Github from '@/views/pages/authentication/Github.vue'
