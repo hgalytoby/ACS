@@ -52,7 +52,7 @@ class UserCreate(UserBase):
     )
 
 
-@optional
+@optional()
 class UserUpdate(UserCreate):
     def create_update_dict(self):
         return self.dict(

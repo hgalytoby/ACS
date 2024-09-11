@@ -7,6 +7,7 @@ import account from '@/pages/account-settings/account.vue'
 const route = useRoute()
 const router = useRouter()
 const activeTab = ref(route.query.tab || 'account')
+const windowTab = ref(route.query.tab || 'account')
 
 router.push({
   // params: { tab: activeTab.value },
@@ -34,12 +35,14 @@ const tabs = [
   },
 ]
 
-const tabEvent = tab => {
-  router.push({ query: { ...route.query, tab } })
+const tabEvent = async tab => {
+  await router.push({ query: { ...route.query, tab } })
+  windowTab.value = tab
 }
 
 watch(route, (nV, _) => {
   activeTab.value = nV.query.tab || 'account'
+  windowTab.value = nV.query.tab || 'account'
 })
 </script>
 
@@ -66,7 +69,7 @@ watch(route, (nV, _) => {
     <VDivider />
 
     <VWindow
-      v-model="activeTab"
+      v-model="windowTab"
       class="mt-5"
     >
       <VWindowItem

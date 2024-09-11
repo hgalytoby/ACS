@@ -31,3 +31,4 @@ export const reqMembersLocationCreateOrUpdate = payload => {
 
 export const reqMembersLocationDestroy = locationId => jwtRequest.delete(urls.member.memberLocation(locationId))
 
+export const reqMembersStatus = () => jwtRequest.get(urls.member.membersStatus)

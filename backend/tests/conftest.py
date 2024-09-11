@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime
 from typing import Any, AsyncGenerator, Awaitable, Callable, Optional
 from unittest.mock import MagicMock
-from uuid import uuid4
+from uuid import UUID, uuid4
 import asyncio
 import contextlib
 
@@ -11,6 +11,7 @@ from fastapi import FastAPI
 from fastapi_async_sqlalchemy import db
 from fastapi_users.password import PasswordHelper
 from httpx import AsyncClient
+from pydantic import BaseModel
 from pytest_mock import MockerFixture
 from redis.exceptions import LockError
 from sqlmodel import SQLModel
@@ -18,12 +19,20 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 import pytest
 
 from app.core.config import settings
-from app.crud import crud_accept_api, crud_member_location, crud_user
+from app.crud import (
+    crud_accept_api,
+    crud_api_group,
+    crud_member_location,
+    crud_user,
+)
+from app.crud.base import CRUDBase
 from app.db.session import async_session_maker, engine
 from app.main import app
 from app.models import (
     AcceptApiBase,
     AcceptApiModel,
+    ApiGroupBase,
+    ApiGroupModel,
     MemberLocationBase,
     MemberLocationModel,
     UserBase,
@@ -57,7 +66,7 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
 async def get_superuser(
     get_async_session: AsyncSession,
     create_user_payload: Callable[..., UserBase],
-):
+) -> UserModel:
     item = create_user_payload(
         model=UserModel,
         is_superuser=True,
@@ -77,7 +86,7 @@ async def get_app(get_superuser) -> AsyncGenerator[FastAPI, None]:
         yield app
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 async def test_client(get_app: FastAPI) -> AsyncGenerator[AsyncClient, None]:
     async with AsyncClient(
         app=app,
@@ -167,12 +176,13 @@ def redis_mock() -> RedisMock:
 
 
 @pytest.fixture(autouse=True)
-def set_redis_mock(
+def _set_redis_mock(
     redis_mock: RedisMock,
     mocker: MockerFixture,
 ):
     for obj in (
-        'app.crud.user.init_redis_pool',
+        'app.crud.user.manager.init_redis_pool',
+        # 'app.utils.redis.init_redis_pool',
         'app.main.init_redis_pool',
     ):
         mock = mocker.patch(obj)
@@ -180,7 +190,7 @@ def set_redis_mock(
 
 
 @pytest.fixture(autouse=True)
-async def setup() -> AsyncGenerator[AsyncClient, None]:
+async def _setup() -> AsyncGenerator[AsyncClient, None]:
     async with engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
 
@@ -278,7 +288,7 @@ def create_user_payload() -> Callable[..., UserBase]:
         **kwargs: dict[Any, Any],
     ) -> UserBase:
         default = {
-            'email': 'pytest@gmail.com',
+            'email': f'pytest@gmail.com',
             'is_active': True,
             'is_superuser': False,
             'is_verified': False,
@@ -302,3 +312,49 @@ async def user(
     async with db():
         instance = await crud_user.create(item=item)
         return instance
+
+
+@pytest.fixture
+def create_api_group_payload() -> Callable[..., ApiGroupBase]:
+    def func(
+        model: type[ApiGroupBase],
+        **kwargs: dict[Any, Any],
+    ) -> ApiGroupBase:
+        data = {'name': uuid4().hex} | kwargs
+        payload = model(**data)
+        return payload
+
+    return func
+
+
+@pytest.fixture
+async def api_group(
+    create_api_group_payload: Callable[..., ApiGroupModel],
+) -> ApiGroupModel:
+    item = create_api_group_payload(model=ApiGroupModel)
+    async with db():
+        instance = await crud_api_group.create(create_item=item)
+        return instance
+
+
+@pytest.fixture
+def assert_db_entry() -> Callable[..., Awaitable[None]]:
+    async def func(crud: CRUDBase, payload: BaseModel, item_id: UUID):
+        async with db():
+            instance = await crud.get(item_id=item_id)
+            assert instance
+            assert (
+                instance.dict(include=payload.dict().keys()) == payload.dict()
+            )
+
+    return func
+
+
+@pytest.fixture
+def assert_db_entry_absence() -> Callable[..., Awaitable[None]]:
+    async def func(crud: CRUDBase, item_id: UUID):
+        async with db():
+            instance = await crud.get(item_id=item_id)
+            assert instance is None
+
+    return func

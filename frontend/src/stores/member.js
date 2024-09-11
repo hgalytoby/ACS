@@ -8,6 +8,7 @@ import {
   reqMembersLocationList,
   reqMembersLocationCreateOrUpdate,
   reqMembersLocationDestroy,
+  reqMembersStatus,
 } from '@/api/member'
 import { useToast } from 'vue-toastification'
 
@@ -39,7 +40,7 @@ export const useMemberStore = defineStore({
     async memberCreateOrUpdate(payload) {
       await reqMemberCreateOrUpdate(payload)
         .then(() => {
-          if (payload?.id){
+          if (payload?.id) {
             toast.success('更新成功!')
           } else {
             toast.success('新增成功!')
@@ -55,32 +56,45 @@ export const useMemberStore = defineStore({
     },
     async memberDestroy(memberId) {
       await reqMemberDestroy(memberId)
-        .then(() => {})
-        .catch(() => {})
+        .then(() => {
+        })
+        .catch(() => {
+        })
     },
     async memberRecordList(params) {
       await reqMemberRecordList(params)
         .then(({ data }) => {
           this.$patch({ recordList: data })
-        }).catch(err => {})
+        }).catch(err => {
+        })
     },
     async memberLocationList() {
       await reqMembersLocationList()
         .then(({ data }) => {
           this.$patch({ locationList: data })
         })
-        .catch(err => {})
+        .catch(err => {
+        })
     },
     async memberLocationCreateOrUpdate(payload) {
       await reqMembersLocationCreateOrUpdate(payload)
-        .then(() => {})
-        .catch(err => {})
+        .then(() => {
+        })
+        .catch(err => {
+        })
     },
     async memberLocationDestroy(locationId) {
       await reqMembersLocationDestroy(locationId)
-        .then(() => {})
+        .then(() => {
+        })
         .catch(err => {
           throw err
+        })
+    },
+    async memberStatusList() {
+      await reqMembersStatus()
+        .then(({ data }) => {
+          this.$patch({ statusList: data })
         })
     },
   },

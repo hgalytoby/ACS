@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { reqEmailSettingsList, reqEmailSettingsUpdate, reqEmailTrySend } from '@/api/email'
+import { reqEmailSetting, reqEmailSettingsList, reqEmailSettingsUpdate, reqEmailTrySend } from '@/api/email'
 import { useToast } from 'vue-toastification'
 
 const toast = useToast()
@@ -18,6 +18,11 @@ export const useEmailStore = defineStore({
     async settingList() {
       await reqEmailSettingsList().then(({ data }) => {
         data.forEach(item => this.$patch({ [item.event]: item }))
+      })
+    },
+    async setting(event) {
+      await reqEmailSetting(event).then(({ data }) => {
+        this.$patch({ [event]: data })
       })
     },
     async settingUpdate(payload) {

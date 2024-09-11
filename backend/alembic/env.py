@@ -5,8 +5,8 @@ import asyncio
 import pathlib
 import sys
 
+from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel, create_engine
-from sqlmodel.ext.asyncio.session import AsyncEngine
 
 from alembic import context
 from app.core.config import settings
@@ -69,12 +69,10 @@ async def run_migrations_online():
     In this scenario we need to create an Engine
     and associate a connection with the context.
     """
-    connectable = AsyncEngine(
-        create_engine(
-            settings.pg.url,
-            echo=True,
-            future=True,
-        )
+    connectable = create_async_engine(
+        settings.pg.url,
+        echo=True,
+        future=True,
     )
 
     async with connectable.connect() as connection:

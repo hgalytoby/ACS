@@ -40,7 +40,7 @@ export const useAcceptStore = defineStore({
       await reqAcceptLocation()
         .then(({ data }) => {
           this.$patch({ acceptLocationList: data })
-        }).catch(err => {console.log(err)})
+        }).catch(err => {})
     },
     async acceptApi() {
       await reqAcceptApi()

@@ -102,7 +102,6 @@ class Client:
 
         async with broadcast.subscribe(channel=settings.project) as subscriber:
             async for event in subscriber:
-                print(f'sender: {event}')
                 await self.handler_message(message=event.message)
 
 

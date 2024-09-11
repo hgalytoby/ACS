@@ -51,7 +51,7 @@ class OAuth2AuthorizeCallback(_OAuth2AuthorizeCallback):
             )
 
         if redirect_url is None:
-            redirect_url = self.route_name
+            redirect_url = str(request.url_for(self.route_name))
 
         access_token = await self.client.get_access_token(
             code, redirect_url, code_verifier
@@ -96,7 +96,6 @@ def get_oauth_router(
             state,
             scopes,
         )
-
         return OAuth2AuthorizeResponse(authorization_url=authorization_url)
 
     @router.get(

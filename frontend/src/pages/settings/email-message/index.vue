@@ -85,7 +85,7 @@ watch(route, (nV, _) => {
         :key="item.icon"
         :value="item.tab"
       >
-        <v-icon :icon="item.icon" />
+        <VIcon :icon="item.icon" />
         <span class="d-none d-md-block">{{ item.title }}</span>
       </VTab>
     </VTabs>

@@ -1,7 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
-from pydantic import Field, validator
+from pydantic import Field, model_validator, validator
 import orjson
 
 from app.core.config import settings
@@ -13,6 +13,7 @@ from app.models import (
 )
 from app.schemas.base import (
     BaseCreatedAtRead,
+    BaseJsonModel,
     BaseModel,
     BaseUUIDRead,
     BaseUpdatedAtRead,
@@ -20,16 +21,8 @@ from app.schemas.base import (
 from app.utils.partial import optional
 
 
-class MemberLocationCreate(MemberLocationBase):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate_to_json
-
-    @classmethod
-    def validate_to_json(cls, value):
-        if isinstance(value, str):
-            return cls(**orjson.loads(value))
-        return value
+class MemberLocationCreate(MemberLocationBase, BaseJsonModel):
+    ...
 
 
 class MemberLocationRead(
@@ -44,21 +37,13 @@ class MemberLocationRead(
     )
 
 
-@optional
+@optional()
 class MemberLocationUpdate(MemberLocationCreate):
     ...
 
 
-class MemberCreate(MemberBase):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate_to_json
-
-    @classmethod
-    def validate_to_json(cls, value):
-        if isinstance(value, str):
-            return cls(**orjson.loads(value))
-        return value
+class MemberCreate(MemberBase, BaseJsonModel):
+    ...
 
 
 class MemberRead(
@@ -79,7 +64,7 @@ class MemberDetailRead(MemberRead):
     )
 
 
-@optional
+@optional()
 class MemberUpdate(MemberCreate):
     ...
 
@@ -96,7 +81,7 @@ class MemberRecordRead(
     ...
 
 
-@optional
+@optional()
 class MemberRecordUpdate(MemberRecordBase):
     ...
 
@@ -139,6 +124,6 @@ class MemberStatusCreatedRead(BaseCreatedAtRead):
     )
 
 
-@optional
+@optional()
 class MemberStatusUpdate(MemberStatusBase):
     ...

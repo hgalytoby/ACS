@@ -5,16 +5,16 @@ from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy_utils import ChoiceType
 from sqlmodel import Column, Field, Relationship
 
-from app.models.base import BaseCreatedAtModel, BaseUUIDModel, SQLModel
+from app.models.base import BaseCreatedAtModel, BaseUUIDModel
 from app.utils.enums import SystemLogEvent, UserLogEvent
 
 
-class LogBase(BaseCreatedAtModel, BaseUUIDModel, SQLModel):
+class LogBase(BaseCreatedAtModel, BaseUUIDModel):
     raw_data: dict = Field(
         default_factory=dict,
         title='原始資料',
         description='原始資料',
-        sa_column=Column(JSON),
+        sa_type=JSON,
     )
 
 

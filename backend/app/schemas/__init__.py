@@ -8,7 +8,8 @@ from .role import (
 )
 from .user import UserDetailRead
 
-UserDetailRead.update_forward_refs(RoleFrontendListRead=RoleFrontendListRead)
-# RoleFrontendRead.update_forward_refs(FrontendRead=FrontendRead)
-RoleApiRead.update_forward_refs(ApiRead=ApiRead)
-RoleDetailRead.update_forward_refs(ApiRead=ApiRead)
+ApiRead.model_rebuild()
+RoleApiRead.model_rebuild()
+RoleDetailRead.model_rebuild()
+RoleFrontendListRead.model_rebuild()
+UserDetailRead.model_rebuild()

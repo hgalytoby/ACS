@@ -21,7 +21,7 @@ class ApiGroupCreate(ApiGroupBase):
     ...
 
 
-@optional
+@optional()
 class ApiGroupUpdate(ApiGroupBase):
     ...
 
@@ -45,7 +45,7 @@ class ApiCreate(ApiBase):
     ...
 
 
-@optional
+@optional()
 class ApiUpdate(ApiBase):
     description: str = Field(
         title='描述',
@@ -53,4 +53,4 @@ class ApiUpdate(ApiBase):
     )
 
 
-ApiGroupDetailRead.update_forward_refs(ApiRead=ApiRead)
+# ApiGroupDetailRead.update_forward_refs(ApiRead=ApiRead)

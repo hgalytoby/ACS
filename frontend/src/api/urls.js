@@ -34,6 +34,7 @@ const member = {
   memberRecord: id => `/api/v1/members-record/${id}`,
   membersLocation: '/api/v1/members-location',
   memberLocation: id => `/api/v1/members-location/${id}`,
+  membersStatus: `/api/v1/members-status`,
 }
 
 const accept = {
@@ -62,7 +63,7 @@ const chart = {
 
 const email = {
   settings: '/api/v1/email-settings',
-  setting: id => `/api/v1/email-settings/${id}`,
+  setting: event => `/api/v1/email-settings/${event}`,
   trySend: '/api/v1/email-try-send',
 }
 

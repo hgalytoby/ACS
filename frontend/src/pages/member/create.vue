@@ -55,7 +55,6 @@ const resetFormImg = (refInputEl, imgModel) => {
   } else {
     myForm.value.setFieldValue('image', null)
   }
-  console.log('resetFormImg')
   imgModel.value = memberInfo.value.image
 }
 

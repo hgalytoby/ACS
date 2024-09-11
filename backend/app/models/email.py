@@ -31,7 +31,6 @@ class EmailSettingsModel(
     table=True,
 ):
     event: SystemLogEvent = Field(
-        unique=True,
         title='事件類型',
         description='事件類型',
         sa_column=Column(ChoiceType(SystemLogEvent, impl=String())),

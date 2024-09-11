@@ -10,6 +10,6 @@ class AcceptApiCreate(AcceptApiBase):
     ...
 
 
-@optional
+@optional()
 class AcceptApiUpdate(AcceptApiBase):
     ...

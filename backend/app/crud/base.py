@@ -98,14 +98,16 @@ class CRUDBase(
         *,
         create_item: CreateSchemaType | ModelType,
         db_session: Optional[AsyncSession] = None,
+        refresh: bool = False,
         commit: bool = True,
     ) -> ModelType:
         db_session = db_session or self.db.session
-        db_obj = self.model.from_orm(create_item)
+        db_obj = self.model.model_validate(create_item)
         instance = await self.save(
             instance=db_obj,
             db_session=db_session,
             commit=commit,
+            refresh=refresh,
         )
         return instance
 
@@ -155,7 +157,6 @@ class CRUDBase(
             if commit:
                 await db_session.commit()
         except exc.IntegrityError as e:
-            print(f'e: {e}')
             await db_session.rollback()
             raise HTTPException(
                 status_code=409,

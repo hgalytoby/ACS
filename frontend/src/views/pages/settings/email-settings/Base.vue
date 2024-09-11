@@ -42,6 +42,7 @@ async function submit({ subject, body }, $event) {
     await emailStore.settingTrySend({ subject, body, event: props.event })
   } else {
     await emailStore.settingUpdate({ subject, body, event: props.event })
+    await emailStore.setting(props.event)
   }
 }
 </script>

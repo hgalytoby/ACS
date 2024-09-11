@@ -80,7 +80,7 @@ class UserModel(
     oauth_accounts: list['OAuthAccountModel'] = Relationship(  # type: ignore
         back_populates='user',
         sa_relationship_kwargs={
-            'lazy': 'selectin',
+            'lazy': 'joined',
         },
     )
     avatar: str = Field(
@@ -96,11 +96,10 @@ class UserModel(
         #     'lazy': 'selectin',
         # }
     )
-    role_list: list['RoleModel'] = Relationship(  # type: ignore
-        back_populates='user_list',
-        link_model=RoleLinkModel,
+    role_list: list[RoleLinkModel] = Relationship(  # type: ignore
+        back_populates='user',
         sa_relationship_kwargs={
-            'lazy': 'selectin',
+            'lazy': 'joined',
         },
     )
 

@@ -25,7 +25,7 @@ class AllUserLogRead(UserLogRead):
     user: UserWithLogRead
 
 
-@optional
+@optional()
 class UserLogUpdate(UserLogBase):
     ...
 
@@ -38,6 +38,6 @@ class SystemLogRead(SystemLogBase):
     ...
 
 
-@optional
+@optional()
 class SystemLogUpdate(LogBase):
     ...

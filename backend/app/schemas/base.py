@@ -1,23 +1,32 @@
 from datetime import datetime
 from uuid import UUID
 
-from humps import camelize
 from pydantic import (
     BaseModel as _BaseModel,
+    ConfigDict,
     Field,
+    model_validator,
 )
-
-from app.utils.json import Json
+from pydantic.alias_generators import to_camel
+import orjson
 
 
 class BaseModel(_BaseModel):
-    class Config:
-        orm_mode = True
-        anystr_strip_whitespace = True
-        alias_generator = lambda string: camelize(string)
-        allow_population_by_field_name = True
-        json_dumps = Json.dumps
-        json_loads = Json.loads
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True,
+        str_strip_whitespace=True,
+        alias_generator=to_camel,
+    )
+
+
+class BaseJsonModel(BaseModel):
+    @model_validator(mode='before')
+    @classmethod
+    def validate_to_json(cls, value):
+        if isinstance(value, str):
+            return cls(**orjson.loads(value))
+        return value
 
 
 class BaseCreatedAtRead(BaseModel):

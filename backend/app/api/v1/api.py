@@ -111,7 +111,7 @@ class ApiGroupView:
 
 
 @cbv(router)
-class ApiGroupView:
+class ApiView:
     @router.get(
         '/apis',
         name=APIAccess.PRIVATE,

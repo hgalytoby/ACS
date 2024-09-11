@@ -6,8 +6,21 @@ export default function(getDataCallback, searchRef, sortRef) {
   const paginationStore = usePaginationStore()
   const loading = ref(false)
   const currentPage = ref(Number(route.query.page) || 1)
-  const currentSize = ref(Number(route.query.size) || 25)
+  const currentSize = ref(Number(route.query.size) || 10)
   const totalVisible = ref()
+
+  watch(
+    () => route.query,
+    async (newRoute, oldRoute) => {
+      // 只有 page size 有用，搜尋及排序就不修了。
+      if (newRoute.query.page) {
+        currentPage.value = parseInt(newRoute.query.page)
+      }
+      if (newRoute.query.size) {
+        currentSize.value = parseInt(newRoute.query.size)
+      }
+    },
+  )
 
   const getData = async params => {
     const query = paginationStore.reset ? {} : { ...route.query, ...params }
@@ -19,7 +32,6 @@ export default function(getDataCallback, searchRef, sortRef) {
       page: currentPage.value,
       size: currentSize.value,
     })
-    query.tab = route.query.tab
     await router.push({
       query: {
         ...query,
@@ -35,7 +47,8 @@ export default function(getDataCallback, searchRef, sortRef) {
     currentSize.value = itemsPerPage
 
     const params = search ? JSON.parse(search) : {}
-    if (sortBy.length){
+
+    if (sortBy.length) {
       sortBy.forEach((item, i) => {
         const field = item.key.includes('.') ? item.key.split('.')[1] : item.key
 
@@ -43,8 +56,8 @@ export default function(getDataCallback, searchRef, sortRef) {
         params[`${field}Sort`] = item.order === 'desc'
       })
     } else {
-      for (const key in route.query){
-        if (key.endsWith('Sort') || key.endsWith('Num')){
+      for (const key in route.query) {
+        if (key.endsWith('Sort') || key.endsWith('Num')) {
           params[key] = undefined
         }
       }

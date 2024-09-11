@@ -5,7 +5,7 @@ from sqlmodel import Field, Relationship
 from app.models.base import BaseCreatedAtModel, BaseUUIDModel, SQLModel
 
 
-class ApiLinkBase(BaseUUIDModel, SQLModel):
+class ApiLinkBase(BaseUUIDModel):
     api_id: UUID = Field(
         title='Api ID',
         description='Api ID',
@@ -19,18 +19,18 @@ class ApiLinkBase(BaseUUIDModel, SQLModel):
         primary_key=True,
     )
 
-    api: 'ApiModel' = Relationship(  # type: ignore
-        back_populates='role_list',
-    )
-    role: 'RoleModel' = Relationship(  # type: ignore
-        back_populates='api_list',
-    )
-
 
 class ApiLinkModel(BaseCreatedAtModel, ApiLinkBase, table=True):
     __table_args__ = {
         'comment': 'Api, Role',
     }
+
+    api: 'ApiModel' = Relationship(
+        back_populates='role_list',
+    )
+    role: 'RoleModel' = Relationship(
+        back_populates='api_list',
+    )
 
 
 class FrontendLinkBase(BaseUUIDModel, SQLModel):
@@ -46,18 +46,19 @@ class FrontendLinkBase(BaseUUIDModel, SQLModel):
         foreign_key='Role.id',
         primary_key=True,
     )
-    frontend: 'FrontendModel' = Relationship(  # type: ignore
-        back_populates='role_list',
-    )
-    role: 'RoleModel' = Relationship(  # type: ignore
-        back_populates='frontend_list',
-    )
 
 
 class FrontendLinkModel(BaseCreatedAtModel, FrontendLinkBase, table=True):
     __table_args__ = {
         'comment': 'Frontend, Role',
     }
+
+    frontend: 'FrontendModel' = Relationship(  # type: ignore
+        back_populates='role_list',
+    )
+    role: 'RoleModel' = Relationship(  # type: ignore
+        back_populates='frontend_list',
+    )
 
 
 class RoleLinkBase(BaseUUIDModel, SQLModel):
@@ -73,6 +74,13 @@ class RoleLinkBase(BaseUUIDModel, SQLModel):
         foreign_key='Role.id',
         primary_key=True,
     )
+
+
+class RoleLinkModel(BaseCreatedAtModel, RoleLinkBase, table=True):
+    __table_args__ = {
+        'comment': 'Role, User',
+    }
+
     user: 'UserModel' = Relationship(  # type: ignore
         back_populates='role_list',
         sa_relationship_kwargs={'lazy': 'selectin'},
@@ -81,9 +89,3 @@ class RoleLinkBase(BaseUUIDModel, SQLModel):
         back_populates='user_list',
         sa_relationship_kwargs={'lazy': 'selectin'},
     )
-
-
-class RoleLinkModel(BaseCreatedAtModel, RoleLinkBase, table=True):
-    __table_args__ = {
-        'comment': 'Role, User',
-    }

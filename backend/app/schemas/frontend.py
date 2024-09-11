@@ -1,4 +1,6 @@
-from pydantic import Field
+from typing import Optional
+
+from pydantic import ConfigDict, Field
 
 from app.models import FrontendBase
 from app.schemas.base import BaseCreatedAtRead, BaseUUIDRead, BaseUpdatedAtRead
@@ -6,7 +8,7 @@ from app.utils.partial import optional
 
 
 class FrontendCreate(FrontendBase):
-    ...
+    parent_id: Optional[str] = Field(default=None)
 
 
 class FrontendRead(
@@ -25,10 +27,7 @@ class FrontendRead(
         description='小孩',
     )
 
-    class Config:
-        orm_mode = False
 
-
-@optional
+@optional()
 class FrontendUpdate(FrontendBase):
     ...

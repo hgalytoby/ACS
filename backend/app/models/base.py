@@ -1,28 +1,26 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from humps import camelize
+from pydantic import ConfigDict
+from pydantic.alias_generators import to_camel
 from sqlalchemy.orm import declared_attr
 from sqlmodel import (
     Field,
     SQLModel as _SQLModel,
 )
 
-from app.utils.json import Json
-
 
 class SQLModel(_SQLModel):
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True,
+        str_strip_whitespace=True,
+        alias_generator=to_camel,
+    )
+
     @declared_attr
     def __tablename__(cls) -> str:
         return cls.__name__.replace('Model', '')
-
-    class Config:
-        orm_mode = True
-        anystr_strip_whitespace = True
-        alias_generator = lambda string: camelize(string)
-        allow_population_by_field_name = True
-        json_dumps = Json.dumps
-        json_loads = Json.loads
 
 
 class BaseCreatedAtModel(SQLModel):

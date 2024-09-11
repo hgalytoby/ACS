@@ -5,7 +5,8 @@ import logging
 import os
 
 from fastapi_mail import ConnectionConfig
-from pydantic import BaseSettings, EmailStr, Field, validator
+from pydantic import Field, model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.utils.enums import AppEnv, AppEnvPath, StorageType
 
@@ -13,22 +14,24 @@ MODE = os.getenv('MODE', AppEnv.DEV)
 
 
 class Base(BaseSettings):
-    class Config:
-        env_file = f'{os.getcwd()}/{AppEnvPath[MODE]}'
+    model_config = SettingsConfigDict(
+        env_file=f'{os.getcwd()}/{AppEnvPath[MODE]}',
+        extra='ignore',
+    )
 
 
 class MailSettings(Base):
-    username: str = Field(env='MAIL_USERNAME', description='帳號')
-    password: str = Field(env='MAIL_PASSWORD', description='密碼')
-    from_name: str = Field(env='MAIL_FROM_NAME', description='信件標題')
+    username: str = Field(alias='MAIL_USERNAME', description='帳號')
+    password: str = Field(alias='MAIL_PASSWORD', description='密碼')
+    from_name: str = Field(alias='MAIL_FROM_NAME', description='信件標題')
 
 
 class PostgresSQL(Base):
-    username: str = Field(env='POSTGRESQL_USERNAME', description='帳號')
-    password: str = Field(env='POSTGRESQL_PASSWORD', description='密碼')
-    host: str = Field(env='POSTGRESQL_HOST', description='位置')
-    port: str = Field(env='POSTGRESQL_PORT', description='埠')
-    db: str = Field(env='POSTGRESQL_DB', description='DB名稱')
+    username: str = Field(alias='POSTGRESQL_USERNAME', description='帳號')
+    password: str = Field(alias='POSTGRESQL_PASSWORD', description='密碼')
+    host: str = Field(alias='POSTGRESQL_HOST', description='位置')
+    port: str = Field(alias='POSTGRESQL_PORT', description='埠')
+    db: str = Field(alias='POSTGRESQL_DB', description='DB名稱')
 
     @property
     def url(self) -> str:
@@ -36,8 +39,8 @@ class PostgresSQL(Base):
 
 
 class Redis(Base):
-    host: str = Field(env='REDIS_HOST', description='位置')
-    port: str = Field(env='REDIS_PORT', description='埠')
+    host: str = Field(alias='REDIS_HOST', description='位置')
+    port: str = Field(alias='REDIS_PORT', description='埠')
 
     @property
     def url(self) -> str:
@@ -45,9 +48,9 @@ class Redis(Base):
 
 
 class Domain(Base):
-    host: str = Field(env='DOMAIN_HOST', description='位置')
-    port: int = Field(env='DOMAIN_PORT', description='埠')
-    ssl: str = Field(env='DOMAIN_SSL')
+    host: str = Field(alias='DOMAIN_HOST', description='位置')
+    port: int = Field(alias='DOMAIN_PORT', description='埠')
+    ssl: str = Field(alias='DOMAIN_SSL')
 
     @property
     def url(self) -> str:
@@ -55,18 +58,20 @@ class Domain(Base):
 
 
 class OAuth(Base):
-    google_id: Optional[str] = Field(env='GOOGLE_OAUTH_CLIENT_ID')
-    google_secret: Optional[str] = Field(env='GOOGLE_OAUTH_CLIENT_SECRET')
-    github_id: Optional[str] = Field(env='GITHUB_OAUTH_CLIENT_ID')
-    github_secret: Optional[str] = Field(env='GITHUB_OAUTH_CLIENT_SECRET')
+    google_id: Optional[str] = Field(alias='GOOGLE_OAUTH_CLIENT_ID')
+    google_secret: Optional[str] = Field(alias='GOOGLE_OAUTH_CLIENT_SECRET')
+    github_id: Optional[str] = Field(alias='GITHUB_OAUTH_CLIENT_ID')
+    github_secret: Optional[str] = Field(alias='GITHUB_OAUTH_CLIENT_SECRET')
     github_associate_id: Optional[str] = Field(
-        env='GITHUB_OAUTH_ASSOCIATE_CLIENT_ID',
+        alias='GITHUB_OAUTH_ASSOCIATE_CLIENT_ID',
     )
     github_associate_secret: Optional[str] = Field(
-        env='GITHUB_OAUTH_ASSOCIATE_CLIENT_SECRET',
+        alias='GITHUB_OAUTH_ASSOCIATE_CLIENT_SECRET',
     )
-    microsoft_id: Optional[str] = Field(env='MICROSOFT_OAUTH_CLIENT_ID')
-    microsoft_secret: Optional[str] = Field(env='MICROSOFT_OAUTH_CLIENT_SECRET')
+    microsoft_id: Optional[str] = Field(alias='MICROSOFT_OAUTH_CLIENT_ID')
+    microsoft_secret: Optional[str] = Field(
+        alias='MICROSOFT_OAUTH_CLIENT_SECRET'
+    )
 
     @property
     def google(self) -> tuple[str, str]:
@@ -88,17 +93,17 @@ class OAuth(Base):
 class LogConfig(Base):
     LOG_NAME: str = 'app.main:app'
     LOG_FORMAT: str = '%(levelprefix)s | %(asctime)s | %(message)s'
-    LOG_LEVEL: str = Field(default='DEBUG', env='LOG_LEVEL')
-    version = 1
-    disable_existing_loggers = False
-    formatters = {
+    LOG_LEVEL: str = Field(default='DEBUG', alias='LOG_LEVEL')
+    version: int = 1
+    disable_existing_loggers: bool = False
+    formatters: dict = {
         'default': {
             '()': 'uvicorn.logging.DefaultFormatter',
             'fmt': LOG_FORMAT,
             'datefmt': '%Y-%m-%d %H:%M:%S',
         },
     }
-    handlers = {
+    handlers: dict = {
         'default': {
             'formatter': 'default',
             'class': 'logging.StreamHandler',
@@ -118,25 +123,29 @@ class LogConfig(Base):
 
 
 class GCStorage(Base):
-    cert: str = Field(env='GC_STORGE_CERT')
-    BUCKET_NAME: str = Field(env='GC_STORAGE_BUCKET_NAME')
+    cert: str = Field(alias='GC_STORGE_CERT')
+    BUCKET_NAME: str = Field(alias='GC_STORAGE_BUCKET_NAME')
 
 
 class Settings(Base):
     redis: Redis = Field(default_factory=Redis)
     pg: PostgresSQL = Field(default_factory=PostgresSQL)
     mail: MailSettings = Field(default_factory=MailSettings)
-    project: str = Field(env='PROJECT')
-    server_host: str = Field(env='SERVER_HOST')
-    server_port: str = Field(env='SERVER_PORT')
-    domain: str = Field(env='DOMAIN')
+    project: str = Field(alias='PROJECT')
+    server_host: str = Field(alias='SERVER_HOST')
+    server_port: str = Field(alias='SERVER_PORT')
+    domain: str = Field(alias='DOMAIN')
     oauth: OAuth = Field(default_factory=OAuth)
     logger: LogConfig = Field(default_factory=LogConfig)
-    app_env: AppEnv = Field(env='APP_ENV')
-    storage: StorageType = Field(env='STORAGE')
-    token_key_prefix: str = Field(env='TOKEN_KEY_PREFIX', default='acs_token:')
+    app_env: AppEnv = Field(alias='APP_ENV')
+    storage: StorageType = Field(alias='STORAGE')
+    token_key_prefix: str = Field(
+        alias='TOKEN_KEY_PREFIX',
+        default='acs_token:',
+    )
 
-    @validator('domain')
+    @model_validator(mode='after')
+    @classmethod
     def _domain(cls, v, values) -> str:
         if not v:
             return f'http://{values["server_host"]}:{values["server_port"]}'
@@ -168,7 +177,7 @@ def get_email_config() -> ConnectionConfig:
     return ConnectionConfig(
         MAIL_USERNAME=mail.username,
         MAIL_PASSWORD=mail.password,
-        MAIL_FROM=EmailStr(mail.username),
+        MAIL_FROM=mail.username,
         MAIL_PORT=587,
         MAIL_SERVER='smtp.gmail.com',
         MAIL_FROM_NAME=mail.from_name,

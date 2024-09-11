@@ -1,4 +1,5 @@
 from typing import Optional
+from uuid import UUID
 
 from pydantic import UUID4
 from sqlalchemy import String
@@ -39,13 +40,7 @@ class ApiGroupModel(
 
 
 class ApiBase(SQLModel):
-    group_id: Optional[UUID4] = Field(
-        default=None,
-        title='群組 ID',
-        description='群組 ID',
-        foreign_key='ApiGroup.id',
-        nullable=True,
-    )
+    ...
 
 
 class ApiModel(
@@ -66,7 +61,7 @@ class ApiModel(
         description='Api method',
         max_length=8,
         nullable=False,
-        sa_column=Column(ChoiceType(ApiMethod, impl=String())),
+        # sa_column=Column(ChoiceType(ApiMethod, impl=String())),
     )
     description: str = Field(
         title='描述',
@@ -74,11 +69,20 @@ class ApiModel(
         max_length=32,
         nullable=False,
     )
-    role_list: list['RoleModel'] = Relationship(  # type: ignore
-        back_populates='api_list',
-        link_model=ApiLinkModel,
-        sa_relationship_kwargs={'lazy': 'selectin'},
+    role_list: list[ApiLinkModel] = Relationship(
+        back_populates='api',
+        sa_relationship_kwargs={
+            'lazy': 'selectin',
+        },
     )
+    group_id: Optional[UUID] = Field(
+        default=None,
+        title='群組 ID',
+        description='群組 ID',
+        foreign_key='ApiGroup.id',
+        nullable=True,
+    )
+
     group: 'ApiGroupModel' = Relationship(
         back_populates='api_list',
     )

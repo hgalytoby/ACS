@@ -30,7 +30,7 @@ class EmailSettingsRead(
     )
 
 
-@optional
+@optional()
 class EmailSettingsUpdate(EmailSettingsBase):
     ...
 

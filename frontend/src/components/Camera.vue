@@ -47,7 +47,6 @@ const acceptMemberStatus = async payload => {
     .then(async () => {
       await dialog.value.openDialog()
     }).catch(async err => {
-      console.log(err.response.data.detail, 1)
       await Swal.fire({
         title: '失敗123',
         text: err.response.data.detail,

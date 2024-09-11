@@ -32,52 +32,52 @@ const {
   currentSize,
   totalVisible,
   searchEmit,
-} = usePagination(userStore.userLog, search, sortBy)
+} = usePagination(userStore.userLog, search, sortBy, searchCallback, sortCallable)
 </script>
 
 <template>
-  <div class="pa-3">
-    <AccountSettingsFilterLog @search-emit="searchEmit" />
+  <div class='pa-3'>
+    <AccountSettingsFilterLog @search-emit='searchEmit' />
     <VCard
-      class="mt-5"
-      elevation="3"
-      rounded="lg"
+      class='mt-5'
+      elevation='3'
+      rounded='lg'
     >
       <VDataTableServer
-        v-model:sort-by="sortBy"
-        v-model:items-per-page="currentSize"
-        v-model:page="currentPage"
-        :search="search"
-        :headers="headers"
-        :items="userStore.log.items"
-        :items-length="userStore.log.total"
-        :loading="loading"
+        v-model:sort-by='sortBy'
+        v-model:items-per-page='currentSize'
+        v-model:page='currentPage'
+        :search='search'
+        :headers='headers'
+        :items='userStore.log.items'
+        :items-length='userStore.log.total'
+        :loading='loading'
         multi-sort
-        @update:options="loadData"
+        @update:options='loadData'
       >
         <template #bottom>
-          <VRow class="text-center px-2 pa-2">
+          <VRow class='text-center px-2 pa-2'>
             <VCol
-              sm="10"
-              cols="12"
+              sm='10'
+              cols='12'
             >
               <VPagination
-                v-model="currentPage"
-                :length="userStore.log.pages"
-                :total-visible="totalVisible"
+                v-model='currentPage'
+                :length='userStore.log.pages'
+                :total-visible='totalVisible'
               />
             </VCol>
             <VCol
-              sm="2"
-              cols="12"
+              sm='2'
+              cols='12'
             >
               <VSelect
-                :model-value="currentSize"
-                label="顯示比數"
-                :items="[10, 25, 50]"
-                density="compact"
+                :model-value='currentSize'
+                label='顯示比數'
+                :items='[10, 25, 50]'
+                density='compact'
                 hide-details
-                @update:model-value="currentSize = $event"
+                @update:model-value='currentSize = $event'
               />
             </VCol>
           </VRow>

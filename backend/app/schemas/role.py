@@ -50,6 +50,6 @@ class RoleCreate(RoleBase):
     ...
 
 
-@optional
+@optional()
 class RoleUpdate(RoleBase):
     ...

@@ -125,7 +125,6 @@ class CRUDMember(
             create_item=create_item,
             db_session=db_session,
         )
-        print(123)
         await Storage.save_image(instance=instance, image=image)
         await Storage.save_qrcode(instance=instance)
         instance = await self.save(instance=instance)
@@ -237,8 +236,8 @@ class CRUDMemberRecord(
 
         return MemberRecordHourlyCountRead(
             data=result,
-            start_date=query.date_range[0],
-            end_date=query.date_range[1],
+            start_date=query.date_range[0].date(),
+            end_date=query.date_range[1].date(),
         )
 
 
