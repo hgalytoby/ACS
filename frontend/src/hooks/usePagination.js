@@ -11,13 +11,13 @@ export default function(getDataCallback, searchRef, sortRef) {
 
   watch(
     () => route.query,
-    async (newRoute, oldRoute) => {
+    async (newQuery, _) => {
       // 只有 page size 有用，搜尋及排序就不修了。
-      if (newRoute.query.page) {
-        currentPage.value = parseInt(newRoute.query.page)
+      if (newQuery.page) {
+        currentPage.value = parseInt(newQuery.page)
       }
-      if (newRoute.query.size) {
-        currentSize.value = parseInt(newRoute.query.size)
+      if (newQuery.size) {
+        currentSize.value = parseInt(newQuery.size)
       }
     },
   )
