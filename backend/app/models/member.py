@@ -3,7 +3,8 @@ from typing import Optional
 from uuid import UUID
 
 from humps import kebabize
-from sqlmodel import Field, Relationship
+from sqlalchemy_utils import ChoiceType
+from sqlmodel import Column, Field, Relationship, String
 
 from app.models.base import (
     BaseCreatedAtModel,
@@ -67,7 +68,7 @@ class MemberBase(SQLModel):
     blood_type: BloodType = Field(
         title='血型',
         description='血型',
-        nullable=False,
+        sa_column=Column(ChoiceType(BloodType, impl=String()), nullable=False)
     )
     birthday: date = Field(
         title='生日',

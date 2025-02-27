@@ -60,8 +60,7 @@ class ApiModel(
         title='Api method',
         description='Api method',
         max_length=8,
-        nullable=False,
-        # sa_column=Column(ChoiceType(ApiMethod, impl=String())),
+        sa_column=Column(ChoiceType(ApiMethod, impl=String()), nullable=False),
     )
     description: str = Field(
         title='描述',

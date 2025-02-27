@@ -62,11 +62,13 @@ if settings.is_dev:
         DebugToolbarMiddleware,
         panels=['app.db.session.SQLAlchemyPanel'],
     )
-    app.mount('/static', StaticFiles(directory='static'), name='static')
+    # app.mount('/static', StaticFiles(directory='static'), name='static')
+    ...
 
 app.include_router(router, prefix='/api')
-app.include_router(ws_router)
 
+app.include_router(ws_router)
+# app.mount('/', StaticFiles(directory='static', html=True), name='static')
 
 @app.get('/')
 async def docs() -> RedirectResponse:

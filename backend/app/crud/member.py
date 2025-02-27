@@ -120,10 +120,14 @@ class CRUDMember(
         create_item: MemberCreate | MemberModel,
         image: UploadFile = File(),
         db_session: Optional[AsyncSession] = None,
+        refresh: bool = False,
+        commit: bool = True,
     ) -> MemberModel:
         instance = await super().create(
             create_item=create_item,
             db_session=db_session,
+            refresh=False,
+            commit=False,
         )
         await Storage.save_image(instance=instance, image=image)
         await Storage.save_qrcode(instance=instance)
