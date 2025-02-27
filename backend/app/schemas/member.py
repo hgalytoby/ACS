@@ -1,8 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
-from pydantic import Field, model_validator, validator
-import orjson
+from pydantic import Field, validator
 
 from app.core.config import settings
 from app.models import (

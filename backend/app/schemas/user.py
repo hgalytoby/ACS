@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from pydantic import EmailStr
+from pydantic import EmailStr, model_validator
 from sqlmodel import Field
 import orjson
 
@@ -68,10 +68,7 @@ class UserUpdate(UserCreate):
             },
         )
 
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate_to_json
-
+    @model_validator(mode='before')
     @classmethod
     def validate_to_json(cls, value):
         if isinstance(value, str):

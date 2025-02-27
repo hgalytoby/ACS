@@ -90,11 +90,10 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate, UserRead]):
         avatar: UploadFile = File(None),
         db_session: Optional[AsyncSession] = None,
     ) -> UserRead:
-        db_session = db_session or self.db.session
         await Storage.save_image(instance=user, image=avatar)
         user = await self.update(
             current_item=user,
-            update_item=update_item,
+            update_item=update_item.dict(exclude_none=True),
             db_session=db_session,
         )
         return UserRead.from_orm(user)

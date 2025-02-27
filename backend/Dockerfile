@@ -8,7 +8,7 @@ ENV POETRY_NO_INTERACTION=1 \
 
 WORKDIR $WORKDIR
 
-RUN apt-get update && apt-get install -y gcc g++ python3-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y gcc && rm -rf /var/lib/apt/lists/*
 RUN python3 -m pip install --upgrade pip && pip install poetry
 RUN poetry config installer.max-workers 10
 RUN poetry config virtualenvs.in-project true

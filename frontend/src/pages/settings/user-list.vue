@@ -66,7 +66,12 @@ const {
             color="primary"
             variant="tonal"
           >
-            <MyVImg :img-obj="item" />
+            <MyVImg
+              :img-obj="{
+                src: item.avatar,
+                lazySrc: item.avatar,
+              }"
+            />
           </VAvatar>
         </template>
         <template #bottom>
