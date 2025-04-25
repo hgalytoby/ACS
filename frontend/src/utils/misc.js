@@ -1,3 +1,8 @@
+const orderMapping = {
+  'true': 'asc',
+  'false': 'asc',
+}
+
 export const getCreatedAt = createdAt => {
   if (!createdAt) return []
   const [start, end] = createdAt
@@ -9,18 +14,19 @@ export const getSortNumQuery = fieldMappings => {
   const result = []
   const route = useRoute()
 
+  if (Object.keys(route.query).length === 0) {
+    return [{ key: 'createdAt', order: 'desc' }]
+  }
   for (const field in fieldMappings) {
     const { num, sort } = fieldMappings[field]
     if (num in route.query && sort in route.query) {
-      const order = route.query[sort] === 'true' ? 'asc' : 'desc'
+
+      const order = orderMapping[route.query[sort]]
 
       result.push({ key: field, order, num: Number(route.query[num]) })
     }
   }
   result.sort((a, b) => a.num - b.num)
-  if (result.length === 0) {
-    return [{ key: 'createdAt', order: 'desc' }]
-  } 
   
   return result
 }

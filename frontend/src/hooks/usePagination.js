@@ -30,7 +30,7 @@ export default function(getDataCallback, searchRef, sortRef) {
     } else if (paginationStore.searchBtn) {
       query = params
     } else {
-      query =  { ...route.query, ...params }
+      query = { ...route.query, ...params }
     }
 
     paginationStore.updateReset(false)
