@@ -1,5 +1,5 @@
 const orderMapping = {
-  'true': 'asc',
+  'true': 'desc',
   'false': 'asc',
 }
 
