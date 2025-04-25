@@ -67,7 +67,7 @@ class AcceptLocationView:
                 message = WebSocketEventSchema(
                     event=WebSocketEvent.MEMBER_STATUS,
                     data=result,
-                ).json()
+                ).json(by_alias=True)
                 await broadcast.publish(
                     channel=settings.project,
                     message=message,

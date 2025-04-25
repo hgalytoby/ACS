@@ -1,5 +1,6 @@
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import { useUserStore } from '@/stores/user'
+import { useMemberStore } from '@/stores/member'
 
 const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss'
 
@@ -26,18 +27,18 @@ function connect() {
 }
 
 function message(event) {
-  const data = JSON.parse(event.data)
+  const payload = JSON.parse(event.data)
+  const memberStore = useMemberStore()
 
-  if (data.event === 'login' && data.success) {
+  if (payload.event === 'LOGIN' && payload.data.success) {
     sendWebSocketMessage({
-      action: 'member_come_list',
+      event: 'MEMBER_STATUS_LIST',
     })
-  } else if (data.action === 'member_come_list') {
-    console.log('member_come_list', data.items)
-    store.commit('member/SET_MEMBER_COME_LIST', data.items)
-  } else if (data.action === 'member_come') {
-    console.log('member_come', data.items)
-    store.commit('member/SET_MEMBER_COME_INFO_LIST', data.items)
+  } else if (payload.event === 'MEMBER_STATUS_LIST') {
+    console.log('MEMBER_STATUS_LIST', payload.data)
+    memberStore.updateStatusList(payload.data)
+  } else if (payload.event === 'MEMBER_STATUS') {
+    console.log('MEMBER_STATUS', payload.data)
   }
 }
 

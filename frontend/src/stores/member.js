@@ -97,5 +97,8 @@ export const useMemberStore = defineStore({
           this.$patch({ statusList: data })
         })
     },
+    updateStatusList(payload) {
+      this.$patch({ statusList: payload })
+    },
   },
 })

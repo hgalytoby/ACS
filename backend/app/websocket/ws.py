@@ -46,7 +46,7 @@ class Client:
         data = WebSocketEventSchema(
             event=WebSocketEvent.MEMBER_STATUS_LIST,
             data=items,
-        ).json()
+        ).json(by_alias=True)
         await self.websocket.send_text(data=data)
 
     async def member_come(
