@@ -9,7 +9,7 @@ import { getMemberListFilterFormItems } from '@/utils/filter-form-items'
 const emit = defineEmits(['searchEmit'])
 
 const formSchema = yup.object({
-  memberName: yup.string().nullable(),
+  name: yup.string().nullable(),
   bloodType: yup.string().nullable(),
   phone: yup.string().nullable(),
   company: yup.string().nullable(),
@@ -18,7 +18,7 @@ const formSchema = yup.object({
 })
 
 const initItems = {
-  username: undefined,
+  name: undefined,
   bloodType: undefined,
   phone: undefined,
   company: undefined,
@@ -54,13 +54,13 @@ const {
           >
             <Field
               v-slot="{ field }"
-              name="username"
+              name="name"
               type="text"
             >
               <VTextField
                 v-bind="field"
-                v-model="formItems.username"
-                label="Username"
+                v-model="formItems.name"
+                label="Name"
                 type="text"
                 variant="outlined"
                 density="compact"
@@ -69,7 +69,7 @@ const {
             </Field>
             <ErrorMessage
               class="error-message"
-              name="username"
+              name="name"
             />
           </VCol>
           <VCol

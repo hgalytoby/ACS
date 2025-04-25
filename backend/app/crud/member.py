@@ -1,25 +1,27 @@
-from collections import defaultdict
 from typing import Any, Optional
 from uuid import UUID
 
+import orjson
 from fastapi import File, HTTPException, UploadFile, status
 from sqlalchemy.orm import joinedload
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel.sql.expression import Select, SelectOfScalar
 
+from app.crud import crud_user_log
 from app.crud.base import CRUDBase
 from app.models import (
     MemberLocationModel,
     MemberModel,
     MemberRecordModel,
-    MemberStatusModel,
+    MemberStatusModel, UserModel,
 )
 from app.schemas.chart import (
     BaseGrowthRead,
     MemberRecordHourlyCountDataRead,
     MemberRecordHourlyCountRead,
 )
+from app.schemas.log import UserLogCreate
 from app.schemas.member import (
     MemberCreate,
     MemberLocationCreate,
@@ -36,6 +38,7 @@ from app.schemas.member import (
     MemberUpdate,
 )
 from app.utils.chart import DateGrowthChart
+from app.utils.enums import UserLogEvent
 from app.utils.sql_query import DateRelatedQueryList, QueryList
 from app.utils.storage import Storage
 
@@ -54,10 +57,14 @@ class CRUDMemberLocation(
         create_item: MemberLocationCreate | MemberLocationModel,
         image: UploadFile = File(),
         db_session: Optional[AsyncSession] = None,
+        refresh: bool = False,
+        commit: bool = True,
     ) -> MemberLocationModel:
         instance = await super().create(
             create_item=create_item,
             db_session=db_session,
+            refresh=refresh,
+            commit=False,
         )
         await Storage.save_image(instance=instance, image=image)
         instance = await self.save(instance=instance, db_session=db_session)
@@ -67,9 +74,9 @@ class CRUDMemberLocation(
         self,
         *,
         current_item: MemberLocationModel,
-        update_item: MemberLocationUpdate
-        | dict[str, Any]
-        | MemberLocationModel,
+        update_item: (
+            MemberLocationUpdate | dict[str, Any] | MemberLocationModel
+        ),
         db_session: Optional[AsyncSession] = None,
         image: UploadFile = File(default=None),
     ) -> MemberLocationModel:
@@ -119,6 +126,7 @@ class CRUDMember(
         *,
         create_item: MemberCreate | MemberModel,
         image: UploadFile = File(),
+        user: UserModel,
         db_session: Optional[AsyncSession] = None,
         refresh: bool = False,
         commit: bool = True,
@@ -131,6 +139,19 @@ class CRUDMember(
         )
         await Storage.save_image(instance=instance, image=image)
         await Storage.save_qrcode(instance=instance)
+        raw_data = orjson.loads(create_item.model_dump_json()) | {
+            "image": image.filename,
+        }
+        user_log = UserLogCreate(
+            user_id=user.id,
+            event=UserLogEvent.CREATE_MEMBER,
+            raw_data=raw_data,
+        )
+        await crud_user_log.create(
+            create_item=user_log,
+            db_session=db_session,
+            commit=False,
+        )
         instance = await self.save(instance=instance)
         return instance
 

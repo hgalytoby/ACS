@@ -33,7 +33,7 @@ export const getMemberListFilterFormItems = () => {
   const route = useRoute()
 
   return {
-    username: route.query.username,
+    name: route.query.name,
     bloodType: route.query.bloodType,
     phone: route.query.phone,
     company: route.query.company,

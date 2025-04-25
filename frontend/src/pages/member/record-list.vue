@@ -34,7 +34,7 @@ const headers = [
 ]
 
 const fieldMappings = {
-  status: { num: 'createdAtNum', sort: 'createdAtSort' },
+  status: { num: 'statusNum', sort: 'statusSort' },
   memberLocationName: { num: 'memberLocationNameNum', sort: 'memberLocationNameSort' },
   memberName: { num: 'memberNameNum', sort: 'memberNameSort' },
   memberPhone: { num: 'memberPhoneNum', sort: 'memberPhoneSort' },
@@ -66,6 +66,7 @@ const {
       rounded="lg"
     >
       <VDataTableServer
+        v-model:sort-by="sortBy"
         v-model:items-per-page="currentSize"
         v-model:page="currentPage"
         :search="search"

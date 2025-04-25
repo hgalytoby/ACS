@@ -23,9 +23,18 @@ export default function(getDataCallback, searchRef, sortRef) {
   )
 
   const getData = async params => {
-    const query = paginationStore.reset ? {} : { ...route.query, ...params }
+    let query
+
+    if (paginationStore.reset) {
+      query = {}
+    } else if (paginationStore.searchBtn) {
+      query = params
+    } else {
+      query =  { ...route.query, ...params }
+    }
 
     paginationStore.updateReset(false)
+    paginationStore.updateSearchBtn(false)
 
     await getDataCallback({
       ...query,

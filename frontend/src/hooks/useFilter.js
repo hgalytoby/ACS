@@ -27,6 +27,7 @@ export default function(emit, formItems, initItems) {
         result[key] = payload[key]
       }
     })
+    paginationStore.updateSearchBtn(true)
     emit('searchEmit', result)
   }
 

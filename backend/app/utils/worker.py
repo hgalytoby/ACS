@@ -15,7 +15,7 @@ from app.utils.enums import SystemLogEvent, UserLogEvent
 async def send_email(subject: str, body: str, email: str):
     message = MessageSchema(
         subject=subject,
-        recipients=[EmailStr(email)],
+        recipients=[email],
         body=body,
         subtype=MessageType.html,
     )

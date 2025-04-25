@@ -12,9 +12,11 @@ from app.crud import (
     crud_member_record,
     crud_member_status,
 )
+from app.crud.user import current_active_verified_user
 from app.dependencies.base import web_params
 from app.dependencies.deps import authorize_api
 from app.dependencies.query import MemberQuery, MemberRecordQuery
+from app.models import UserModel
 from app.schemas.member import (
     MemberCreate,
     MemberLocationCreate,
@@ -28,6 +30,7 @@ from app.schemas.member import (
 from app.schemas.websocket import WebSocketEventSchema
 from app.utils.enums import APIAccess, WebSocketEvent
 from app.utils.pagination import Page
+from app.utils.sql_query import QueryList
 from app.websocket import broadcast
 
 router = APIRouter()
@@ -35,6 +38,8 @@ router = APIRouter()
 
 @cbv(router)
 class MemberView:
+    user: UserModel = Depends(current_active_verified_user)
+
     @router.get(
         '/members',
         name=APIAccess.PRIVATE,
@@ -44,7 +49,7 @@ class MemberView:
     )
     async def get_multi(
         self,
-        query=web_params(MemberQuery),
+        query: QueryList = web_params(MemberQuery),
     ) -> Page[MemberRead]:
         items = await crud_member.get_multi(query=query, paginated=True)
         return items
@@ -61,7 +66,7 @@ class MemberView:
         item: MemberCreate,
         image: UploadFile = File(),
     ) -> MemberRead:
-        instance = await crud_member.create(create_item=item, image=image)
+        instance = await crud_member.create(create_item=item, image=image, user=self.user)
         return instance
 
     @router.get(
