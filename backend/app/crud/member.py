@@ -1,12 +1,13 @@
+from collections import defaultdict
 from typing import Any, Optional
 from uuid import UUID
 
-import orjson
 from fastapi import File, HTTPException, UploadFile, status
 from sqlalchemy.orm import joinedload
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel.sql.expression import Select, SelectOfScalar
+import orjson
 
 from app.crud import crud_user_log
 from app.crud.base import CRUDBase
@@ -14,7 +15,8 @@ from app.models import (
     MemberLocationModel,
     MemberModel,
     MemberRecordModel,
-    MemberStatusModel, UserModel,
+    MemberStatusModel,
+    UserModel,
 )
 from app.schemas.chart import (
     BaseGrowthRead,
@@ -140,7 +142,7 @@ class CRUDMember(
         await Storage.save_image(instance=instance, image=image)
         await Storage.save_qrcode(instance=instance)
         raw_data = orjson.loads(create_item.model_dump_json()) | {
-            "image": image.filename,
+            'image': image.filename,
         }
         user_log = UserLogCreate(
             user_id=user.id,
