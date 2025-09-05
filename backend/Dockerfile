@@ -1,4 +1,4 @@
-FROM python:3.10.12-slim-buster AS builder
+FROM python:3.11-slim-bullseye AS builder
 
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
@@ -16,7 +16,7 @@ COPY pyproject.toml ./
 RUN poetry install --only main --no-root && rm -rf "$POETRY_CACHE_DIR"
 
 
-FROM python:3.10.12-slim-buster AS base
+FROM python:3.11-slim-bullseye AS base
 
 ENV WORKDIR=/usr/src/app \
     PATH="/usr/src/app/.venv/bin:$PATH"
