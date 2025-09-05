@@ -6,6 +6,7 @@ Create Date: 2023-08-26 14:50:53.172014
 
 """
 from sqlalchemy.dialects import postgresql
+from sqlalchemy.dialects.postgresql import UUID
 import sqlalchemy as sa
 import sqlalchemy_utils
 import sqlmodel
