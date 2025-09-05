@@ -11,7 +11,7 @@ services:
     container_name: acs_nginx
     restart: always
     ports:
-      - "80:80"
+      - "30001:80"
     depends_on:
       - redis
       - postgres
