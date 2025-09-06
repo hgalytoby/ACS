@@ -46,6 +46,8 @@ services:
     environment:
       - PYTHONUNBUFFERED=TURE
       - MODE=PROD
+    env_file:
+      - path: .env
 
 volumes:
   postgres-data:
