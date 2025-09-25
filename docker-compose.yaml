@@ -17,7 +17,7 @@ services:
       - postgres
       - backend
     volumes:
-      - static-data:/usr/src/app/static
+      - ../files/static:/usr/src/app/static
 
   postgres:
     image: postgres:16
@@ -40,7 +40,7 @@ services:
       - redis
       - postgres
     volumes:
-      - static-data:/usr/src/app/static
+      - ../files/static:/usr/src/app/static
     ports:
       - "30000:8000"
     environment:
@@ -51,6 +51,4 @@ services:
 
 volumes:
   postgres-data:
-    driver: local
-  static-data:
     driver: local
