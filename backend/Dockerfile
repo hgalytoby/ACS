@@ -23,7 +23,6 @@ ENV WORKDIR=/usr/src/app \
 
 COPY --from=builder $WORKDIR $WORKDIR
 WORKDIR $WORKDIR
-RUN mkdir -p /static
 ENV PYTHONPATH=$WORKDIR:$PYTHONPATH
 COPY . .
 CMD chmod +x ./wait-for-it.sh && \
