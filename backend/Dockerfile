@@ -25,6 +25,8 @@ COPY --from=builder $WORKDIR $WORKDIR
 WORKDIR $WORKDIR
 ENV PYTHONPATH=$WORKDIR:$PYTHONPATH
 COPY . .
+RUN mkdir -p /static
+
 CMD chmod +x ./wait-for-it.sh && \
     ./wait-for-it.sh redis:6379 && \
     ./wait-for-it.sh postgres:5432 && \
