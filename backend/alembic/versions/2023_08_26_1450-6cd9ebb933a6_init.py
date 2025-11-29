@@ -32,9 +32,7 @@ def upgrade() -> None:
     )
     op.create_table(
         'ApiGroup',
-        sa.Column(
-            'name', sqlmodel.AutoString(length=32), nullable=False
-        ),
+        sa.Column('name', sqlmodel.AutoString(length=32), nullable=False),
         sa.Column('id', sa.Uuid(), nullable=False),
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.Column('created_at', sa.DateTime(), nullable=False),
@@ -49,9 +47,7 @@ def upgrade() -> None:
             nullable=True,
         ),
         sa.Column('id', sa.Uuid(), nullable=False),
-        sa.Column(
-            'subject', sqlmodel.AutoString(), nullable=False
-        ),
+        sa.Column('subject', sqlmodel.AutoString(), nullable=False),
         sa.Column('body', sqlmodel.AutoString(), nullable=False),
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.Column('created_at', sa.DateTime(), nullable=False),
@@ -64,9 +60,7 @@ def upgrade() -> None:
             sqlmodel.AutoString(length=32),
             nullable=False,
         ),
-        sa.Column(
-            'value', sqlmodel.AutoString(length=32), nullable=False
-        ),
+        sa.Column('value', sqlmodel.AutoString(length=32), nullable=False),
         sa.Column('parent_id', sa.Uuid(), nullable=True),
         sa.Column('id', sa.Uuid(), nullable=False),
         sa.Column('updated_at', sa.DateTime(), nullable=True),
@@ -81,12 +75,8 @@ def upgrade() -> None:
     op.create_table(
         'Member',
         sa.Column('id', sa.Uuid(), nullable=False),
-        sa.Column(
-            'name', sqlmodel.AutoString(length=32), nullable=False
-        ),
-        sa.Column(
-            'blood_type', sqlmodel.AutoString(), nullable=False
-        ),
+        sa.Column('name', sqlmodel.AutoString(length=32), nullable=False),
+        sa.Column('blood_type', sqlmodel.AutoString(), nullable=False),
         sa.Column('birthday', sa.Date(), nullable=False),
         sa.Column('phone', sqlmodel.AutoString(), nullable=False),
         sa.Column(
@@ -101,9 +91,7 @@ def upgrade() -> None:
         ),
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.Column('created_at', sa.DateTime(), nullable=False),
-        sa.Column(
-            'image', sqlmodel.AutoString(length=256), nullable=True
-        ),
+        sa.Column('image', sqlmodel.AutoString(length=256), nullable=True),
         sa.Column(
             'qrcode',
             sqlmodel.AutoString(length=256),
@@ -115,14 +103,10 @@ def upgrade() -> None:
     op.create_table(
         'MemberLocation',
         sa.Column('id', sa.Uuid(), nullable=False),
-        sa.Column(
-            'name', sqlmodel.AutoString(length=64), nullable=False
-        ),
+        sa.Column('name', sqlmodel.AutoString(length=64), nullable=False),
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.Column('created_at', sa.DateTime(), nullable=False),
-        sa.Column(
-            'image', sqlmodel.AutoString(length=256), nullable=True
-        ),
+        sa.Column('image', sqlmodel.AutoString(length=256), nullable=True),
         sa.PrimaryKeyConstraint('id'),
         sa.UniqueConstraint('name'),
     )
@@ -130,9 +114,7 @@ def upgrade() -> None:
         'MemberRecord',
         sa.Column('id', sa.Uuid(), nullable=False),
         sa.Column('status', sa.Boolean(), nullable=False),
-        sa.Column(
-            'member_location_id', sa.Uuid(), nullable=False
-        ),
+        sa.Column('member_location_id', sa.Uuid(), nullable=False),
         sa.Column(
             'member_location_name',
             sqlmodel.AutoString(length=64),
@@ -149,9 +131,7 @@ def upgrade() -> None:
             sqlmodel.AutoString(length=32),
             nullable=False,
         ),
-        sa.Column(
-            'member_phone', sqlmodel.AutoString(), nullable=False
-        ),
+        sa.Column('member_phone', sqlmodel.AutoString(), nullable=False),
         sa.Column(
             'member_company',
             sqlmodel.AutoString(length=32),
@@ -173,9 +153,7 @@ def upgrade() -> None:
     op.create_table(
         'Role',
         sa.Column('id', sa.Uuid(), nullable=False),
-        sa.Column(
-            'name', sqlmodel.AutoString(length=32), nullable=False
-        ),
+        sa.Column('name', sqlmodel.AutoString(length=32), nullable=False),
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.Column('created_at', sa.DateTime(), nullable=False),
         sa.Column('is_protected', sa.Boolean(), nullable=False),
@@ -238,9 +216,7 @@ def upgrade() -> None:
         sa.Column('id', sa.Uuid(), nullable=False),
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.Column('created_at', sa.DateTime(), nullable=False),
-        sa.Column(
-            'uri', sqlmodel.AutoString(length=128), nullable=False
-        ),
+        sa.Column('uri', sqlmodel.AutoString(length=128), nullable=False),
         sa.Column(
             'description',
             sqlmodel.AutoString(length=32),
@@ -275,9 +251,7 @@ def upgrade() -> None:
         sa.Column('status', sa.Boolean(), nullable=False),
         sa.Column('created_at', sa.DateTime(), nullable=False),
         sa.Column('member_id', sa.Uuid(), nullable=False),
-        sa.Column(
-            'member_location_id', sa.Uuid(), nullable=False
-        ),
+        sa.Column('member_location_id', sa.Uuid(), nullable=False),
         sa.ForeignKeyConstraint(
             ['member_id'],
             ['Member.id'],
@@ -292,22 +266,12 @@ def upgrade() -> None:
         'OAuthAccount',
         sa.Column('id', sa.Uuid(), nullable=False),
         sa.Column('user_id', sa.Uuid(), nullable=False),
-        sa.Column(
-            'oauth_name', sqlmodel.AutoString(), nullable=False
-        ),
-        sa.Column(
-            'access_token', sqlmodel.AutoString(), nullable=False
-        ),
+        sa.Column('oauth_name', sqlmodel.AutoString(), nullable=False),
+        sa.Column('access_token', sqlmodel.AutoString(), nullable=False),
         sa.Column('expires_at', sa.Integer(), nullable=True),
-        sa.Column(
-            'refresh_token', sqlmodel.AutoString(), nullable=True
-        ),
-        sa.Column(
-            'account_id', sqlmodel.AutoString(), nullable=False
-        ),
-        sa.Column(
-            'account_email', sqlmodel.AutoString(), nullable=False
-        ),
+        sa.Column('refresh_token', sqlmodel.AutoString(), nullable=True),
+        sa.Column('account_id', sqlmodel.AutoString(), nullable=False),
+        sa.Column('account_email', sqlmodel.AutoString(), nullable=False),
         sa.ForeignKeyConstraint(
             ['user_id'],
             ['User.id'],
