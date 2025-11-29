@@ -1,6 +1,7 @@
+from uuid import UUID
+
 from fastapi_users_db_sqlmodel import SQLModelBaseOAuthAccount
 from humps import kebabize
-from pydantic import UUID4
 from sqlmodel import Field, Relationship
 
 from app.models.base import (
@@ -114,7 +115,7 @@ class UserModel(
 
 
 class OAuthAccountModel(BaseUUIDModel, SQLModelBaseOAuthAccount, table=True):
-    user_id: UUID4 = Field(
+    user_id: UUID = Field(
         title='使用者 ID',
         description='使用者 ID',
         foreign_key='User.id',
