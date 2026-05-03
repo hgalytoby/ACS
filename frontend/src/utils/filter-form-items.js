@@ -4,6 +4,7 @@ export const getAccountSettingsUserListFilterFormItems = () => {
   const route = useRoute()
 
   return {
+    tab: route.query.tab || undefined,
     event: route.query.event,
     createdAt: getCreatedAt(route.query.createdAt),
   }
